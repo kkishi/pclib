@@ -34,3 +34,20 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "modint",
+    srcs = ["modint.h"],
+)
+
+cc_test(
+    name = "modint_test",
+    srcs = [
+        "modint_test.cc",
+    ],
+    deps = [
+        ":modint",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
