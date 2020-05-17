@@ -12,15 +12,8 @@ class ModInt {
     }
     return *this;
   }
-  ModInt operator+(const ModInt& m) const {
-    ModInt n(*this);
-    n += m;
-    return n;
-  }
-  ModInt& operator++() {
-    (*this) += 1;
-    return *this;
-  }
+  ModInt operator+(const ModInt& m) const { return ModInt(*this) += m; }
+  ModInt& operator++() { return (*this) += 1; }
   ModInt& operator-=(const ModInt& m) {
     n_ -= m.n_;
     if (n_ < 0) {
@@ -28,21 +21,14 @@ class ModInt {
     }
     return *this;
   }
-  ModInt operator-(const ModInt& m) const {
-    ModInt n(*this);
-    n -= m;
-    return n;
-  }
+  ModInt operator-(const ModInt& m) const { return ModInt(*this) -= m; }
+  ModInt& operator--() { return (*this) -= 1; }
   ModInt& operator*=(const ModInt& m) {
     n_ *= m.n_;
     n_ %= Mod;
     return *this;
   }
-  ModInt operator*(const ModInt& m) const {
-    ModInt n(*this);
-    n *= m;
-    return n;
-  }
+  ModInt operator*(const ModInt& m) const { return ModInt(*this) *= m; }
   long long value() const { return n_; }
 
  private:

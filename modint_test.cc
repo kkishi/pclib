@@ -40,6 +40,12 @@ TEST(modint, sub) {
   EXPECT_EQ((a - b).value(), 10);
 }
 
+TEST(modint, decrement) {
+  ModInt<7> m(0);
+  --m;
+  EXPECT_EQ(m.value(), 6);
+}
+
 TEST(modint, mul) {
   ModInt<7> m(2);
   m *= 6;
