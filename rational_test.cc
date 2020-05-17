@@ -1,8 +1,8 @@
+#include "rational.h"
+
 #include <sstream>
 
 #include "gtest/gtest.h"
-
-#include "rational.h"
 
 TEST(rational, simple) {
   Rational<int> rat(1, 2);
@@ -11,7 +11,7 @@ TEST(rational, simple) {
 }
 
 TEST(rational, normalization) {
-  Rational<int> rat(2 * 3 * 5, - 3 * 5 * 7);
+  Rational<int> rat(2 * 3 * 5, -3 * 5 * 7);
   EXPECT_EQ(rat.numerator(), -2);
   EXPECT_EQ(rat.denominator(), 7);
 }

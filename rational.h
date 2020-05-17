@@ -27,6 +27,7 @@ class Rational {
   }
   T numerator() const { return numerator_; }
   T denominator() const { return denominator_; }
+
  private:
   T numerator_;
   T denominator_;
@@ -34,6 +35,6 @@ class Rational {
 
 template <typename T>
 std::ostream& operator<<(std::ostream& out, const Rational<T>& r) {
-  out << r.numerator() << '/'<< r.denominator();
+  out << r.numerator() << '/' << r.denominator();
   return out;
 }
