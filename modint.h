@@ -29,6 +29,7 @@ class ModInt {
     return *this;
   }
   ModInt operator*(const ModInt& m) const { return ModInt(*this) *= m; }
+  bool operator==(const ModInt& m) const { return n_ == m.n_; }
   long long value() const { return n_; }
 
  private:
