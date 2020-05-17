@@ -56,6 +56,12 @@ TEST(modint, mul) {
   EXPECT_EQ((a * b).value(), 1);
 }
 
+TEST(modint, large) {
+  ModInt<1000000007> a(2147483647), b(2147483646);
+  EXPECT_EQ((a + b).value(), 294967265);
+  EXPECT_EQ((a * b).value(), 703135109);
+}
+
 TEST(modint, stream) {
   std::ostringstream oss;
   ModInt<7> m(2);
