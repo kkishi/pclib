@@ -24,10 +24,12 @@ T Index(const vector<T>& v, T x) {
   return lower_bound(v.begin(), v.end(), x) - v.begin();
 }
 
-typedef pair<int, int> Cell;
+struct Cell {
+  int x, y;
+};
 
 ostream& operator<<(ostream& os, const Cell& c) {
-  cout << "{" << c.first << "," << c.second << "}";
+  cout << "{" << c.x << "," << c.y << "}";
   return os;
 }
 
@@ -65,17 +67,17 @@ class Grid {
     }
   }
   pair<Cell, bool> Move(const Cell& c, int dx, int dy) const {
-    if (grid_[c.first + dx][c.second + dy].online) {
+    if (grid_[c.x + dx][c.y + dy].online) {
       return {{0, 0}, false};
     }
-    return {{c.first + dx * 2, c.second + dy * 2}, true};
+    return {{c.x + dx * 2, c.y + dy * 2}, true};
   };
   bool IsEdge(const Cell& c) const {
-    return c.first == 1 || (c.first + 1) == (grid_.size() - 1) ||
-           c.second == 1 || (c.second + 1) == (grid_[0].size() - 1);
+    return c.x == 1 || (c.x + 1) == (grid_.size() - 1) ||
+           c.y == 1 || (c.y + 1) == (grid_[0].size() - 1);
   };
-  bool Visited(const Cell& c) const { return grid_[c.first][c.second].visited; }
-  void Visit(const Cell& c) { grid_[c.first][c.second].visited = true; }
+  bool Visited(const Cell& c) const { return grid_[c.x][c.y].visited; }
+  void Visit(const Cell& c) { grid_[c.x][c.y].visited = true; }
 
  private:
   vector<vector<Content>> grid_;
@@ -133,8 +135,8 @@ int main() {
       ans = -1;
       break;
     }
-    long long x = cx[here.first / 2 + 1] - cx[here.first / 2];
-    long long y = cy[here.second / 2 + 1] - cy[here.second / 2];
+    long long x = cx[here.x / 2 + 1] - cx[here.x / 2];
+    long long y = cy[here.y / 2 + 1] - cy[here.y / 2];
     ans += x * y;
     REP(i, 4) {
       auto [there, ok] = grid.Move(here, dx[i], dy[i]);
