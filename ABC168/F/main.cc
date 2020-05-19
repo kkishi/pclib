@@ -24,16 +24,16 @@ T Index(const vector<T>& v, T x) {
   return lower_bound(v.begin(), v.end(), x) - v.begin();
 }
 
-struct Cell {
+struct Coord {
   int x, y;
 };
 
-ostream& operator<<(ostream& os, const Cell& c) {
+ostream& operator<<(ostream& os, const Coord& c) {
   cout << "{" << c.x << "," << c.y << "}";
   return os;
 }
 
-struct Content {
+struct State {
   bool online;
   bool visited;
 };
@@ -54,33 +54,35 @@ class Grid {
   }
   void DrawLine(int x, int y, int mx, int my, int dx, int dy) {
     for (; x <= mx && y <= my; x += dx, y += dy) {
-      grid_[x][y].online = true;
+      state({x, y}).online = true;
     }
   }
-  Cell CellAt(int lower_x, int lower_y) const {
+  Coord At(int lower_x, int lower_y) const {
     return {lower_x * 2 + 1, lower_y * 2 + 1};
   }
   void Debug() const {
     REP(i, grid_.size()) {
-      REP(j, grid_[i].size()) { cout << grid_[i][j].online; }
+      REP(j, grid_[i].size()) { cout << state({i, j}).online; }
       cout << endl;
     }
   }
-  pair<Cell, bool> Move(const Cell& c, int dx, int dy) const {
-    if (grid_[c.x + dx][c.y + dy].online) {
+  pair<Coord, bool> Move(const Coord& c, int dx, int dy) const {
+    if (state({c.x + dx, c.y + dy}).online) {
       return {{0, 0}, false};
     }
     return {{c.x + dx * 2, c.y + dy * 2}, true};
   };
-  bool IsEdge(const Cell& c) const {
-    return c.x == 1 || (c.x + 1) == (grid_.size() - 1) ||
-           c.y == 1 || (c.y + 1) == (grid_[0].size() - 1);
+  bool IsEdge(const Coord& c) const {
+    return c.x == 1 || (c.x + 1) == (grid_.size() - 1) || c.y == 1 ||
+           (c.y + 1) == (grid_[0].size() - 1);
   };
-  bool Visited(const Cell& c) const { return grid_[c.x][c.y].visited; }
-  void Visit(const Cell& c) { grid_[c.x][c.y].visited = true; }
+  bool Visited(const Coord& c) const { return state(c).visited; }
+  void Visit(const Coord& c) { state({c.x, c.y}).visited = true; }
+  const State& state(const Coord& c) const { return grid_[c.x][c.y]; }
+  State& state(const Coord& c) { return grid_[c.x][c.y]; }
 
  private:
-  vector<vector<Content>> grid_;
+  vector<vector<State>> grid_;
 };
 
 int dx[] = {0, 1, 0, -1};
@@ -119,16 +121,16 @@ int main() {
   REP(i, N) grid.DrawLineX(Index(cx, A[i]), Index(cx, B[i]), Index(cy, C[i]));
   REP(i, M) grid.DrawLineY(Index(cx, D[i]), Index(cy, E[i]), Index(cy, F[i]));
 
-  Cell init = grid.CellAt(Index(cx, 0), Index(cy, 0));
+  Coord init = grid.At(Index(cx, 0), Index(cy, 0));
 
-  queue<Cell> que;
+  queue<Coord> que;
   que.push(init);
 
   grid.Visit(init);
 
   long long ans = 0;
   while (!que.empty()) {
-    Cell here = que.front();
+    Coord here = que.front();
     que.pop();
 
     if (grid.IsEdge(here)) {
