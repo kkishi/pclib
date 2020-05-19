@@ -12,6 +12,16 @@ int D[kMax];
 int E[kMax];
 int F[kMax];
 
+vector<int> Compress(vector<int> v) {
+  sort(v.begin(), v.end());
+  v.erase(unique(v.begin(), v.end()), v.end());
+  return v;
+}
+
+int Index(const vector<int>& v, int x) {
+  return lower_bound(v.begin(), v.end(), x) - v.begin();
+}
+
 typedef pair<int, int> Cell;
 
 ostream& operator<<(ostream& os, const Cell& c) {
@@ -26,47 +36,25 @@ struct Content {
 
 class Grid {
  public:
-  Grid(const set<int>& xs, const set<int>& ys) {
-    xs_.push_back(*xs.begin() - 1);
-    copy(xs.begin(), xs.end(), back_inserter(xs_));
-    xs_.push_back(*xs.rbegin() + 1);
-
-    REP(i, xs_.size()) xi_[xs_[i]] = i;
-
-    ys_.push_back(*ys.begin() - 1);
-    copy(ys.begin(), ys.end(), back_inserter(ys_));
-    ys_.push_back(*ys.rbegin() + 1);
-
-    REP(i, ys_.size()) yi_[ys_[i]] = i;
-
-    grid_.resize(xs_.size() * 2 - 1);
-    REP(i, grid_.size()) { grid_[i].resize(ys_.size() * 2 - 1); }
+  Grid(int x, int y) {
+    grid_.resize(x * 2 - 1);
+    REP(i, grid_.size()) grid_[i].resize(y * 2 - 1);
   }
   void DrawLineX(int x1, int x2, int y) {
     if (x1 > x2) swap(x1, x2);
-    DrawLine(xi(x1), yi(y), xi(x2), yi(y), 1, 0);
+    DrawLine(x1 * 2, y * 2, x2 * 2, y * 2, 1, 0);
   }
   void DrawLineY(int x, int y1, int y2) {
     if (y1 > y2) swap(y1, y2);
-    DrawLine(xi(x), yi(y1), xi(x), yi(y2), 0, 1);
+    DrawLine(x * 2, y1 * 2, x * 2, y2 * 2, 0, 1);
   }
   void DrawLine(int x, int y, int mx, int my, int dx, int dy) {
     for (; x <= mx && y <= my; x += dx, y += dy) {
       grid_[x][y].online = true;
     }
   }
-  int xi(int x) const {
-    auto it = xi_.find(x);
-    assert(it != xi_.end());
-    return it->second * 2;
-  }
-  int yi(int y) const {
-    auto it = yi_.find(y);
-    assert(it != yi_.end());
-    return it->second * 2;
-  }
   Cell CellAt(int lower_x, int lower_y) const {
-    return {xi(lower_x) + 1, yi(lower_y) + 1};
+    return {lower_x * 2 + 1, lower_y * 2 + 1};
   }
   void Debug() const {
     REP(i, grid_.size()) {
@@ -80,17 +68,6 @@ class Grid {
     }
     return {{c.first + dx * 2, c.second + dy * 2}, true};
   };
-  long long lower_x(const Cell& c) const { return xs_[c.first / 2]; }
-  long long higher_x(const Cell& c) const { return xs_[(c.first + 1) / 2]; }
-  long long lower_y(const Cell& c) const { return ys_[c.second / 2]; }
-  long long higher_y(const Cell& c) const { return ys_[(c.second + 1) / 2]; }
-  void DebugCell(const Cell& c) const {
-    cout << "(" << lower_x(c) << "," << lower_y(c) << ") "
-         << "(" << higher_x(c) << "," << higher_y(c) << ")" << endl;
-  }
-  long long AreaOf(const Cell& c) const {
-    return (higher_x(c) - lower_x(c)) * (higher_y(c) - lower_y(c));
-  }
   bool IsEdge(const Cell& c) const {
     return c.first == 1 || (c.first + 1) == (grid_.size() - 1) ||
            c.second == 1 || (c.second + 1) == (grid_[0].size() - 1);
@@ -99,9 +76,6 @@ class Grid {
   void Visit(const Cell& c) { grid_[c.first][c.second].visited = true; }
 
  private:
-  vector<int> xs_, ys_;
-  map<int, int> xi_, yi_;
-
   vector<vector<Content>> grid_;
 };
 
@@ -127,14 +101,21 @@ int main() {
     ys.insert(F[i]);
   }
   xs.insert(0);
+  xs.insert(*xs.begin() - 1);
+  xs.insert(*xs.rbegin() + 1);
   ys.insert(0);
+  ys.insert(*ys.begin() - 1);
+  ys.insert(*ys.rbegin() + 1);
 
-  Grid grid(xs, ys);
+  vector<int> cx = Compress(vector<int>(xs.begin(), xs.end()));
+  vector<int> cy = Compress(vector<int>(ys.begin(), ys.end()));
 
-  REP(i, N) grid.DrawLineX(A[i], B[i], C[i]);
-  REP(i, M) grid.DrawLineY(D[i], E[i], F[i]);
+  Grid grid(cx.size(), cy.size());
 
-  Cell init = grid.CellAt(0, 0);
+  REP(i, N) grid.DrawLineX(Index(cx, A[i]), Index(cx, B[i]), Index(cy, C[i]));
+  REP(i, M) grid.DrawLineY(Index(cx, D[i]), Index(cy, E[i]), Index(cy, F[i]));
+
+  Cell init = grid.CellAt(Index(cx, 0), Index(cy, 0));
 
   queue<Cell> que;
   que.push(init);
@@ -150,7 +131,9 @@ int main() {
       ans = -1;
       break;
     }
-    ans += grid.AreaOf(here);
+    long long x = cx[here.first / 2 + 1] - cx[here.first / 2];
+    long long y = cy[here.second / 2 + 1] - cy[here.second / 2];
+    ans += x * y;
     REP(i, 4) {
       auto [there, ok] = grid.Move(here, dx[i], dy[i]);
       if (!ok) {
