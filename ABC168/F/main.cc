@@ -108,36 +108,7 @@ class Grid {
 int dx[] = {0, 1, 0, -1};
 int dy[] = {1, 0, -1, 0};
 
-void GridTest() {
-  set<int> xs;
-  xs.insert(0);
-  xs.insert(-1);
-  xs.insert(1);
-  set<int> ys;
-  ys.insert(0);
-  ys.insert(1);
-  Grid grid(xs, ys);
-  grid.DrawLineX(-1, 1, 1);
-  grid.Debug();
-  Cell center = grid.CellAt(0, 0);
-  cout << grid.IsEdge(center) << endl;
-  cout << center.first << " " << center.second << endl;
-  Cell right;
-  bool ok;
-  tie(right, ok) = grid.Move(center, 0, 1);
-  cout << "ok:" << ok << endl;
-  cout << grid.IsEdge(right) << endl;
-  cout << right.first << " " << right.second << endl;
-  cout << "area" << endl;
-  cout << grid.AreaOf(center) << endl;
-  cout << grid.lower_x(center) << " " << grid.lower_y(center) << endl;
-  cout << grid.higher_x(center) << " " << grid.higher_y(center) << endl;
-}
-
 int main() {
-  // GridTest();
-  // return 0;
-
   int N, M;
   cin >> N >> M;
   REP(i, N) cin >> A[i] >> B[i] >> C[i];
@@ -163,27 +134,17 @@ int main() {
   REP(i, N) grid.DrawLineX(A[i], B[i], C[i]);
   REP(i, M) grid.DrawLineY(D[i], E[i], F[i]);
 
-  // grid.Debug();
-
   Cell init = grid.CellAt(0, 0);
 
   queue<Cell> que;
   que.push(init);
 
   grid.Visit(init);
-  /*
-  vector<vector<bool>> visited(grid.grid_x_ / 2 + 10);
-  REP(i, visited.size()) visited[i].resize(grid.grid_y_ / 2 + 10);
-  visited[init.first / 2][init.second / 2] = true;
-  */
 
   long long ans = 0;
   while (!que.empty()) {
     Cell here = que.front();
     que.pop();
-
-    // cout << here << endl;
-    // grid.DebugCell(here);
 
     if (grid.IsEdge(here)) {
       ans = -1;
