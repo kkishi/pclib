@@ -12,13 +12,15 @@ int D[kMax];
 int E[kMax];
 int F[kMax];
 
-vector<int> Compress(vector<int> v) {
+template <typename T>
+vector<T> Compress(vector<T> v) {
   sort(v.begin(), v.end());
   v.erase(unique(v.begin(), v.end()), v.end());
   return v;
 }
 
-int Index(const vector<int>& v, int x) {
+template <typename T>
+T Index(const vector<T>& v, T x) {
   return lower_bound(v.begin(), v.end(), x) - v.begin();
 }
 
