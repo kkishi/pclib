@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 
+#include "compress.h"
+
 #define REP(i, n) for (int i = 0; i < (int)(n); ++i)
 
 using namespace std;
@@ -11,18 +13,6 @@ int C[kMax];
 int D[kMax];
 int E[kMax];
 int F[kMax];
-
-template <typename T>
-vector<T> Compress(vector<T> v) {
-  sort(v.begin(), v.end());
-  v.erase(unique(v.begin(), v.end()), v.end());
-  return v;
-}
-
-template <typename T>
-T Index(const vector<T>& v, T x) {
-  return lower_bound(v.begin(), v.end(), x) - v.begin();
-}
 
 struct Coord {
   int x, y;

@@ -1,3 +1,5 @@
+package(default_visibility = ["//visibility:public"])
+
 cc_library(
     name = "gcd",
     srcs = ["gcd.h"],
@@ -47,6 +49,23 @@ cc_test(
     ],
     deps = [
         ":modint",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "compress",
+    srcs = ["compress.h"],
+)
+
+cc_test(
+    name = "compress_test",
+    srcs = [
+        "compress_test.cc",
+    ],
+    deps = [
+        ":compress",
         "@gtest",
         "@gtest//:gtest_main",
     ],

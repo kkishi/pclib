@@ -59,6 +59,15 @@ TEST(modint, large) {
   EXPECT_EQ(a * b, 703135109);
 }
 
+TEST(modint, auto_conversion) {
+  ModInt<1000000007> a = 123;
+  int b = 456;
+  EXPECT_EQ(a + b, 579);
+
+  // TODO: Make this work. This sometimes causes a surprising compile error.
+  // EXPECT_EQ(b + a, 579);
+}
+
 TEST(modint, stream) {
   std::ostringstream oss;
   ModInt<7> m = 2;
