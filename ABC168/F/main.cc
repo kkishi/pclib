@@ -36,12 +36,12 @@ void DrawLineY(Grid& g, int x, int y1, int y2) {
 }
 
 void Debug(const Grid& g) {
-  auto to_char = [](const GridState& s, optional<char> boundary)->char {
-                   if (boundary) {
-                     return s.online ? *boundary : ' ';
-                   }
-                   return s.visited ? 'o' : ' ';
-                 };
+  auto to_char = [](const GridState& s, optional<char> boundary) -> char {
+    if (boundary) {
+      return s.online ? *boundary : ' ';
+    }
+    return s.visited ? 'o' : ' ';
+  };
   g.Debug(cerr, to_char);
 }
 
