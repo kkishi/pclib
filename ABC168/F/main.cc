@@ -2,6 +2,7 @@
 
 #include "compress.h"
 
+#define ALL(c) begin(c), end(c)
 #define REP(i, n) for (int i = 0; i < (int)(n); ++i)
 
 using namespace std;
@@ -30,10 +31,7 @@ struct State {
 
 class Grid {
  public:
-  Grid(int x, int y) {
-    grid_.resize(x * 2 - 1);
-    REP(i, grid_.size()) grid_[i].resize(y * 2 - 1);
-  }
+  Grid(int x, int y) : grid_(x * 2 - 1, vector(y * 2 - 1, State{})) {}
   void DrawLineX(int x1, int x2, int y) {
     if (x1 > x2) swap(x1, x2);
     DrawLine(x1 * 2, y * 2, x2 * 2, y * 2, 1, 0);
@@ -56,11 +54,11 @@ class Grid {
       cout << endl;
     }
   }
-  pair<Coord, bool> Move(const Coord& c, int dx, int dy) const {
+  optional<Coord> Move(const Coord& c, int dx, int dy) const {
     if (state({c.x + dx, c.y + dy}).online) {
-      return {{0, 0}, false};
+      return nullopt;
     }
-    return {{c.x + dx * 2, c.y + dy * 2}, true};
+    return {{c.x + dx * 2, c.y + dy * 2}};
   };
   bool IsEdge(const Coord& c) const {
     return c.x == 1 || (c.x + 1) == (grid_.size() - 1) || c.y == 1 ||
@@ -75,27 +73,23 @@ class Grid {
   vector<vector<State>> grid_;
 };
 
-int dx[] = {0, 1, 0, -1};
-int dy[] = {1, 0, -1, 0};
-
 int main() {
   int N, M;
   cin >> N >> M;
+
   REP(i, N) cin >> A[i] >> B[i] >> C[i];
   REP(i, M) cin >> D[i] >> E[i] >> F[i];
 
   set<int> xs;
   set<int> ys;
-  REP(i, N) {
-    xs.insert(A[i]);
-    xs.insert(B[i]);
-    ys.insert(C[i]);
-  }
-  REP(i, M) {
-    xs.insert(D[i]);
-    ys.insert(E[i]);
-    ys.insert(F[i]);
-  }
+
+  xs.insert(A, A + N);
+  xs.insert(B, B + N);
+  ys.insert(C, C + N);
+  xs.insert(D, D + M);
+  ys.insert(E, E + M);
+  ys.insert(F, F + M);
+
   xs.insert(0);
   xs.insert(*xs.begin() - 1);
   xs.insert(*xs.rbegin() + 1);
@@ -103,8 +97,8 @@ int main() {
   ys.insert(*ys.begin() - 1);
   ys.insert(*ys.rbegin() + 1);
 
-  vector<int> cx = Compress(vector<int>(xs.begin(), xs.end()));
-  vector<int> cy = Compress(vector<int>(ys.begin(), ys.end()));
+  vector cx = Compress(vector(ALL(xs)));
+  vector cy = Compress(vector(ALL(ys)));
 
   Grid grid(cx.size(), cy.size());
 
@@ -131,15 +125,17 @@ int main() {
     long long y = cy[here.y / 2 + 1] - cy[here.y / 2];
     ans += x * y;
     REP(i, 4) {
-      auto [there, ok] = grid.Move(here, dx[i], dy[i]);
-      if (!ok) {
+      int dx[] = {0, 1, 0, -1};
+      int dy[] = {1, 0, -1, 0};
+      optional<Coord> there = grid.Move(here, dx[i], dy[i]);
+      if (!there) {
         continue;
       }
-      if (grid.Visited(there)) {
+      if (grid.Visited(*there)) {
         continue;
       }
-      grid.Visit(there);
-      que.push(there);
+      grid.Visit(*there);
+      que.push(*there);
     }
   }
   if (ans == -1) {
