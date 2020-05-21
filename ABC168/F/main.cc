@@ -71,8 +71,8 @@ int main() {
 
   vector cx = Compress(vector(ALL(xs)));
   vector cy = Compress(vector(ALL(ys)));
-  auto xi = [&cx](int i)->int { return Index(cx, i); };
-  auto yi = [&cy](int i)->int { return Index(cy, i); };
+  auto xi = Uncompressor(cx);
+  auto yi = Uncompressor(cy);
 
   Grid grid(cx.size() - 1, cy.size() - 1);
 
