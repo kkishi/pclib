@@ -1,9 +1,7 @@
 #include <bits/stdc++.h>
 
 #include "compress.h"
-
-#define ALL(c) begin(c), end(c)
-#define REP(i, n) for (int i = 0; i < (int)(n); ++i)
+#include "macros.h"
 
 using namespace std;
 
@@ -24,54 +22,92 @@ ostream& operator<<(ostream& os, const Coord& c) {
   return os;
 }
 
-struct State {
+template<typename State>
+class Grid {
+ public:
+  Grid(int x, int y) : grid_(x * 2 + 1, vector(y * 2 + 1, State())) {}
+  bool InBounds(const Coord& c) const {
+    int x = coord(c.x), y = coord(c.y);
+    return 0 <= x && x < grid_.size() && 0 <= y && y < grid_[0].size();
+  }
+  State& StateOf(const Coord& c) {
+    return grid_[coord(c.x)][coord(c.y)];
+  }
+  State& Boundary(const Coord& c, int dx, int dy) {
+    return grid_[coord(c.x) + dx][coord(c.y) + dy];
+  }
+  void Debug(char to_char(const State& s, optional<char> boundary)) const {
+    auto is_boundary = [](int x)->bool { return x % 2 == 0; };
+
+    // Print horizontal legend.
+    cout << "  ";  // Padding for the vertical legend.
+    REP(y, grid_[0].size()) {
+      if (is_boundary(y)) {
+        cout << " ";
+      } else {
+        cout << (y / 2) % 10;
+      }
+    }
+    cout << endl;
+
+    REP(x, grid_.size()) {
+      // Print vertical legend.
+      if (is_boundary(x)) {
+        cout << "  ";
+      } else {
+        cout << (x / 2) % 10 << " ";
+      }
+
+      REP(y, grid_[x].size()) {
+        if (is_boundary(x) && is_boundary(y)) {
+          cout << "+";
+          continue;
+        }
+        optional<char> boundary;
+        if (is_boundary(x)) {
+          boundary = '-';
+        } else if (is_boundary(y)) {
+          boundary = '|';
+        }
+        cout << to_char(grid_[x][y], boundary);
+      }
+      cout << endl;
+    }
+  }
+
+ private:
+  static int coord(int i) { return i * 2 + 1; }
+
+  vector<vector<State>> grid_;
+};
+
+struct GridState {
   bool online;
   bool visited;
 };
 
-class Grid {
- public:
-  Grid(int x, int y) : grid_(x * 2 - 1, vector(y * 2 - 1, State{})) {}
-  void DrawLineX(int x1, int x2, int y) {
-    if (x1 > x2) swap(x1, x2);
-    DrawLine(x1 * 2, y * 2, x2 * 2, y * 2, 1, 0);
+void DrawLineX(Grid<GridState>& g, int x1, int x2, int y) {
+  if (x1 > x2) swap(x1, x2);
+  for (int x = x1; x < x2; ++x) {
+    g.Boundary({x, y}, 0, -1).online = true;
   }
-  void DrawLineY(int x, int y1, int y2) {
-    if (y1 > y2) swap(y1, y2);
-    DrawLine(x * 2, y1 * 2, x * 2, y2 * 2, 0, 1);
-  }
-  void DrawLine(int x, int y, int mx, int my, int dx, int dy) {
-    for (; x <= mx && y <= my; x += dx, y += dy) {
-      state({x, y}).online = true;
-    }
-  }
-  Coord At(int lower_x, int lower_y) const {
-    return {lower_x * 2 + 1, lower_y * 2 + 1};
-  }
-  void Debug() const {
-    REP(i, grid_.size()) {
-      REP(j, grid_[i].size()) { cout << state({i, j}).online; }
-      cout << endl;
-    }
-  }
-  optional<Coord> Move(const Coord& c, int dx, int dy) const {
-    if (state({c.x + dx, c.y + dy}).online) {
-      return nullopt;
-    }
-    return {{c.x + dx * 2, c.y + dy * 2}};
-  };
-  bool IsEdge(const Coord& c) const {
-    return c.x == 1 || (c.x + 1) == (grid_.size() - 1) || c.y == 1 ||
-           (c.y + 1) == (grid_[0].size() - 1);
-  };
-  bool Visited(const Coord& c) const { return state(c).visited; }
-  void Visit(const Coord& c) { state({c.x, c.y}).visited = true; }
-  const State& state(const Coord& c) const { return grid_[c.x][c.y]; }
-  State& state(const Coord& c) { return grid_[c.x][c.y]; }
+}
 
- private:
-  vector<vector<State>> grid_;
-};
+void DrawLineY(Grid<GridState>& g, int x, int y1, int y2) {
+  if (y1 > y2) swap(y1, y2);
+  for (int y = y1; y < y2; ++y) {
+    g.Boundary({x, y}, -1, 0).online = true;
+  }
+}
+
+void Debug(const Grid<GridState>& g) {
+  g.Debug([](const GridState& s, optional<char> boundary)->char {
+               if (boundary) {
+                 return s.online ? *boundary : ' ';
+               }
+               return s.visited ? 'o' : ' ';
+             });
+}
 
 int main() {
   int N, M;
@@ -100,47 +136,44 @@ int main() {
   vector cx = Compress(vector(ALL(xs)));
   vector cy = Compress(vector(ALL(ys)));
 
-  Grid grid(cx.size(), cy.size());
+  Grid<GridState> grid(cx.size() - 1, cy.size() - 1);
 
-  REP(i, N) grid.DrawLineX(Index(cx, A[i]), Index(cx, B[i]), Index(cy, C[i]));
-  REP(i, M) grid.DrawLineY(Index(cx, D[i]), Index(cy, E[i]), Index(cy, F[i]));
+  REP(i, N) DrawLineX(grid, Index(cx, A[i]), Index(cx, B[i]), Index(cy, C[i]));
+  REP(i, M) DrawLineY(grid, Index(cx, D[i]), Index(cy, E[i]), Index(cy, F[i]));
 
-  Coord init = grid.At(Index(cx, 0), Index(cy, 0));
+  Coord init = {Index(cx, 0), Index(cy, 0)};
 
   queue<Coord> que;
   que.push(init);
 
-  grid.Visit(init);
+  grid.StateOf(init).visited = true;
 
   long long ans = 0;
   while (!que.empty()) {
     Coord here = que.front();
     que.pop();
-
-    if (grid.IsEdge(here)) {
-      ans = -1;
-      break;
-    }
-    long long x = cx[here.x / 2 + 1] - cx[here.x / 2];
-    long long y = cy[here.y / 2 + 1] - cy[here.y / 2];
+    long long x = cx[here.x + 1] - cx[here.x];
+    long long y = cy[here.y + 1] - cy[here.y];
     ans += x * y;
     REP(i, 4) {
       int dx[] = {0, 1, 0, -1};
       int dy[] = {1, 0, -1, 0};
-      optional<Coord> there = grid.Move(here, dx[i], dy[i]);
-      if (!there) {
+      if (grid.Boundary(here, dx[i], dy[i]).online) {
         continue;
       }
-      if (grid.Visited(*there)) {
+      Coord there = {here.x + dx[i], here.y + dy[i]};
+      if (!grid.InBounds(there)) {
+        cout << "INF" << endl;
+        return 0;
+      }
+      GridState& s = grid.StateOf(there);
+      if (s.visited) {
         continue;
       }
-      grid.Visit(*there);
-      que.push(*there);
+      s.visited = true;
+      que.push(there);
     }
   }
-  if (ans == -1) {
-    cout << "INF" << endl;
-  } else {
-    cout << ans << endl;
-  }
+  // Debug(grid);
+  cout << ans << endl;
 }
