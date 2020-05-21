@@ -20,9 +20,6 @@ cc_test(
 cc_library(
     name = "rational",
     srcs = ["rational.h"],
-    deps = [
-        ":gcd",
-    ],
 )
 
 cc_test(
@@ -66,6 +63,23 @@ cc_test(
     ],
     deps = [
         ":compress",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "macros",
+    srcs = ["macros.h"],
+)
+
+cc_test(
+    name = "macros_test",
+    srcs = [
+        "macros_test.cc",
+    ],
+    deps = [
+        ":macros",
         "@gtest",
         "@gtest//:gtest_main",
     ],

@@ -1,7 +1,6 @@
 #include <cassert>
+#include <numeric>
 #include <ostream>
-
-#include "gcd.h"
 
 template <typename T>
 class Rational {
@@ -22,9 +21,9 @@ class Rational {
       sign = -1;
       numerator = -numerator;
     }
-    T gcd = Gcd(numerator, denominator);
-    numerator_ = sign * (numerator / gcd);
-    denominator_ = denominator / gcd;
+    T g = std::gcd(numerator, denominator);
+    numerator_ = sign * (numerator / g);
+    denominator_ = denominator / g;
   }
   T numerator() const { return numerator_; }
   T denominator() const { return denominator_; }
