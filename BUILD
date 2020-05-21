@@ -109,3 +109,20 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "prime",
+    srcs = ["prime.h"],
+)
+
+cc_test(
+    name = "prime_test",
+    srcs = [
+        "prime_test.cc",
+    ],
+    deps = [
+        ":prime",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
