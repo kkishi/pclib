@@ -29,7 +29,29 @@ class ModInt {
     return *this;
   }
   ModInt operator*(const ModInt& m) const { return ModInt(*this) *= m; }
+  ModInt& operator/=(const ModInt& m) {
+    *this *= m.inverse();
+    return *this;
+  }
+  ModInt operator/(const ModInt& m) const { return ModInt(*this) /= m; }
   bool operator==(const ModInt& m) const { return n_ == m.n_; }
+  ModInt pow(int n) const {
+    if (n == 0) {
+      return 1;
+    }
+    ModInt m = pow(n / 2);
+    m *= m;
+    if (n % 2 == 1) {
+      m *= n_;
+    }
+    return m;
+  }
+  ModInt inverse() const {
+    // Compute the inverse based on Fermat's little theorem. Note that this only
+    // works when n_ and Mod are relatively prime. The theorem says that
+    // n_^(Mod-1) = 1 (mod Mod). So we can compute n_^(Mod-2).
+    return pow(Mod - 2);
+  }
   long long value() const { return n_; }
 
  private:

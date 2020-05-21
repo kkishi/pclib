@@ -68,6 +68,13 @@ TEST(modint, auto_conversion) {
   // EXPECT_EQ(b + a, 579);
 }
 
+TEST(modint, div) {
+  ModInt<7> m = 2;
+  EXPECT_EQ(m / 3, 3);
+
+  EXPECT_EQ(ModInt<1000000007>(12345678900000) / 100000, 123456789);
+}
+
 TEST(modint, stream) {
   std::ostringstream oss;
   ModInt<7> m = 2;
