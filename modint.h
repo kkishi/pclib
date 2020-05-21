@@ -1,10 +1,16 @@
 #include <ostream>
+#include <vector>
 
 template <int Mod>
 class ModInt {
  public:
   ModInt() : n_(0) {}
-  ModInt(long long n) : n_(n % Mod) {}
+  ModInt(long long n) : n_(n % Mod) {
+    if (n_ < 0) {
+      // In C++, (-n)%m == -(n%m).
+      n_ += Mod;
+    }
+  }
   ModInt& operator+=(const ModInt& m) {
     n_ += m.n_;
     if (n_ >= Mod) {
@@ -12,7 +18,6 @@ class ModInt {
     }
     return *this;
   }
-  ModInt operator+(const ModInt& m) const { return ModInt(*this) += m; }
   ModInt& operator++() { return (*this) += 1; }
   ModInt& operator-=(const ModInt& m) {
     n_ -= m.n_;
@@ -21,21 +26,29 @@ class ModInt {
     }
     return *this;
   }
-  ModInt operator-(const ModInt& m) const { return ModInt(*this) -= m; }
   ModInt& operator--() { return (*this) -= 1; }
   ModInt& operator*=(const ModInt& m) {
     n_ *= m.n_;
     n_ %= Mod;
     return *this;
   }
-  ModInt operator*(const ModInt& m) const { return ModInt(*this) *= m; }
   ModInt& operator/=(const ModInt& m) {
     *this *= m.inverse();
     return *this;
   }
+  ModInt operator+(const ModInt& m) const { return ModInt(*this) += m; }
+  ModInt operator-(const ModInt& m) const { return ModInt(*this) -= m; }
+  ModInt operator*(const ModInt& m) const { return ModInt(*this) *= m; }
   ModInt operator/(const ModInt& m) const { return ModInt(*this) /= m; }
-  bool operator==(const ModInt& m) const { return n_ == m.n_; }
+#define DEFINE_BINARY_OPERATOR(op) \
+  bool operator op(const ModInt& m) const { return n_ op m.n_; }
+  DEFINE_BINARY_OPERATOR(!=);
+  DEFINE_BINARY_OPERATOR(<);
+  DEFINE_BINARY_OPERATOR(<=);
+  DEFINE_BINARY_OPERATOR(==);
+#undef BOP
   ModInt pow(int n) const {
+    // a * b ^ n = answer.
     ModInt a = 1, b = *this;
     while (n != 0) {
       if (n & 1) {
@@ -54,9 +67,23 @@ class ModInt {
   }
   long long value() const { return n_; }
 
+  static ModInt factorial(int n) {
+    for (int i = factorial_.size(); i <= n; ++i) {
+      factorial_.push_back(i == 0 ? 1 : factorial_.back() * i);
+    }
+    return ModInt<Mod>::factorial_[n];
+  }
+  static ModInt combination(int n, int k) {
+    return factorial(n) / factorial(n - k) / factorial(k);
+  }
+
  private:
   long long n_;
+  static std::vector<ModInt> factorial_;
 };
+
+template<int Mod>
+std::vector<ModInt<Mod>> ModInt<Mod>::factorial_ = std::vector<ModInt<Mod>>();
 
 template <int Mod>
 std::ostream& operator<<(std::ostream& out, const ModInt<Mod>& m) {
