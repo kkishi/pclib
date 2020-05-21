@@ -84,3 +84,11 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "bound_grid",
+    srcs = ["bound_grid.h"],
+    deps = [
+        ":macros",
+    ],
+)

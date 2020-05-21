@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 
+#include "bound_grid.h"
 #include "compress.h"
 #include "macros.h"
 
@@ -13,100 +14,35 @@ int D[kMax];
 int E[kMax];
 int F[kMax];
 
-struct Coord {
-  int x, y;
-};
-
-ostream& operator<<(ostream& os, const Coord& c) {
-  cout << "{" << c.x << "," << c.y << "}";
-  return os;
-}
-
-template<typename State>
-class Grid {
- public:
-  Grid(int x, int y) : grid_(x * 2 + 1, vector(y * 2 + 1, State())) {}
-  bool InBounds(const Coord& c) const {
-    int x = coord(c.x), y = coord(c.y);
-    return 0 <= x && x < grid_.size() && 0 <= y && y < grid_[0].size();
-  }
-  State& StateOf(const Coord& c) {
-    return grid_[coord(c.x)][coord(c.y)];
-  }
-  State& Boundary(const Coord& c, int dx, int dy) {
-    return grid_[coord(c.x) + dx][coord(c.y) + dy];
-  }
-  void Debug(char to_char(const State& s, optional<char> boundary)) const {
-    auto is_boundary = [](int x)->bool { return x % 2 == 0; };
-
-    // Print horizontal legend.
-    cout << "  ";  // Padding for the vertical legend.
-    REP(y, grid_[0].size()) {
-      if (is_boundary(y)) {
-        cout << " ";
-      } else {
-        cout << (y / 2) % 10;
-      }
-    }
-    cout << endl;
-
-    REP(x, grid_.size()) {
-      // Print vertical legend.
-      if (is_boundary(x)) {
-        cout << "  ";
-      } else {
-        cout << (x / 2) % 10 << " ";
-      }
-
-      REP(y, grid_[x].size()) {
-        if (is_boundary(x) && is_boundary(y)) {
-          cout << "+";
-          continue;
-        }
-        optional<char> boundary;
-        if (is_boundary(x)) {
-          boundary = '-';
-        } else if (is_boundary(y)) {
-          boundary = '|';
-        }
-        cout << to_char(grid_[x][y], boundary);
-      }
-      cout << endl;
-    }
-  }
-
- private:
-  static int coord(int i) { return i * 2 + 1; }
-
-  vector<vector<State>> grid_;
-};
-
 struct GridState {
   bool online;
   bool visited;
 };
 
-void DrawLineX(Grid<GridState>& g, int x1, int x2, int y) {
+using Grid = BoundGrid<GridState>;
+
+void DrawLineX(Grid& g, int x1, int x2, int y) {
   if (x1 > x2) swap(x1, x2);
   for (int x = x1; x < x2; ++x) {
     g.Boundary({x, y}, 0, -1).online = true;
   }
 }
 
-void DrawLineY(Grid<GridState>& g, int x, int y1, int y2) {
+void DrawLineY(Grid& g, int x, int y1, int y2) {
   if (y1 > y2) swap(y1, y2);
   for (int y = y1; y < y2; ++y) {
     g.Boundary({x, y}, -1, 0).online = true;
   }
 }
 
-void Debug(const Grid<GridState>& g) {
-  g.Debug([](const GridState& s, optional<char> boundary)->char {
-               if (boundary) {
-                 return s.online ? *boundary : ' ';
-               }
-               return s.visited ? 'o' : ' ';
-             });
+void Debug(const Grid& g) {
+  auto to_char = [](const GridState& s, optional<char> boundary)->char {
+                   if (boundary) {
+                     return s.online ? *boundary : ' ';
+                   }
+                   return s.visited ? 'o' : ' ';
+                 };
+  g.Debug(cerr, to_char);
 }
 
 int main() {
@@ -135,13 +71,15 @@ int main() {
 
   vector cx = Compress(vector(ALL(xs)));
   vector cy = Compress(vector(ALL(ys)));
+  auto xi = [&cx](int i)->int { return Index(cx, i); };
+  auto yi = [&cy](int i)->int { return Index(cy, i); };
 
-  Grid<GridState> grid(cx.size() - 1, cy.size() - 1);
+  Grid grid(cx.size() - 1, cy.size() - 1);
 
-  REP(i, N) DrawLineX(grid, Index(cx, A[i]), Index(cx, B[i]), Index(cy, C[i]));
-  REP(i, M) DrawLineY(grid, Index(cx, D[i]), Index(cy, E[i]), Index(cy, F[i]));
+  REP(i, N) DrawLineX(grid, xi(A[i]), xi(B[i]), yi(C[i]));
+  REP(i, M) DrawLineY(grid, xi(D[i]), yi(E[i]), yi(F[i]));
 
-  Coord init = {Index(cx, 0), Index(cy, 0)};
+  Coord init = {xi(0), yi(0)};
 
   queue<Coord> que;
   que.push(init);
