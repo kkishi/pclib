@@ -11,7 +11,7 @@ std::ostream& operator<<(std::ostream& os, const Coord& c) {
   return os;
 }
 
-template<typename State>
+template <typename State>
 class BoundGrid {
  public:
   BoundGrid(int x, int y) : grid_(x * 2 + 1, std::vector(y * 2 + 1, State())) {}
@@ -19,14 +19,13 @@ class BoundGrid {
     std::size_t x = coord(c.x), y = coord(c.y);
     return 0 <= x && x < grid_.size() && 0 <= y && y < grid_[0].size();
   }
-  State& StateOf(const Coord& c) {
-    return grid_[coord(c.x)][coord(c.y)];
-  }
+  State& StateOf(const Coord& c) { return grid_[coord(c.x)][coord(c.y)]; }
   State& Boundary(const Coord& c, int dx, int dy) {
     return grid_[coord(c.x) + dx][coord(c.y) + dy];
   }
-  void Debug(std::ostream& os, char to_char(const State& s, std::optional<char> boundary)) const {
-    auto is_boundary = [](int x)->bool { return x % 2 == 0; };
+  void Debug(std::ostream& os,
+             char to_char(const State& s, std::optional<char> boundary)) const {
+    auto is_boundary = [](int x) -> bool { return x % 2 == 0; };
 
     // Print horizontal legend.
     os << "  ";  // Padding for the vertical legend.

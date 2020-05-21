@@ -92,3 +92,20 @@ cc_library(
         ":macros",
     ],
 )
+
+cc_library(
+    name = "factorize",
+    srcs = ["factorize.h"],
+)
+
+cc_test(
+    name = "factorize_test",
+    srcs = [
+        "factorize_test.cc",
+    ],
+    deps = [
+        ":factorize",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
