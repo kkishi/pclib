@@ -36,15 +36,15 @@ class ModInt {
   ModInt operator/(const ModInt& m) const { return ModInt(*this) /= m; }
   bool operator==(const ModInt& m) const { return n_ == m.n_; }
   ModInt pow(int n) const {
-    if (n == 0) {
-      return 1;
+    ModInt a = 1, b = *this;
+    while (n != 0) {
+      if (n & 1) {
+        a *= b;
+      }
+      n /= 2;
+      b *= b;
     }
-    ModInt m = pow(n / 2);
-    m *= m;
-    if (n % 2 == 1) {
-      m *= n_;
-    }
-    return m;
+    return a;
   }
   ModInt inverse() const {
     // Compute the inverse based on Fermat's little theorem. Note that this only
