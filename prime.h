@@ -3,7 +3,7 @@
 std::vector<bool> Sieve(int n) {
   std::vector<bool> v(n + 1, true);
   v[0] = v[1] = false;
-  for (int i = 2; i * i<= n; ++i) {
+  for (int i = 2; i * i <= n; ++i) {
     if (!v[i]) {
       continue;
     }

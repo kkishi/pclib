@@ -126,3 +126,20 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "segment_tree",
+    srcs = ["segment_tree.h"],
+)
+
+cc_test(
+    name = "segment_tree_test",
+    srcs = [
+        "segment_tree_test.cc",
+    ],
+    deps = [
+        ":segment_tree",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
