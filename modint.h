@@ -88,7 +88,7 @@ class ModInt {
 };
 
 template<int Mod>
-std::vector<ModInt<Mod>> ModInt<Mod>::factorial_ = std::vector<ModInt<Mod>>();
+std::vector<ModInt<Mod>> ModInt<Mod>::factorial_;
 
 template <int Mod>
 std::ostream& operator<<(std::ostream& out, const ModInt<Mod>& m) {
