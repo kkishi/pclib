@@ -36,17 +36,22 @@ class ModInt {
     *this *= m.inverse();
     return *this;
   }
-  ModInt operator+(const ModInt& m) const { return ModInt(*this) += m; }
-  ModInt operator-(const ModInt& m) const { return ModInt(*this) -= m; }
-  ModInt operator*(const ModInt& m) const { return ModInt(*this) *= m; }
-  ModInt operator/(const ModInt& m) const { return ModInt(*this) /= m; }
 #define DEFINE_BINARY_OPERATOR(op) \
+  ModInt operator op(const ModInt& m) const { return ModInt(*this) op##= m; }
+  DEFINE_BINARY_OPERATOR(+)
+  DEFINE_BINARY_OPERATOR(-)
+  DEFINE_BINARY_OPERATOR(*)
+  DEFINE_BINARY_OPERATOR(/)
+#undef DEFINE_BINARY_OPERATOR
+#define DEFINE_COMPARISON_OPERATOR(op) \
   bool operator op(const ModInt& m) const { return n_ op m.n_; }
-  DEFINE_BINARY_OPERATOR(!=);
-  DEFINE_BINARY_OPERATOR(<);
-  DEFINE_BINARY_OPERATOR(<=);
-  DEFINE_BINARY_OPERATOR(==);
-#undef BOP
+  DEFINE_COMPARISON_OPERATOR(!=)
+  DEFINE_COMPARISON_OPERATOR(<)
+  DEFINE_COMPARISON_OPERATOR(<=)
+  DEFINE_COMPARISON_OPERATOR(==)
+  DEFINE_COMPARISON_OPERATOR(>)
+  DEFINE_COMPARISON_OPERATOR(>=)
+#undef BDEFINE_COMPARISON_OPERATOR
   ModInt pow(int n) const {
     // a * b ^ n = answer.
     ModInt a = 1, b = *this;
