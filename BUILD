@@ -143,3 +143,20 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "dijkstra",
+    srcs = ["dijkstra.h"],
+)
+
+cc_test(
+    name = "dijkstra_test",
+    srcs = [
+        "dijkstra_test.cc",
+    ],
+    deps = [
+        ":dijkstra",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
