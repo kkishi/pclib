@@ -160,3 +160,20 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "disjointset",
+    srcs = ["disjointset.h"],
+)
+
+cc_test(
+    name = "disjointset_test",
+    srcs = [
+        "disjointset_test.cc",
+    ],
+    deps = [
+        ":disjointset",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
