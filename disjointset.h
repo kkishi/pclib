@@ -18,9 +18,10 @@ class DisjointSet {
     if (x == y) return;
     if (Size(x) > Size(y)) std::swap(x, y);
     parent_[x] = parent_[y];
-    size_[x] += size_[y];
+    size_[y] += size_[x];
   }
-  int Size(int x) const { return size_[Find(x)]; }
+  int Size(int x) { return size_[Find(x)]; }
+  bool Same(int x, int y) { return Find(x) == Find(y); }
 
  private:
   std::vector<int> parent_, size_;
