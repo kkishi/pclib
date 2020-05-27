@@ -33,4 +33,10 @@ TEST(geometry, circle) {
   EXPECT_NEAR(is2[0].y, -2.3173249167, kEps);
   EXPECT_NEAR(is2[1].x, -3.2245348486, kEps);
   EXPECT_NEAR(is2[1].y, 2.3173249167, kEps);
+
+  Circle<double> e = {{-1, 0}, 2.8183};
+  EXPECT_TRUE(c.Intersections(e).empty());
+
+  Circle<double> f = {{-7, 0}, 2.819};
+  EXPECT_TRUE(c.Intersections(f).empty());
 }
