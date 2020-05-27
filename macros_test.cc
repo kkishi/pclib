@@ -5,7 +5,7 @@
 
 #include "gtest/gtest.h"
 
-TEST(gcd, simple) {
+TEST(macros, simple) {
   std::set<int> s;
   REP(i, 3) s.insert(i);
 

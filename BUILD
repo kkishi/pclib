@@ -177,3 +177,20 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "geometry",
+    srcs = ["geometry.h"],
+)
+
+cc_test(
+    name = "geometry_test",
+    srcs = [
+        "geometry_test.cc",
+    ],
+    deps = [
+        ":geometry",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
