@@ -16,20 +16,21 @@ TEST(geometry, vector) {
 }
 
 TEST(geometry, circle) {
+  const double kEps = 1e-10;
+
   Circle<double> a{{0, 0}, 1};
   Circle<double> b{{1, 1}, 1};
-
   std::vector<Vector<double>> is = a.Intersections(b);
-  const double kEps = 1e-10;
   EXPECT_NEAR(is[0].x, 0, kEps);
   EXPECT_NEAR(is[0].y, 1, kEps);
   EXPECT_NEAR(is[1].x, 1, kEps);
   EXPECT_NEAR(is[1].y, 0, kEps);
 
-  Circle<double> c{{2, 0}, 1};
-  std::vector<Vector<double>> is2 = a.Intersections(c);
-  for (const auto& v : is2) {
-    std::cout << v << std::endl;
-  }
-
+  Circle<double> c = {{1, 0}, 4.81837};
+  Circle<double> d = {{-1, 0}, 3.21225};
+  std::vector<Vector<double>> is2 = c.Intersections(d);
+  EXPECT_NEAR(is2[0].x, -3.2245348486, kEps);
+  EXPECT_NEAR(is2[0].y, -2.3173249167, kEps);
+  EXPECT_NEAR(is2[1].x, -3.2245348486, kEps);
+  EXPECT_NEAR(is2[1].y, 2.3173249167, kEps);
 }

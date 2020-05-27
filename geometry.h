@@ -45,11 +45,16 @@ struct Circle {
     auto sq = [](T x) -> T { return x * x; };
     V v = c.center - center;
     T l = v.Norm();
+    if (l >= radius + c.radius ||
+        (l + radius) <= c.radius ||
+        (l + c.radius) <= radius) {
+      return {};
+    }
     T x = (sq(radius) - sq(c.radius) + sq(l)) / (2 * l);
-    T a = std::sqrt(sq(c.radius) - sq(x));
+    T a = std::sqrt(sq(radius) - sq(x));
     V perpendicular_foot = v * (x / l);
     V perpendicular = v.Rot90() * (a / l);
-    return {perpendicular_foot + perpendicular,
-            perpendicular_foot - perpendicular};
+    return {center + perpendicular_foot + perpendicular,
+            center + perpendicular_foot - perpendicular};
   }
 };
