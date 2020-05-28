@@ -79,18 +79,15 @@ class ModInt {
     return factorial_[n];
   }
   static ModInt combination(int n, int k) {
-    ModInt numerator;
-    // TODO: Probably, instead of silently bail, crash (on #if DEBUG) and
-    // suggest a slower implementation.
-    if (n <= 1000000) {
-      numerator = factorial(n) / factorial(n - k);
-    } else {
-      // Sometimes n can be very large while k is still small. In that case,
-      // avoid calculating n!. https://atcoder.jp/contests/abc156/tasks/abc156_d
-      numerator = 1;
-      for (int i = 0; i < k; ++i) {
-        numerator *= (n - i);
-      }
+#if DEBUG
+    assert(n <= 1000000 && "n is too large. If k is small, consider using combination_slow.");
+#endif
+    return factorial(n) / factorial(n - k) / factorial(k);
+  }
+  static ModInt combination_slow(int n, int k) {
+    ModInt numerator = 1;
+    for (int i = 0; i < k; ++i) {
+      numerator *= (n - i);
     }
     return numerator / factorial(k);
   }
