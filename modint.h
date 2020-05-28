@@ -76,10 +76,21 @@ class ModInt {
     for (int i = factorial_.size(); i <= n; ++i) {
       factorial_.push_back(i == 0 ? 1 : factorial_.back() * i);
     }
-    return ModInt<Mod>::factorial_[n];
+    return factorial_[n];
   }
   static ModInt combination(int n, int k) {
-    return factorial(n) / factorial(n - k) / factorial(k);
+    ModInt numerator;
+    if (n <= 1000000) {
+      numerator = factorial(n) / factorial(n - k);
+    } else {
+      // Sometimes n can be very large while k is still small. In that case,
+      // avoid calculating n!. https://atcoder.jp/contests/abc156/tasks/abc156_d
+      numerator = 1;
+      for (int i = 0; i < k; ++i) {
+        numerator *= (n - i);
+      }
+    }
+    return numerator / factorial(k);
   }
 
  private:

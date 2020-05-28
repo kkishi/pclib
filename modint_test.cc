@@ -84,6 +84,8 @@ TEST(modint, factorial) {
 
 TEST(modint, comb) {
   EXPECT_EQ(ModInt<1000000007>::combination(100000, 50000), 149033233);
+  // n is large but k is small. This should avoid the calculation of n!.
+  EXPECT_EQ(ModInt<1000000007>::combination(1000000000, 141421), 516595147);
 }
 
 TEST(modint, comparison) {
