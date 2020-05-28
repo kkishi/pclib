@@ -80,6 +80,8 @@ class ModInt {
   }
   static ModInt combination(int n, int k) {
     ModInt numerator;
+    // TODO: Probably, instead of silently bail, crash (on #if DEBUG) and
+    // suggest a slower implementation.
     if (n <= 1000000) {
       numerator = factorial(n) / factorial(n - k);
     } else {

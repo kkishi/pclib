@@ -17,6 +17,8 @@ struct State {
   bool operator<(const State& s) const { return cost > s.cost; }
 };
 
+// NOTE: This implementation is very limited and is never used for solving
+// problems yet.
 template <class Graph>
 std::optional<Cost> Dijkstra(const Graph& graph, const Node& init,
                              const Node& dest) {

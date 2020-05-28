@@ -25,6 +25,20 @@ struct Vector {
   }
   Vector operator*(T t) const { return Vector(*this) *= t; }
   Vector Rot90() const { return {-y, x}; }
+
+  // TODO:
+  // * Rename this struct to Point and add method that treats this struct as
+  //   a 2D vector (e.g., dot product) and as a complex number (arc, multiple
+  //   number multiplication, ...).
+  //   Check the STL functions: https://ja.cppreference.com/w/cpp/numeric/complex
+  //   Check the wikipedia page: https://en.wikipedia.org/wiki/Complex_number
+  // * Replace Rot90 with more generic Rotate(arg) function.
+  // * Think about a way to visualize these objects for debugging. One idea is
+  //   to add an external library that renders these objects using Cairo.
+  //   For visualization, WolframAlpha is also extremely useful, for example it
+  //   even calculates intersections if provided 2 circles. Try:
+  //   (x-1)^2+y^2=5^2, (x+7)^2+y^2=3^2
+  // * Add common constants like pi.
 };
 
 template <typename T>
@@ -57,4 +71,9 @@ struct Circle {
     return {center + perpendicular_foot + perpendicular,
             center + perpendicular_foot - perpendicular};
   }
+
+  // TODO: Add Contains method that checks if a point is contained in the
+  // circle. That function should use EPS on check to take into account the
+  // computation error. Proabbly this library should also provide a commom EPS
+  // value (or provide utility functions that uses EPS inside of it).
 };
