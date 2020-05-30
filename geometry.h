@@ -30,8 +30,9 @@ struct Vector {
   // * Rename this struct to Point and add method that treats this struct as
   //   a 2D vector (e.g., dot product) and as a complex number (arc, multiple
   //   number multiplication, ...).
-  //   Check the STL functions: https://ja.cppreference.com/w/cpp/numeric/complex
-  //   Check the wikipedia page: https://en.wikipedia.org/wiki/Complex_number
+  //   Check the STL functions:
+  //   https://ja.cppreference.com/w/cpp/numeric/complex Check the wikipedia
+  //   page: https://en.wikipedia.org/wiki/Complex_number
   // * Replace Rot90 with more generic Rotate(arg) function.
   // * Think about a way to visualize these objects for debugging. One idea is
   //   to add an external library that renders these objects using Cairo.
@@ -59,8 +60,7 @@ struct Circle {
     auto sq = [](T x) -> T { return x * x; };
     V v = c.center - center;
     T l = v.Norm();
-    if (l >= radius + c.radius ||
-        (l + radius) <= c.radius ||
+    if (l >= radius + c.radius || (l + radius) <= c.radius ||
         (l + c.radius) <= radius) {
       return {};
     }

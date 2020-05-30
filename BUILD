@@ -194,3 +194,21 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "rerooting",
+    srcs = ["rerooting.h"],
+)
+
+cc_test(
+    name = "rerooting_test",
+    srcs = [
+        "rerooting_test.cc",
+    ],
+    deps = [
+        ":modint",
+        ":rerooting",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)

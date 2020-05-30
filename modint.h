@@ -37,7 +37,7 @@ class ModInt {
     return *this;
   }
 #define DEFINE_BINARY_OPERATOR(op) \
-  ModInt operator op(const ModInt& m) const { return ModInt(*this) op##= m; }
+  ModInt operator op(const ModInt& m) const { return ModInt(*this) op## = m; }
   DEFINE_BINARY_OPERATOR(+)
   DEFINE_BINARY_OPERATOR(-)
   DEFINE_BINARY_OPERATOR(*)
@@ -80,7 +80,8 @@ class ModInt {
   }
   static ModInt combination(int n, int k) {
 #if DEBUG
-    assert(n <= 1000000 && "n is too large. If k is small, consider using combination_slow.");
+    assert(n <= 1000000 &&
+           "n is too large. If k is small, consider using combination_slow.");
 #endif
     return factorial(n) / factorial(n - k) / factorial(k);
   }
@@ -97,7 +98,7 @@ class ModInt {
   static std::vector<ModInt> factorial_;
 };
 
-template<int Mod>
+template <int Mod>
 std::vector<ModInt<Mod>> ModInt<Mod>::factorial_;
 
 template <int Mod>

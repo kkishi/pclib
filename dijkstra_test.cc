@@ -1,6 +1,6 @@
-#include <vector>
-
 #include "dijkstra.h"
+
+#include <vector>
 
 #include "gtest/gtest.h"
 
