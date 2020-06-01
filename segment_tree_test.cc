@@ -72,6 +72,18 @@ TEST(segment_tree, apply_multi) {
   EXPECT_EQ(t.Aggregate(0, 10), 20);
 }
 
+TEST(segment_tree, apply_complex) {
+  SegmentTree t = AdditiveSegmentTree<int>(3);
+  t.Set(1, 5);
+  t.Apply(0, 3, 2);
+  // EXPECT_EQ(t.Get(0), 2);
+  t.Set(1, 3);
+  EXPECT_EQ(t.Get(1), 3);
+  EXPECT_EQ(t.Get(0), 2);
+  EXPECT_EQ(t.Get(2), 2);
+  EXPECT_EQ(t.Aggregate(0, 3), 7);
+}
+
 TEST(segment_tree, apply_large) {
   SegmentTree t = AdditiveSegmentTree<int>(1000000);
   t.Apply(0, 1000000, 1);
