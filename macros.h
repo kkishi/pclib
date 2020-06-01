@@ -20,5 +20,4 @@ void debug(T value, Ts... args) {
 #endif
 
 #define ALL(x) (x).begin(), (x).end()
-#define FOR(i, n) for (auto i : (n))
 #define REP(i, n) for (int i = 0; i < (int)(n); ++i)
