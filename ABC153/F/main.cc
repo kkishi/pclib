@@ -1,15 +1,15 @@
 #include <bits/stdc++.h>
 
-#include "segment_tree.h"
 #include "macros.h"
+#include "segment_tree.h"
 
 using namespace std;
 
+using ll = long long;
+
 struct Monster {
   ll X, H;
-  bool operator<(const Monster& m) const {
-    return X < m.X;
-  }
+  bool operator<(const Monster& m) const { return X < m.X; }
 };
 
 Monster monster[200000];

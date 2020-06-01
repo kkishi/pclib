@@ -6,7 +6,7 @@
 
 using namespace std;
 
-using mint = ModInt<1000000000+7>;
+using mint = ModInt<1000000000 + 7>;
 
 struct DP {
   int size;
