@@ -81,3 +81,10 @@ SegmentTree<T> AdditiveSegmentTree(int size) {
   auto mul = [](T v, int size) { return v * size; };
   return SegmentTree<T>(size, add, T(), mul);
 }
+
+template <typename T>
+SegmentTree<T> MinimumSegmentTree(int size) {
+  auto minimum = [](T a, T b) { return std::min(a, b); };
+  auto id = [](T v, int) { return v; };
+  return SegmentTree<T>(size, minimum, std::numeric_limits<T>::max(), id);
+}

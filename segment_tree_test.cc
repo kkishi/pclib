@@ -34,12 +34,8 @@ TEST(segment_tree, gcd) {
   EXPECT_EQ(t.Aggregate(1, 3), 2);
 }
 
-int Min(int a, int b) { return std::min(a, b); }
-
-const int kInf = 1000000000;
-
 TEST(segment_tree, min) {
-  SegmentTree<int> t(4, Min, kInf);
+  SegmentTree t = MinimumSegmentTree<int>(4);
   t.Set(0, 3);
   t.Set(1, 2);
   t.Set(2, 4);
