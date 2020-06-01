@@ -1,10 +1,4 @@
-// Some notes about the interface:
-// * operation and identity are passed a constructor arguments, not as template
-//   argument, because the latter requires them to be constructed compile time.
 #include <functional>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
 #include <vector>
 
 template <typename T>
@@ -71,39 +65,6 @@ class SegmentTree {
                         range_operation_(l_[index], size));
     };
     return rec(0, (v_.size() + 1) / 2, 0);
-  }
-
-  void Debug() const {
-    auto debug = [&](const std::vector<T>& v) {
-      int width = 0;
-      for (T t : v) {
-        std::stringstream ss;
-        ss << t;
-        width = std::max<int>(width, ss.str().size());
-      }
-      const int N = (v.size() + 1) / 2;
-      int index = 0;  // Index in this level.
-      int twos = 1;   // Number of elements in this level.
-      std::string separator = '|' + std::string(N * (width + 1) - 1, '-') + '|';
-      std::cerr << separator << std::endl;
-      for (T t : v) {
-        if (index == 0) {
-          std::cerr << '|';
-        }
-        std::cerr << std::string((width + 1) * (N / twos - 1), ' ');
-        std::cerr << std::setw(width) << t << '|';
-        ++index;
-        if (index == twos) {
-          index = 0;
-          twos <<= 1;
-          std::cerr << std::endl << separator << std::endl;
-        }
-      }
-    };
-    std::cerr << "v_:" << std::endl;
-    debug(v_);
-    std::cerr << "l_:" << std::endl;
-    debug(l_);
   }
 
  private:
