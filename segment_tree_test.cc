@@ -5,7 +5,8 @@
 #include "gtest/gtest.h"
 
 TEST(segment_tree, simple) {
-  SegmentTree t = AdditiveSegmentTree<int>(3);
+  auto add = [](int a, int b) { return a + b; };
+  SegmentTree<int> t(3, add);
   t.Set(0, 1);
   t.Set(1, 2);
   t.Set(2, 4);
@@ -15,15 +16,14 @@ TEST(segment_tree, simple) {
   EXPECT_EQ(t.Aggregate(0, 3), 8);
 }
 
-int Gcd(int a, int b) {
-  if (a == 0) return b;
-  if (b == 0) return a;
-  return std::gcd(a, b);
-}
-
 // https://atcoder.jp/contests/abc125/tasks/abc125_c
 TEST(segment_tree, gcd) {
-  SegmentTree<int> t(3, Gcd);
+  auto gcd = [](int a, int b) {
+    if (a == 0) return b;
+    if (b == 0) return a;
+    return std::gcd(a, b);
+  };
+  SegmentTree<int> t(3, gcd);
   t.Set(0, 7);
   t.Set(1, 6);
   t.Set(2, 8);
@@ -35,7 +35,8 @@ TEST(segment_tree, gcd) {
 }
 
 TEST(segment_tree, min) {
-  SegmentTree t = MinimumSegmentTree<int>(4);
+  auto min = [](int a, int b) { return std::min(a, b); };
+  SegmentTree<int> t(4, min, std::numeric_limits<int>::max());
   t.Set(0, 3);
   t.Set(1, 2);
   t.Set(2, 4);
@@ -58,14 +59,14 @@ TEST(segment_tree, min) {
 }
 
 TEST(segment_tree, apply) {
-  SegmentTree t = AdditiveSegmentTree<int>(4);
+  RangeSegmentTree t = AdditiveSegmentTree<int>(4);
   t.Apply(1, 3, 2);
   EXPECT_EQ(t.Get(2), 2);
   EXPECT_EQ(t.Aggregate(0, 4), 4);
 }
 
 TEST(segment_tree, apply_multi) {
-  SegmentTree t = AdditiveSegmentTree<int>(10);
+  RangeSegmentTree t = AdditiveSegmentTree<int>(10);
   t.Apply(0, 10, 1);
   EXPECT_EQ(t.Get(8), 1);
   t.Apply(5, 10, 2);
@@ -73,19 +74,18 @@ TEST(segment_tree, apply_multi) {
 }
 
 TEST(segment_tree, apply_complex) {
-  SegmentTree t = AdditiveSegmentTree<int>(3);
-  t.Set(1, 5);
+  RangeSegmentTree t = AdditiveSegmentTree<int>(3);
+  t.Apply(1, 2, 5);
   t.Apply(0, 3, 2);
-  // EXPECT_EQ(t.Get(0), 2);
-  t.Set(1, 3);
-  EXPECT_EQ(t.Get(1), 3);
+  t.Apply(1, 2, -4);
   EXPECT_EQ(t.Get(0), 2);
+  EXPECT_EQ(t.Get(1), 3);
   EXPECT_EQ(t.Get(2), 2);
   EXPECT_EQ(t.Aggregate(0, 3), 7);
 }
 
 TEST(segment_tree, apply_large) {
-  SegmentTree t = AdditiveSegmentTree<int>(1000000);
+  RangeSegmentTree t = AdditiveSegmentTree<int>(1000000);
   t.Apply(0, 1000000, 1);
   EXPECT_EQ(t.Get(0), 1);
   EXPECT_EQ(t.Aggregate(0, 1000000), 1000000);
@@ -96,7 +96,7 @@ TEST(segment_tree, apply_large) {
 }
 
 TEST(segment_tree, apply_min) {
-  SegmentTree t = MinimumSegmentTree<int>(4);
+  RangeSegmentTree t = MinimumSegmentTree<int>(4);
 
   t.Apply(0, 2, 3);
   t.Apply(2, 4, 4);
@@ -105,7 +105,7 @@ TEST(segment_tree, apply_min) {
   t.Apply(1, 3, 2);
   EXPECT_EQ(t.Aggregate(0, 4), 2);
 
-  t.Set(2, 1);
+  t.Apply(2, 3, 1);
   EXPECT_EQ(t.Aggregate(2, 3), 1);
 
   // Apply does not overwrite the value.
