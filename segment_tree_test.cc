@@ -4,10 +4,8 @@
 
 #include "gtest/gtest.h"
 
-auto add = [](int a, int b) -> int { return a + b; };
-
 TEST(segment_tree, simple) {
-  SegmentTree<int> t(3, add);
+  SegmentTree t = AdditiveSegmentTree<int>(3);
   t.Set(0, 1);
   t.Set(1, 2);
   t.Set(2, 4);
@@ -63,17 +61,15 @@ TEST(segment_tree, min) {
   EXPECT_EQ(t.Aggregate(0, 4), 1);
 }
 
-auto mul = [](int a, int size) -> int { return a * size; };
-
 TEST(segment_tree, apply) {
-  SegmentTree<int> t(4, add, 0, mul);
+  SegmentTree t = AdditiveSegmentTree<int>(4);
   t.Apply(1, 3, 2);
   EXPECT_EQ(t.Get(2), 2);
   EXPECT_EQ(t.Aggregate(0, 4), 4);
 }
 
 TEST(segment_tree, apply_multi) {
-  SegmentTree<int> t(10, add, 0, mul);
+  SegmentTree t = AdditiveSegmentTree<int>(10);
   t.Apply(0, 10, 1);
   EXPECT_EQ(t.Get(8), 1);
   t.Apply(5, 10, 2);
@@ -81,7 +77,7 @@ TEST(segment_tree, apply_multi) {
 }
 
 TEST(segment_tree, apply_large) {
-  SegmentTree<int> t(1000000, add, 0, mul);
+  SegmentTree t = AdditiveSegmentTree<int>(1000000);
   t.Apply(0, 1000000, 1);
   EXPECT_EQ(t.Get(0), 1);
   EXPECT_EQ(t.Aggregate(0, 1000000), 1000000);

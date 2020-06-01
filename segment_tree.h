@@ -74,3 +74,10 @@ class SegmentTree {
   std::vector<T> v_;
   std::vector<T> l_;
 };
+
+template <typename T>
+SegmentTree<T> AdditiveSegmentTree(int size) {
+  auto add = [](T a, T b) { return a + b; };
+  auto mul = [](T v, int size) { return v * size; };
+  return SegmentTree<T>(size, add, T(), mul);
+}
