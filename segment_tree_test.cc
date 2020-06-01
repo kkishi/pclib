@@ -82,3 +82,22 @@ TEST(segment_tree, apply_large) {
   EXPECT_EQ(t.Aggregate(0, 1000000), 2000000);
   EXPECT_EQ(t.Aggregate(100, 200), 100);
 }
+
+TEST(segment_tree, apply_min) {
+  SegmentTree t = MinimumSegmentTree<int>(4);
+
+  t.Apply(0, 2, 3);
+  t.Apply(2, 4, 4);
+  EXPECT_EQ(t.Aggregate(0, 4), 3);
+
+  t.Apply(1, 3, 2);
+  EXPECT_EQ(t.Aggregate(0, 4), 2);
+
+  t.Set(2, 1);
+  EXPECT_EQ(t.Aggregate(2, 3), 1);
+
+  // Apply does not overwrite the value.
+  t.Apply(2, 3, 2);
+  EXPECT_EQ(t.Get(2), 1);
+  EXPECT_EQ(t.Aggregate(2, 3), 1);
+}
