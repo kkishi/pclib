@@ -58,7 +58,7 @@ class RangeSegmentTree {
 
   RangeSegmentTree(
       int size, Operation operation, T identity = T(),
-      RangeOperation range_operation = [](int v, int) { return v; })
+      RangeOperation range_operation = [](T v, int) { return v; })
       : operation_(operation),
         identity_(identity),
         range_operation_(range_operation) {
