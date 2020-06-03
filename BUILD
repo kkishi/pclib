@@ -212,3 +212,20 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "bignum",
+    srcs = ["bignum.h"],
+)
+
+cc_test(
+    name = "bignum_test",
+    srcs = [
+        "bignum_test.cc",
+    ],
+    deps = [
+        ":bignum",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
