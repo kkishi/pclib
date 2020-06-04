@@ -229,3 +229,20 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "grid",
+    srcs = ["grid.h"],
+)
+
+cc_test(
+    name = "grid_test",
+    srcs = [
+        "grid_test.cc",
+    ],
+    deps = [
+        ":grid",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
