@@ -246,3 +246,20 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "binary_search",
+    srcs = ["binary_search.h"],
+)
+
+cc_test(
+    name = "binary_search_test",
+    srcs = [
+        "binary_search_test.cc",
+    ],
+    deps = [
+        ":binary_search",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
