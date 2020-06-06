@@ -54,6 +54,9 @@ class ModInt {
   DEFINE_COMPARISON_OPERATOR(>=)
 #undef BDEFINE_COMPARISON_OPERATOR
   ModInt pow(int n) const {
+    if (n < 0) {
+      return inverse().pow(-n);
+    }
     // a * b ^ n = answer.
     ModInt a = 1, b = *this;
     while (n != 0) {

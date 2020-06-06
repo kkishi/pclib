@@ -105,3 +105,11 @@ TEST(modint, stream) {
   oss << m;
   EXPECT_EQ(oss.str(), "2");
 }
+
+TEST(modint, pow_inverse) {
+  ModInt<7> m = 2;
+  EXPECT_EQ(m.pow(-1), 4);
+
+  EXPECT_EQ(ModInt<1000000007>(2).pow(-42) *
+            ModInt<1000000007>(2).pow(42), 1);
+}
