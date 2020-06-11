@@ -40,3 +40,7 @@ TEST(geometry, circle) {
   Circle<double> f = {{-7, 0}, 2.819};
   EXPECT_TRUE(c.Intersections(f).empty());
 }
+
+TEST(geometry, pi) {
+  EXPECT_DOUBLE_EQ(pi, 3.1415926535897931);
+}

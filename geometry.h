@@ -24,6 +24,12 @@ struct Vector {
     return *this;
   }
   Vector operator*(T t) const { return Vector(*this) *= t; }
+  bool operator<(const Vector& v) const {
+    if (x != v.x) {
+      return x < v.x;
+    }
+    return y < v.y;
+  }
   Vector Rot90() const { return {-y, x}; }
 
   // TODO:
@@ -41,6 +47,12 @@ struct Vector {
   //   (x-1)^2+y^2=5^2, (x+7)^2+y^2=3^2
   // * Add common constants like pi.
 };
+
+template <typename T>
+std::istream& operator>>(std::istream& is, Vector<T>& v) {
+  is >> v.x >> v.y;
+  return is;
+}
 
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const Vector<T>& v) {
@@ -77,3 +89,5 @@ struct Circle {
   // computation error. Proabbly this library should also provide a commom EPS
   // value (or provide utility functions that uses EPS inside of it).
 };
+
+const double pi = acos(-1);
