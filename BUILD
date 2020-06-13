@@ -263,3 +263,37 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "warshall_floyd",
+    srcs = ["warshall_floyd.h"],
+)
+
+cc_test(
+    name = "warshall_floyd_test",
+    srcs = [
+        "warshall_floyd_test.cc",
+    ],
+    deps = [
+        ":warshall_floyd",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "strongly_connected_component",
+    srcs = ["strongly_connected_component.h"],
+)
+
+cc_test(
+    name = "strongly_connected_component_test",
+    srcs = [
+        "strongly_connected_component_test.cc",
+    ],
+    deps = [
+        ":strongly_connected_component",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
