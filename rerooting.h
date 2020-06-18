@@ -7,10 +7,9 @@
 template <typename T>
 class TreeDP {
  public:
-  TreeDP(const std::vector<std::vector<int>>& edges,
-         std::function<T(T, T)> op1, std::function<T(T)> op2,
-         T identity = T())
-      : edges_(edges), op1_(op1), op2_(op2), identity_(identity) {
+  TreeDP(const std::vector<std::vector<int>>& edges, std::function<T(T, T)> op2,
+         std::function<T(T)> op1, T identity = T())
+      : edges_(edges), op2_(op2), op1_(op1), identity_(identity) {
     dp_.resize(edges.size());
     for (std::size_t i = 0; i < edges.size(); ++i) {
       dp_[i].resize(edges[i].size());
@@ -38,11 +37,11 @@ class TreeDP {
         T t = identity_;
         for (std::size_t i = 0; i < edges_[node].size(); ++i) {
           if (int child = edges_[node][i]; child != parent) {
-            t = op1_(t, dp_[node][i]);
+            t = op2_(t, dp_[node][i]);
           }
         }
         if (parent != -1) {
-          dp_[parent][parent_index] = op2_(t);
+          dp_[parent][parent_index] = op1_(t);
         }
       }
     }
@@ -67,25 +66,25 @@ class TreeDP {
         }
       }
 
-      // lower[i] = op1_(dp[i - 1], op1_(dp[i - 2], ...))
+      // lower[i] = op2_(dp[i - 1], op2_(dp[i - 2], ...))
       std::vector<T> lower(edges.size() + 1);
       lower[0] = identity_;
       for (std::size_t i = 0; i < edges.size(); ++i) {
-        lower[i + 1] = op1_(lower[i], dp[i]);
+        lower[i + 1] = op2_(lower[i], dp[i]);
       }
 
-      // higher[i] = op1_(dp[i], op1_(dp[i + 1], ...))
+      // higher[i] = op2_(dp[i], op2_(dp[i + 1], ...))
       std::vector<T> higher(edges.size() + 1);
       higher[edges.size()] = identity_;
       for (std::size_t i = edges.size() - 1; i < edges.size(); --i) {
-        higher[i] = op1_(higher[i + 1], dp[i]);
+        higher[i] = op2_(higher[i + 1], dp[i]);
       }
 
-      result_[node] = op2_(higher[0]);
+      result_[node] = op1_(higher[0]);
 
       for (std::size_t i = 0; i < edges.size(); ++i) {
         if (int child = edges[i]; child != parent) {
-          s.push({child, node, op2_(op1_(lower[i], higher[i + 1]))});
+          s.push({child, node, op1_(op2_(lower[i], higher[i + 1]))});
         }
       }
     }
@@ -97,8 +96,8 @@ class TreeDP {
  private:
   std::vector<std::vector<int>> edges_;
 
-  const std::function<T(T, T)> op1_;
-  const std::function<T(T)> op2_;
+  const std::function<T(T, T)> op2_;
+  const std::function<T(T)> op1_;
   const T identity_;
 
   std::vector<std::vector<T>> dp_;
