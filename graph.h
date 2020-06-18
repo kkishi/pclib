@@ -11,7 +11,7 @@ template <typename T>
 class Graph {
  public:
   Graph(int n) : edges_(n) {}
-  void AddEdge(int from, int to, T weight) {
+  void AddEdge(int from, int to, T weight = T()) {
     edges_[from].push_back({from, to, weight});
   }
   const std::vector<Edge<T>>& Edges(int from) const { return edges_[from]; }

@@ -284,6 +284,7 @@ cc_test(
 cc_library(
     name = "strongly_connected_component",
     srcs = ["strongly_connected_component.h"],
+    deps = [":graph"],
 )
 
 cc_test(
@@ -292,6 +293,7 @@ cc_test(
         "strongly_connected_component_test.cc",
     ],
     deps = [
+        ":graph",
         ":strongly_connected_component",
         "@gtest",
         "@gtest//:gtest_main",

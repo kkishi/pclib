@@ -1,6 +1,7 @@
 #include "strongly_connected_component.h"
 
 #include "gmock/gmock.h"
+#include "graph.h"
 #include "gtest/gtest.h"
 
 using std::vector;
@@ -13,7 +14,15 @@ TEST(strongly_connected_component, simple) {
   vector<vector<int>> graph = {
       {b}, {c, e, f}, {d, g}, {c, h}, {a, f}, {g}, {f}, {d, g},
   };
-  vector<vector<int>> sccs = StronglyConnectedComponents(graph);
+
+  Graph<int> grp(graph.size());
+  for (std::size_t u = 0; u < graph.size(); ++u) {
+    for (int v : graph[u]) {
+      grp.AddEdge(u, v);
+    }
+  }
+  vector<vector<int>> sccs = StronglyConnectedComponents(grp);
+
   EXPECT_EQ(sccs.size(), 3);
   EXPECT_THAT(sccs, UnorderedElementsAre(UnorderedElementsAre(a, b, e),
                                          UnorderedElementsAre(c, d, h),
