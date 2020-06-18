@@ -6,18 +6,15 @@
 
 using testing::ElementsAre;
 
-const int INF = 1 << 29;
-
 TEST(bellman_ford, simple) {
   Graph<int> g(3);
   g.AddEdge(0, 1, 1);
   g.AddEdge(0, 2, 2);
   g.AddEdge(1, 2, 3);
 
-  std::vector<int> dist(3, INF);
-  dist[0] = 0;
+  std::vector<int> dist;
 
-  EXPECT_TRUE(BellmanFord(g, dist));
+  EXPECT_TRUE(BellmanFord(g, 0, dist));
   EXPECT_THAT(dist, ElementsAre(0, 1, 2));
 }
 
@@ -27,10 +24,9 @@ TEST(bellman_ford, negative_cycle) {
   g.AddEdge(1, 2, 1);
   g.AddEdge(2, 0, 1);
 
-  std::vector<int> dist(3, INF);
-  dist[0] = 0;
+  std::vector<int> dist;
 
-  EXPECT_FALSE(BellmanFord(g, dist));
+  EXPECT_FALSE(BellmanFord(g, 0, dist));
 }
 
 TEST(bellman_ford, negative_noncycle) {
@@ -39,9 +35,8 @@ TEST(bellman_ford, negative_noncycle) {
   g.AddEdge(1, 2, 1);
   g.AddEdge(2, 0, 1);
 
-  std::vector<int> dist(3, INF);
-  dist[0] = 0;
+  std::vector<int> dist;
 
-  EXPECT_TRUE(BellmanFord(g, dist));
+  EXPECT_TRUE(BellmanFord(g, 0, dist));
   EXPECT_THAT(dist, ElementsAre(0, -2, -1));
 }

@@ -14,7 +14,7 @@ class Graph {
   void AddEdge(int from, int to, T weight) {
     edges_[from].push_back({from, to, weight});
   }
-  const std::vector<Edge<T>> Edges(int from) const { return edges_[from]; }
+  const std::vector<Edge<T>>& Edges(int from) const { return edges_[from]; }
   int NumVertices() const { return edges_.size(); }
 
  private:
