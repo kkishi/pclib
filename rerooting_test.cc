@@ -15,7 +15,7 @@ TEST(rerooting, diameter) {
   edges[0].push_back(2);
   edges[2].push_back(0);
 
-  TreeDP<int, Max, Increment> tdp(edges);
+  TreeDP<int> tdp(edges, Max, Increment);
   tdp.DFS(0);
   EXPECT_EQ(tdp.DP()[0][0], 1);
   EXPECT_EQ(tdp.DP()[0][1], 1);
@@ -56,8 +56,7 @@ TEST(rerooting, distributing_integers) {
   add_edge(3, 4);
   add_edge(3, 5);
 
-  TreeDP<DP, Combine, Calc> tdp(edges);
-  tdp.SetUnit({0, 1, 1});
+  TreeDP<DP> tdp(edges, Combine, Calc, {0, 1, 1});
   tdp.DFS(0);
   tdp.Rerooting(0);
 

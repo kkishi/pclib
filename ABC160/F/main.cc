@@ -36,8 +36,7 @@ int main() {
     edges[b].push_back(a);
   }
 
-  TreeDP<DP, Combine, Calc> tdp(edges);
-  tdp.SetUnit({0, 1, 1});
+  TreeDP<DP> tdp(edges, Combine, Calc, {0, 1, 1});
   tdp.DFS(0);
   tdp.Rerooting(0);
   REP(i, N) cout << tdp.Result()[i].cnt << endl;
