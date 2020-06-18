@@ -13,8 +13,8 @@ void Dijkstra(const Graph<T>& graph, int start, std::vector<T>& dist) {
   T inf = std::numeric_limits<T>::max();
   fill(dist.begin(), dist.end(), inf);
 
-  using entry = std::pair<T, int>;
-  std::priority_queue<entry, std::vector<entry>, std::greater<>> que;
+  using element = std::pair<T, int>;
+  std::priority_queue<element, std::vector<element>, std::greater<>> que;
 
   auto push = [&](int u, int c) {
     if (dist[u] <= c) return;
