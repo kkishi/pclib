@@ -147,6 +147,7 @@ cc_test(
 cc_library(
     name = "dijkstra",
     srcs = ["dijkstra.h"],
+    deps = [":graph"],
 )
 
 cc_test(
@@ -156,6 +157,7 @@ cc_test(
     ],
     deps = [
         ":dijkstra",
+        ":graph",
         "@gtest",
         "@gtest//:gtest_main",
     ],

@@ -3,48 +3,32 @@
 #include <queue>
 #include <vector>
 
-using Node = int;
-using Cost = int;
+#include "graph.h"
 
-struct Edge {
-  Node node;
-  Cost cost;
-};
+template <typename T>
+void Dijkstra(const Graph<T>& graph, int start, std::vector<T>& dist) {
+  int n = graph.NumVertices();
 
-struct State {
-  Node node;
-  Cost cost;
-  bool operator<(const State& s) const { return cost > s.cost; }
-};
+  dist.resize(n);
+  T inf = std::numeric_limits<T>::max();
+  fill(dist.begin(), dist.end(), inf);
 
-// NOTE: This implementation is very limited and is never used for solving
-// problems yet.
-template <class Graph>
-std::optional<Cost> Dijkstra(const Graph& graph, const Node& init,
-                             const Node& dest) {
-  std::map<Node, Cost> best;
-  std::priority_queue<State> que;
+  using entry = std::pair<T, int>;
+  std::priority_queue<entry, std::vector<entry>, std::greater<>> que;
 
-  auto push = [&best, &que](const State& there) {
-    std::map<Node, Cost>::const_iterator it = best.find(there.node);
-    if (it != best.end() && it->second <= there.cost) {
-      return;
-    }
-    best[there.node] = there.cost;
-    que.push(there);
+  auto push = [&](int u, int c) {
+    if (dist[u] <= c) return;
+    dist[u] = c;
+    que.push({c, u});
   };
 
-  push({init, 0});
+  push(start, 0);
 
   while (!que.empty()) {
-    State here = que.top();
+    auto [c, u] = que.top();
     que.pop();
-    if (here.node == dest) {
-      return here.cost;
-    }
-    for (const Edge& e : graph.Edges(here.node)) {
-      push({e.node, here.cost + e.cost});
+    for (const Edge<T>& e : graph.Edges(u)) {
+      push(e.to, c + e.weight);
     }
   }
-  return std::nullopt;
-};
+}
