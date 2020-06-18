@@ -297,3 +297,39 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "graph",
+    srcs = ["graph.h"],
+)
+
+cc_test(
+    name = "graph_test",
+    srcs = [
+        "graph_test.cc",
+    ],
+    deps = [
+        ":graph",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "bellman_ford",
+    srcs = ["bellman_ford.h"],
+    deps = [":graph"],
+)
+
+cc_test(
+    name = "bellman_ford_test",
+    srcs = [
+        "bellman_ford_test.cc",
+    ],
+    deps = [
+        ":bellman_ford",
+        ":graph",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
