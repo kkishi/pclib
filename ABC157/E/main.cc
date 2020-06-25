@@ -4,15 +4,15 @@
 #include "segment_tree.h"
 
 int main() {
-  CIN(int, N);
+  in(int, N);
   SegmentTree<int> tree(N, [](int a, int b) { return a | b; });
   string S;
   cin >> S;
-  REP(i, N) tree.Set(i, 1 << (S[i] - 'a'));
-  REP(i, N) DBG(i, tree.Get(i));
+  rep(i, N) tree.Set(i, 1 << (S[i] - 'a'));
+  rep(i, N) dbg(i, tree.Get(i));
   int Q;
   cin >> Q;
-  REP(q, Q) {
+  rep(q, Q) {
     int t;
     cin >> t;
     if (t == 1) {
@@ -23,7 +23,7 @@ int main() {
     } else {
       int l, r;
       cin >> l >> r;
-      cout << __builtin_popcount(tree.Aggregate(l - 1, r)) << endl;
+      out(__builtin_popcount(tree.Aggregate(l - 1, r)));
     }
   }
 }

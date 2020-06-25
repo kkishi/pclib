@@ -46,11 +46,10 @@ void Debug(const Grid& g) {
 }
 
 int main() {
-  int N, M;
-  cin >> N >> M;
+  in(int, N, M);
 
-  REP(i, N) cin >> A[i] >> B[i] >> C[i];
-  REP(i, M) cin >> D[i] >> E[i] >> F[i];
+  rep(i, N) cin >> A[i] >> B[i] >> C[i];
+  rep(i, M) cin >> D[i] >> E[i] >> F[i];
 
   set<int> xs;
   set<int> ys;
@@ -69,15 +68,15 @@ int main() {
   ys.insert(*ys.begin() - 1);
   ys.insert(*ys.rbegin() + 1);
 
-  vector cx = Compress(vector(ALL(xs)));
-  vector cy = Compress(vector(ALL(ys)));
+  vector cx = Compress(vector(all(xs)));
+  vector cy = Compress(vector(all(ys)));
   auto xi = Uncompressor(cx);
   auto yi = Uncompressor(cy);
 
   Grid grid(cx.size() - 1, cy.size() - 1);
 
-  REP(i, N) DrawLineX(grid, xi(A[i]), xi(B[i]), yi(C[i]));
-  REP(i, M) DrawLineY(grid, xi(D[i]), yi(E[i]), yi(F[i]));
+  rep(i, N) DrawLineX(grid, xi(A[i]), xi(B[i]), yi(C[i]));
+  rep(i, M) DrawLineY(grid, xi(D[i]), yi(E[i]), yi(F[i]));
 
   Coord init = {xi(0), yi(0)};
 
@@ -93,7 +92,7 @@ int main() {
     long long x = cx[here.x + 1] - cx[here.x];
     long long y = cy[here.y + 1] - cy[here.y];
     ans += x * y;
-    REP(i, 4) {
+    rep(i, 4) {
       int dx[] = {0, 1, 0, -1};
       int dy[] = {1, 0, -1, 0};
       if (grid.Boundary(here, dx[i], dy[i]).online) {
@@ -113,5 +112,5 @@ int main() {
     }
   }
   // Debug(grid);
-  cout << ans << endl;
+  out(ans);
 }

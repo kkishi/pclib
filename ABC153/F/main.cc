@@ -15,12 +15,12 @@ struct Monster {
 Monster monster[200000];
 
 int main() {
-  CIN(ll, N, D, A);
-  REP(i, N) cin >> monster[i].X >> monster[i].H;
+  in(ll, N, D, A);
+  rep(i, N) cin >> monster[i].X >> monster[i].H;
   sort(monster, monster + N);
 
   RangeSegmentTree tree = AdditiveSegmentTree<ll>(N);
-  REP(i, N) tree.Apply(i, i + 1, monster[i].H);
+  rep(i, N) tree.Apply(i, i + 1, monster[i].H);
 
   ll ans = 0;
   int mi = 0;
@@ -36,5 +36,5 @@ int main() {
     tree.Apply(mi, ub, -cnt * A);
     ans += cnt;
   }
-  COUT(ans);
+  out(ans);
 }
