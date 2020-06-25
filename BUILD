@@ -7,9 +7,7 @@ cc_library(
 
 cc_test(
     name = "gcd_test",
-    srcs = [
-        "gcd_test.cc",
-    ],
+    srcs = ["gcd_test.cc"],
     deps = [
         ":gcd",
         "@gtest",
@@ -24,9 +22,7 @@ cc_library(
 
 cc_test(
     name = "rational_test",
-    srcs = [
-        "rational_test.cc",
-    ],
+    srcs = ["rational_test.cc"],
     deps = [
         ":rational",
         "@gtest",
@@ -41,9 +37,7 @@ cc_library(
 
 cc_test(
     name = "modint_test",
-    srcs = [
-        "modint_test.cc",
-    ],
+    srcs = ["modint_test.cc"],
     deps = [
         ":modint",
         "@gtest",
@@ -58,9 +52,7 @@ cc_library(
 
 cc_test(
     name = "compress_test",
-    srcs = [
-        "compress_test.cc",
-    ],
+    srcs = ["compress_test.cc"],
     deps = [
         ":compress",
         "@gtest",
@@ -75,9 +67,7 @@ cc_library(
 
 cc_test(
     name = "macros_test",
-    srcs = [
-        "macros_test.cc",
-    ],
+    srcs = ["macros_test.cc"],
     deps = [
         ":macros",
         "@gtest",
@@ -88,9 +78,6 @@ cc_test(
 cc_library(
     name = "bound_grid",
     srcs = ["bound_grid.h"],
-    deps = [
-        ":macros",
-    ],
 )
 
 cc_library(
@@ -100,9 +87,7 @@ cc_library(
 
 cc_test(
     name = "factorize_test",
-    srcs = [
-        "factorize_test.cc",
-    ],
+    srcs = ["factorize_test.cc"],
     deps = [
         ":factorize",
         "@gtest",
@@ -117,9 +102,7 @@ cc_library(
 
 cc_test(
     name = "prime_test",
-    srcs = [
-        "prime_test.cc",
-    ],
+    srcs = ["prime_test.cc"],
     deps = [
         ":prime",
         "@gtest",
@@ -134,9 +117,7 @@ cc_library(
 
 cc_test(
     name = "segment_tree_test",
-    srcs = [
-        "segment_tree_test.cc",
-    ],
+    srcs = ["segment_tree_test.cc"],
     deps = [
         ":segment_tree",
         "@gtest",
@@ -152,9 +133,7 @@ cc_library(
 
 cc_test(
     name = "dijkstra_test",
-    srcs = [
-        "dijkstra_test.cc",
-    ],
+    srcs = ["dijkstra_test.cc"],
     deps = [
         ":dijkstra",
         ":graph",
@@ -170,9 +149,7 @@ cc_library(
 
 cc_test(
     name = "disjointset_test",
-    srcs = [
-        "disjointset_test.cc",
-    ],
+    srcs = ["disjointset_test.cc"],
     deps = [
         ":disjointset",
         "@gtest",
@@ -187,9 +164,7 @@ cc_library(
 
 cc_test(
     name = "geometry_test",
-    srcs = [
-        "geometry_test.cc",
-    ],
+    srcs = ["geometry_test.cc"],
     deps = [
         ":geometry",
         "@gtest",
@@ -204,9 +179,7 @@ cc_library(
 
 cc_test(
     name = "rerooting_test",
-    srcs = [
-        "rerooting_test.cc",
-    ],
+    srcs = ["rerooting_test.cc"],
     deps = [
         ":modint",
         ":rerooting",
@@ -222,9 +195,7 @@ cc_library(
 
 cc_test(
     name = "bignum_test",
-    srcs = [
-        "bignum_test.cc",
-    ],
+    srcs = ["bignum_test.cc"],
     deps = [
         ":bignum",
         "@gtest",
@@ -239,9 +210,7 @@ cc_library(
 
 cc_test(
     name = "grid_test",
-    srcs = [
-        "grid_test.cc",
-    ],
+    srcs = ["grid_test.cc"],
     deps = [
         ":grid",
         "@gtest",
@@ -256,9 +225,7 @@ cc_library(
 
 cc_test(
     name = "binary_search_test",
-    srcs = [
-        "binary_search_test.cc",
-    ],
+    srcs = ["binary_search_test.cc"],
     deps = [
         ":binary_search",
         "@gtest",
@@ -273,9 +240,7 @@ cc_library(
 
 cc_test(
     name = "warshall_floyd_test",
-    srcs = [
-        "warshall_floyd_test.cc",
-    ],
+    srcs = ["warshall_floyd_test.cc"],
     deps = [
         ":warshall_floyd",
         "@gtest",
@@ -291,9 +256,7 @@ cc_library(
 
 cc_test(
     name = "strongly_connected_component_test",
-    srcs = [
-        "strongly_connected_component_test.cc",
-    ],
+    srcs = ["strongly_connected_component_test.cc"],
     deps = [
         ":graph",
         ":strongly_connected_component",
@@ -309,9 +272,7 @@ cc_library(
 
 cc_test(
     name = "graph_test",
-    srcs = [
-        "graph_test.cc",
-    ],
+    srcs = ["graph_test.cc"],
     deps = [
         ":graph",
         "@gtest",
@@ -327,9 +288,7 @@ cc_library(
 
 cc_test(
     name = "bellman_ford_test",
-    srcs = [
-        "bellman_ford_test.cc",
-    ],
+    srcs = ["bellman_ford_test.cc"],
     deps = [
         ":bellman_ford",
         ":graph",
