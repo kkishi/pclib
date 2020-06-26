@@ -110,3 +110,5 @@ std::ostream& operator<<(std::ostream& out, const ModInt<Mod>& m) {
   out << m.value();
   return out;
 }
+
+using mint = ModInt<1000000007>;
