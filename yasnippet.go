@@ -86,7 +86,7 @@ func main() {
 		library := strings.ReplaceAll(strings.TrimSuffix(header, ".h"), "_", "-")
 		withMain := false
 		if library == "macros" {
-			library = "atcoder"
+			library = "main"
 			withMain = true
 		}
 		f := open(library)
