@@ -82,19 +82,21 @@ class ModInt {
     }
     return fact_[n];
   }
-  static ModInt Comb(int n, int k) {
+  static ModInt Comb(int n, int k) { return Perm(n, k) / Fact(k); }
+  static ModInt CombSlow(int n, int k) { return PermSlow(n, k) / Fact(k); }
+  static ModInt Perm(int n, int k) {
 #if DEBUG
     assert(n <= 1000000 &&
-           "n is too large. If k is small, consider using CombSlow.");
+           "n is too large. If k is small, consider using PermSlow.");
 #endif
-    return Fact(n) / Fact(n - k) / Fact(k);
+    return Fact(n) / Fact(n - k);
   }
-  static ModInt CombSlow(int n, int k) {
-    ModInt numerator = 1;
+  static ModInt PermSlow(int n, int k) {
+    ModInt p = 1;
     for (int i = 0; i < k; ++i) {
-      numerator *= (n - i);
+      p *= (n - i);
     }
-    return numerator / Fact(k);
+    return p;
   }
 
  private:
