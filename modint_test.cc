@@ -78,14 +78,11 @@ TEST(modint, div) {
   EXPECT_EQ(ModInt<1000000007>(12345678900000) / 100000, 123456789);
 }
 
-TEST(modint, factorial) {
-  EXPECT_EQ(ModInt<1000000007>::factorial(100000), 457992974);
-}
+TEST(modint, fact) { EXPECT_EQ(ModInt<1000000007>::Fact(100000), 457992974); }
 
 TEST(modint, comb) {
-  EXPECT_EQ(ModInt<1000000007>::combination(100000, 50000), 149033233);
-  EXPECT_EQ(ModInt<1000000007>::combination_slow(1000000000, 141421),
-            516595147);
+  EXPECT_EQ(ModInt<1000000007>::Comb(100000, 50000), 149033233);
+  EXPECT_EQ(ModInt<1000000007>::CombSlow(1000000000, 141421), 516595147);
 }
 
 TEST(modint, comparison) {
@@ -108,8 +105,7 @@ TEST(modint, stream) {
 
 TEST(modint, pow_inverse) {
   ModInt<7> m = 2;
-  EXPECT_EQ(m.pow(-1), 4);
+  EXPECT_EQ(m.Pow(-1), 4);
 
-  EXPECT_EQ(ModInt<1000000007>(2).pow(-42) *
-            ModInt<1000000007>(2).pow(42), 1);
+  EXPECT_EQ(ModInt<1000000007>(2).Pow(-42) * ModInt<1000000007>(2).Pow(42), 1);
 }

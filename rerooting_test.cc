@@ -39,8 +39,8 @@ DP Combine(DP a, DP b) {
 }
 
 DP Calc(DP x) {
-  return {x.size + 1, x.cnt / x.fact * mint::factorial(x.size),
-          mint::factorial(x.size + 1)};
+  return {x.size + 1, x.cnt / x.fact * mint::Fact(x.size),
+          mint::Fact(x.size + 1)};
 }
 
 // https://atcoder.jp/contests/abc160/tasks/abc160_f
