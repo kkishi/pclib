@@ -53,6 +53,7 @@ class ModInt {
   DEFINE_COMPARISON_OPERATOR(>)
   DEFINE_COMPARISON_OPERATOR(>=)
 #undef BDEFINE_COMPARISON_OPERATOR
+  ModInt operator-() const { return ModInt(-n_); }
   ModInt Pow(int n) const {
     if (n < 0) {
       return Inv().Pow(-n);

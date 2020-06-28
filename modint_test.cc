@@ -41,6 +41,12 @@ TEST(modint, sub) {
   EXPECT_EQ(a - b, 10);
 }
 
+TEST(modint, minus) {
+  ModInt<7> m = 2;
+  ModInt<7> n = -m;
+  EXPECT_EQ(n, -2);
+}
+
 TEST(modint, decrement) {
   ModInt<7> m;
   --m;
