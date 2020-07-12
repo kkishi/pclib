@@ -321,3 +321,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "rollinghash",
+    srcs = ["rollinghash.h"],
+)
+
+cc_test(
+    name = "rollinghash_test",
+    srcs = ["rollinghash_test.cc"],
+    deps = [
+        ":rollinghash",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
