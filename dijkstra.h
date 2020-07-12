@@ -6,18 +6,16 @@
 #include "graph.h"
 
 template <typename T>
-void Dijkstra(const Graph<T>& graph, int start, std::vector<T>& dist) {
-  int n = graph.NumVertices();
+std::vector<std::optional<T>> Dijkstra(const Graph<T>& graph, int start) {
+  const int n = graph.NumVertices();
 
-  dist.resize(n);
-  T inf = std::numeric_limits<T>::max();
-  fill(dist.begin(), dist.end(), inf);
+  std::vector<std::optional<T>> dist(n);
 
   using element = std::pair<T, int>;
   std::priority_queue<element, std::vector<element>, std::greater<>> que;
 
-  auto push = [&](int u, int c) {
-    if (dist[u] <= c) return;
+  auto push = [&dist, &que](int u, T c) {
+    if (dist[u] && *dist[u] <= c) return;
     dist[u] = c;
     que.push({c, u});
   };
@@ -31,4 +29,6 @@ void Dijkstra(const Graph<T>& graph, int start, std::vector<T>& dist) {
       push(e.to, c + e.weight);
     }
   }
+
+  return dist;
 }
