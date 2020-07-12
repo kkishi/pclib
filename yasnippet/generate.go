@@ -40,6 +40,7 @@ func open(library string) *os.File {
 		log.Fatal(err)
 	}
 	return f
+
 }
 
 func write(w io.Writer, header, library string, skipIncludes bool) {
@@ -58,7 +59,7 @@ func write(w io.Writer, header, library string, skipIncludes bool) {
 	i := 0
 	if skipIncludes {
 		for ; i < len(lines); i++ {
-			if !strings.HasPrefix(lines[i], "#include") && len(lines[i]) != 0 {
+			if !strings.HasPrefix(lines[i], "#") && len(lines[i]) != 0 {
 				break
 			}
 		}
