@@ -47,4 +47,9 @@ void write_to_cout(const T& value, const Ts&... args) {
 
 using ll = long long;
 
+template <typename T>
+using V = std::vector<T>;
+template <typename T>
+using VV = V<V<T>>;
+
 using namespace std;

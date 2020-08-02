@@ -12,3 +12,10 @@ TEST(macros, simple) {
   std::vector v(all(s));
   EXPECT_EQ(v, std::vector({0, 1, 2}));
 }
+
+TEST(macros, V) {
+  V<int> v = {1};
+  VV<int> vv(2, V<int>(2, 42));
+  EXPECT_EQ(v[0], 1);
+  EXPECT_EQ(vv[1][1], 42);
+}
