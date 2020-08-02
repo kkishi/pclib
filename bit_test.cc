@@ -6,9 +6,9 @@
 
 TEST(bit, find) {
   BIT<int> bit(8);
-  for (int i = 1; i <= 8; ++i) {
-    bit.Add(i, i);
-    EXPECT_EQ(bit.Get(i), i);
+  for (int i = 0; i < 8; ++i) {
+    bit.Add(i, i + 1);
+    EXPECT_EQ(bit.Get(i), i + 1);
   }
-  EXPECT_EQ(bit.Sum(8), 8 * 9 / 2);
+  EXPECT_EQ(bit.Sum(7), 8 * 9 / 2);
 }
