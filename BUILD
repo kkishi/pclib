@@ -336,3 +336,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "bit",
+    srcs = ["bit.h"],
+)
+
+cc_test(
+    name = "bit_test",
+    srcs = ["bit_test.cc"],
+    deps = [
+        ":bit",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
