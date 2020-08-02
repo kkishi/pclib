@@ -57,7 +57,6 @@ func main() {
 		library := strings.ReplaceAll(strings.TrimSuffix(header, ".h"), "_", "-")
 		withMain := false
 		if library == "macros" {
-			library = "main"
 			withMain = true
 		}
 		snippets[library] = Snippet{
