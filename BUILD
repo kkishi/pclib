@@ -351,3 +351,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "mo",
+    srcs = ["mo.h"],
+)
+
+cc_test(
+    name = "mo_test",
+    srcs = ["mo_test.cc"],
+    deps = [
+        ":mo",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
