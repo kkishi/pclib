@@ -2,11 +2,6 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary")
 
 package(default_visibility = ["//visibility:public"])
 
-go_binary(
-    name = "yasnippet",
-    srcs = ["yasnippet.go"],
-)
-
 cc_library(
     name = "gcd",
     srcs = ["gcd.h"],
@@ -127,6 +122,21 @@ cc_test(
     srcs = ["segment_tree_test.cc"],
     deps = [
         ":segment_tree",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "range_segment_tree",
+    srcs = ["range_segment_tree.h"],
+)
+
+cc_test(
+    name = "range_segment_tree_test",
+    srcs = ["range_segment_tree_test.cc"],
+    deps = [
+        ":range_segment_tree",
         "@gtest",
         "@gtest//:gtest_main",
     ],

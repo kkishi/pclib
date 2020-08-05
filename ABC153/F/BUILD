@@ -3,7 +3,7 @@ cc_binary(
     srcs = ["main.cc"],
     deps = [
         "//:macros",
-        "//:segment_tree",
+        "//:range_segment_tree",
     ],
 )
 

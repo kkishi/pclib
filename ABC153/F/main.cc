@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 
 #include "macros.h"
-#include "segment_tree.h"
+#include "range_segment_tree.h"
 
 using namespace std;
 
