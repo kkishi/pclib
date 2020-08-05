@@ -27,6 +27,9 @@ func body(header string, main bool) []string {
 		return append(lines, []string{
 			"",
 			"int main() {",
+			"  ios_base::sync_with_stdio(false);",
+			"  cin.tie(NULL);",
+			"",
 			"  $0",
 			"}",
 		}...)

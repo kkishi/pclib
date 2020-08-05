@@ -3,19 +3,19 @@
 // #undef DEBUG  // Uncomment this line to forcefully disable debug print.
 #if DEBUG
 template <typename T>
-void debug(T value) {
+void debug(const T& value) {
   std::cerr << value;
 }
 template <typename T, typename... Ts>
-void debug(T value, Ts... args) {
+void debug(const T& value, const Ts&... args) {
   std::cerr << value << ", ";
   debug(args...);
 }
-#define dbg(...)                              \
-  do {                                        \
-    cerr << #__VA_ARGS__ << ": ";             \
-    debug(__VA_ARGS__);                       \
-    cerr << " (L" << __LINE__ << ")" << endl; \
+#define dbg(...)                        \
+  do {                                  \
+    cerr << #__VA_ARGS__ << ": ";       \
+    debug(__VA_ARGS__);                 \
+    cerr << " (L" << __LINE__ << ")\n"; \
   } while (0)
 #else
 #define dbg(...)
@@ -33,7 +33,7 @@ void read_from_cin(T& value, Ts&... args) {
 
 template <typename T>
 void write_to_cout(const T& value) {
-  std::cout << value << std::endl;
+  std::cout << value << '\n';
 }
 template <typename T, typename... Ts>
 void write_to_cout(const T& value, const Ts&... args) {
