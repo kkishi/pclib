@@ -24,7 +24,7 @@ struct DS {
 };
 
 TEST(mo, abc174_sample2) {
-  std::vector<int> c{2, 5, 6, 5, 2, 1, 7, 9, 7, 2};
+  std::vector<int> c = {2, 5, 6, 5, 2, 1, 7, 9, 7, 2};
   DS ds(c.size());
   ds.c = c;
 
@@ -35,9 +35,5 @@ TEST(mo, abc174_sample2) {
                                         {8, 10}, {6, 8}};
   for (auto [l, r] : q) mo.AddQuery(l - 1, r);
 
-  std::vector<int> a = {1, 2, 2, 1, 2, 2, 6, 3, 3, 3};
-  for (size_t i = 0; i < q.size(); ++i) {
-    auto [idx, x] = mo.ProcessQuery();
-    EXPECT_EQ(a[idx], x);
-  }
+  EXPECT_THAT(mo.ProcessQueries(), ElementsAre(1, 2, 2, 1, 2, 2, 6, 3, 3, 3));
 }

@@ -5,35 +5,34 @@
 template <typename T, class DS>
 class Mo {
  public:
-  Mo(DS& ds) : ds_(ds), index_(0), prev_(-1) {}
-  std::pair<int, T> ProcessQuery() {
-    if (prev_ == -1) {
-      int bin = sqrt(index_);
-      sort(queries_.begin(), queries_.end(),
-           [&bin](const Query& a, const Query& b) {
-             int ba = a.begin / bin, bb = b.begin / bin;
-             if (ba != bb) return ba < bb;
-             if (ba % 2 == 0) {
-               return a.end < b.end;
-             }
-             return a.end > b.end;
-           });
-      prev_ = 0;
-      const Query& q = queries_[0];
-      Add(q.begin, q.end);
-      return {q.index, ds_.Get()};
-    }
-    const Query& p = queries_[prev_];
-    const Query& c = queries_[prev_ + 1];
-    ++prev_;
-    Add(c.begin, p.begin);
-    Del(p.begin, c.begin);
-    Add(p.end, c.end);
-    Del(c.end, p.end);
-    return {c.index, ds_.Get()};
-  }
+  Mo(DS& ds) : ds_(ds) {}
   void AddQuery(int begin, int end) {
-    queries_.push_back({begin, end, index_++});
+    int index = queries_.size();
+    queries_.push_back({begin, end, index});
+  }
+  std::vector<T> ProcessQueries() {
+    int bin = sqrt(queries_.size());
+    sort(queries_.begin(), queries_.end(),
+         [&bin](const Query& a, const Query& b) {
+           int c = a.begin / bin, d = b.begin / bin;
+           if (c != d) return c < d;
+           if (c % 2 == 0) {
+             return a.end < b.end;
+           }
+           return a.end > b.end;
+         });
+    std::vector<T> ret(queries_.size());
+    Query p = {0, 0, 0};
+    for (std::size_t i = 0; i < queries_.size(); ++i) {
+      const Query& c = queries_[i];
+      Add(c.begin, p.begin);
+      Del(p.begin, c.begin);
+      Add(p.end, c.end);
+      Del(c.end, p.end);
+      ret[c.index] = ds_.Get();
+      p = c;
+    }
+    return ret;
   }
 
  private:
@@ -51,6 +50,5 @@ class Mo {
     }
   }
   DS& ds_;
-  int index_, prev_;
   std::vector<Query> queries_;
 };
