@@ -128,6 +128,21 @@ cc_test(
 )
 
 cc_library(
+    name = "dual_segment_tree",
+    srcs = ["dual_segment_tree.h"],
+)
+
+cc_test(
+    name = "dual_segment_tree_test",
+    srcs = ["dual_segment_tree_test.cc"],
+    deps = [
+        ":dual_segment_tree",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
     name = "range_segment_tree",
     srcs = ["range_segment_tree.h"],
 )
