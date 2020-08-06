@@ -5,8 +5,6 @@
 
 using namespace std;
 
-using ll = long long;
-
 struct Monster {
   ll X, H;
   bool operator<(const Monster& m) const { return X < m.X; }
@@ -15,7 +13,7 @@ struct Monster {
 Monster monster[200000];
 
 int main() {
-  in(ll, N, D, A);
+  rd(ll, N, D, A);
   rep(i, N) cin >> monster[i].X >> monster[i].H;
   sort(monster, monster + N);
 
@@ -36,5 +34,5 @@ int main() {
     tree.Update(mi, ub, -cnt * A);
     ans += cnt;
   }
-  out(ans);
+  wt(ans);
 }

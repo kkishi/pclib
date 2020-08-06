@@ -46,7 +46,7 @@ void Debug(const Grid& g) {
 }
 
 int main() {
-  in(int, N, M);
+  rd(int, N, M);
 
   rep(i, N) cin >> A[i] >> B[i] >> C[i];
   rep(i, M) cin >> D[i] >> E[i] >> F[i];
@@ -112,5 +112,5 @@ int main() {
     }
   }
   // Debug(grid);
-  out(ans);
+  wt(ans);
 }

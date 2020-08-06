@@ -24,12 +24,11 @@ DP Calc(DP x) {
 }
 
 int main() {
-  in(int, N);
+  rd(int, N);
 
   vector<vector<int>> edges(N);
   rep(i, N - 1) {
-    int a, b;
-    cin >> a >> b;
+    rd(int, a, b);
     --a, --b;
     edges[a].push_back(b);
     edges[b].push_back(a);
@@ -38,5 +37,5 @@ int main() {
   TreeDP<DP> tdp(edges, Combine, Calc, {0, 1, 1});
   tdp.DFS(0);
   tdp.Rerooting(0);
-  rep(i, N) out(tdp.Result()[i].cnt);
+  rep(i, N) wt(tdp.Result()[i].cnt);
 }

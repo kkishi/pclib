@@ -1,6 +1,6 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 
-// #undef DEBUG  // Uncomment this line to forcefully disable debug print.
 #if DEBUG
 template <typename T>
 void debug(const T& value) {
@@ -27,7 +27,7 @@ void read_from_cin(T& value, Ts&... args) {
   std::cin >> value;
   read_from_cin(args...);
 }
-#define in(type, ...) \
+#define rd(type, ...) \
   type __VA_ARGS__;   \
   read_from_cin(__VA_ARGS__);
 
@@ -40,7 +40,7 @@ void write_to_cout(const T& value, const Ts&... args) {
   std::cout << value << ' ';
   write_to_cout(args...);
 }
-#define out(...) write_to_cout(__VA_ARGS__);
+#define wt(...) write_to_cout(__VA_ARGS__);
 
 #define all(x) (x).begin(), (x).end()
 #define rep(i, n) for (int i = 0; i < (int)(n); ++i)
@@ -51,5 +51,3 @@ template <typename T>
 using V = std::vector<T>;
 template <typename T>
 using VV = V<V<T>>;
-
-using namespace std;

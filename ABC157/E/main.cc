@@ -3,8 +3,10 @@
 #include "macros.h"
 #include "segment_tree.h"
 
+using namespace std;
+
 int main() {
-  in(int, N);
+  rd(int, N);
   SegmentTree<int> tree(N, [](int a, int b) { return a | b; });
   string S;
   cin >> S;
@@ -23,7 +25,7 @@ int main() {
     } else {
       int l, r;
       cin >> l >> r;
-      out(__builtin_popcount(tree.Aggregate(l - 1, r)));
+      wt(__builtin_popcount(tree.Aggregate(l - 1, r)));
     }
   }
 }
