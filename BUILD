@@ -143,21 +143,6 @@ cc_test(
 )
 
 cc_library(
-    name = "range_segment_tree",
-    srcs = ["range_segment_tree.h"],
-)
-
-cc_test(
-    name = "range_segment_tree_test",
-    srcs = ["range_segment_tree_test.cc"],
-    deps = [
-        ":range_segment_tree",
-        "@gtest",
-        "@gtest//:gtest_main",
-    ],
-)
-
-cc_library(
     name = "dijkstra",
     srcs = ["dijkstra.h"],
     deps = [":graph"],
