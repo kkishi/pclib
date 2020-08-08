@@ -5,36 +5,36 @@
 template <typename T>
 class Rational {
  public:
-  Rational(T numerator, T denominator) {
-    assert(denominator != 0);
-    if (numerator == 0) {
-      numerator_ = 0;
-      denominator_ = 1;
+  Rational(T p, T q) {
+    assert(q != 0);
+    if (p == 0) {
+      p_ = 0;
+      q_ = 1;
       return;
     }
-    if (denominator < 0) {
-      numerator = -numerator;
-      denominator = -denominator;
+    if (q < 0) {
+      p = -p;
+      q = -q;
     }
     T sign = 1;
-    if (numerator < 0) {
+    if (p < 0) {
       sign = -1;
-      numerator = -numerator;
+      p = -p;
     }
-    T g = std::gcd(numerator, denominator);
-    numerator_ = sign * (numerator / g);
-    denominator_ = denominator / g;
+    T g = std::gcd(p, q);
+    p_ = sign * (p / g);
+    q_ = q / g;
   }
-  T numerator() const { return numerator_; }
-  T denominator() const { return denominator_; }
+  T p() const { return p_; }
+  T q() const { return q_; }
 
  private:
-  T numerator_;
-  T denominator_;
+  T p_;
+  T q_;
 };
 
 template <typename T>
 std::ostream& operator<<(std::ostream& out, const Rational<T>& r) {
-  out << r.numerator() << '/' << r.denominator();
+  out << r.p() << '/' << r.q();
   return out;
 }
