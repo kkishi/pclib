@@ -333,15 +333,30 @@ cc_test(
 )
 
 cc_library(
-    name = "rollinghash",
-    srcs = ["rollinghash.h"],
+    name = "rolling_hash_match",
+    srcs = ["rolling_hash_match.h"],
 )
 
 cc_test(
-    name = "rollinghash_test",
-    srcs = ["rollinghash_test.cc"],
+    name = "rolling_hash_match_test",
+    srcs = ["rolling_hash_match_test.cc"],
     deps = [
-        ":rollinghash",
+        ":rolling_hash_match",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "rolling_hash",
+    srcs = ["rolling_hash.h"],
+)
+
+cc_test(
+    name = "rolling_hash_test",
+    srcs = ["rolling_hash_test.cc"],
+    deps = [
+        ":rolling_hash",
         "@gtest",
         "@gtest//:gtest_main",
     ],
