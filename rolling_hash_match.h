@@ -7,19 +7,20 @@ std::vector<int> RollingHashMatches(const std::string& haystack,
   if (haystack.size() < needle.size()) {
     return {};
   }
-  const uint64_t base = 100000007;
+  auto roll = [](uint64_t& x, char c) { x = x * 100000007 + c; };
   uint64_t h = 0, n = 0, t = 1;
   for (std::size_t i = 0; i < needle.size(); ++i) {
-    h = h * base + haystack[i];
-    n = n * base + needle[i];
-    t *= base;
+    roll(h, haystack[i]);
+    roll(n, needle[i]);
+    roll(t, 0);
   }
   std::vector<int> matches;
   for (std::size_t i = 0;; ++i) {
     if (h == n) matches.push_back(i);
     std::size_t j = i + needle.size();
     if (j == haystack.size()) break;
-    h = h * base - t * haystack[i] + haystack[j];
+    roll(h, haystack[j]);
+    h -= t * haystack[i];
   }
   return matches;
 }
