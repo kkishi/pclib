@@ -2,7 +2,7 @@
 #include <ostream>
 #include <vector>
 
-template <int Mod>
+template <int Mod = 1000000007>
 class ModInt {
  public:
   ModInt() : n_(0) {}
@@ -113,5 +113,3 @@ std::ostream& operator<<(std::ostream& out, const ModInt<Mod>& m) {
   out << m.value();
   return out;
 }
-
-using mint = ModInt<1000000007>;
