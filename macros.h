@@ -45,6 +45,12 @@ void write_to_cout(const T& value, const Ts&... args) {
 #define all(x) (x).begin(), (x).end()
 #define rep(i, n) for (int i = 0; i < (int)(n); ++i)
 
+template <typename T>
+std::istream& operator>>(std::istream& is, std::vector<T>& v) {
+  for (T& vi : v) is >> vi;
+  return is;
+}
+
 using ll = long long;
 
 template <typename T>
