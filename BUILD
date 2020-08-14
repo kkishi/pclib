@@ -315,24 +315,6 @@ cc_test(
 )
 
 cc_library(
-    name = "setminmax",
-    srcs = [
-        "setmax.h",
-        "setmin.h",
-    ],
-)
-
-cc_test(
-    name = "setminmax_test",
-    srcs = ["setminmax_test.cc"],
-    deps = [
-        ":setminmax",
-        "@gtest",
-        "@gtest//:gtest_main",
-    ],
-)
-
-cc_library(
     name = "rolling_hash_match",
     srcs = ["rolling_hash_match.h"],
 )

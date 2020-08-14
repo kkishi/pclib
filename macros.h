@@ -51,6 +51,24 @@ std::istream& operator>>(std::istream& is, std::vector<T>& v) {
   return is;
 }
 
+template <typename T>
+bool chmax(T& a, T b) {
+  if (a < b) {
+    a = b;
+    return true;
+  }
+  return false;
+}
+
+template <typename T>
+bool chmin(T& a, T b) {
+  if (a > b) {
+    a = b;
+    return true;
+  }
+  return false;
+}
+
 using ll = long long;
 
 template <typename T>
