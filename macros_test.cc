@@ -19,3 +19,22 @@ TEST(macros, V) {
   EXPECT_EQ(v[0], 1);
   EXPECT_EQ(vv[1][1], 42);
 }
+
+TEST(macros, debug) {
+  using std::map;
+  using std::pair;
+  using std::set;
+  using std::string;
+  using std::vector;
+  // Just confirm that it doesn't cause compilation err.r
+  vector<int> v = {1, 2, 3};
+  dbg(v);
+  vector<int> s = {1, 2, 3};
+  dbg(s);
+  pair<int, double> p = {1, 2.5};
+  dbg(p);
+  map<int, string> m = {{42, "foo"}};
+  dbg(m);
+  map<pair<set<int>, vector<pair<string, double>>>, string> c;
+  dbg(c);
+}

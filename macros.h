@@ -2,14 +2,46 @@
 #include <vector>
 
 #if DEBUG
+template <typename Iter>
+void debug_iter(Iter begin, Iter end);
 template <typename T>
 void debug(const T& value) {
   std::cerr << value;
 }
+template <typename T>
+void debug(const std::vector<T>& v) {
+  debug_iter(v.begin(), v.end());
+}
+template <typename T>
+void debug(const std::set<T>& s) {
+  debug_iter(s.begin(), s.end());
+}
+template <typename T, typename U>
+void debug(const std::map<T, U>& m) {
+  debug_iter(m.begin(), m.end());
+}
+template <typename T, typename U>
+void debug(const std::pair<T, U>& p) {
+  std::cerr << "{";
+  debug(p.first);
+  std::cerr << ", ";
+  debug(p.second);
+  std::cerr << "}";
+}
 template <typename T, typename... Ts>
 void debug(const T& value, const Ts&... args) {
-  std::cerr << value << ", ";
+  debug(value);
+  std::cerr << ", ";
   debug(args...);
+}
+template <typename Iter>
+void debug_iter(Iter begin, Iter end) {
+  std::cerr << "{";
+  for (Iter it = begin; it != end; ++it) {
+    if (it != begin) std::cerr << ", ";
+    debug(*it);
+  }
+  std::cerr << "}";
 }
 #define dbg(...)                        \
   do {                                  \
