@@ -8,6 +8,10 @@ template <typename T>
 void debug(const T& value) {
   std::cerr << value;
 }
+template <typename T, size_t N>
+void debug(const std::array<T, N>& a) {
+  debug_iter(a.begin(), a.end());
+}
 template <typename T>
 void debug(const std::vector<T>& v) {
   debug_iter(v.begin(), v.end());
