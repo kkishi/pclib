@@ -101,6 +101,9 @@ bool chmin(T& a, T b) {
   return false;
 }
 
+#include <boost/hana/functional/fix.hpp>
+auto Fix = [](auto&& f) { return boost::hana::fix(f); };
+
 using ll = long long;
 
 template <typename T>
