@@ -1,4 +1,6 @@
+#include <functional>
 #include <iostream>
+#include <queue>
 #include <vector>
 
 #if DEBUG
@@ -109,6 +111,10 @@ bool chmin(T& a, T b) {
 auto Fix = [](auto&& f) { return boost::hana::fix(f); };
 
 using ll = long long;
+
+template <typename T>
+using low_priority_queue =
+    std::priority_queue<T, std::vector<T>, std::greater<T>>;
 
 template <typename T>
 using V = std::vector<T>;
