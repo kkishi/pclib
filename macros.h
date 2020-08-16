@@ -11,22 +11,18 @@ struct is_container<T, std::void_t<decltype(std::declval<T>().begin()),
                                    decltype(std::declval<T>().end())>>
     : std::true_type {};
 
-template <typename T,
-          typename std::enable_if<!is_container<T>::value>::type* = nullptr>
+template <typename T, std::enable_if_t<!is_container<T>::value>* = nullptr>
 void debug(const T& value);
-template <typename T,
-          typename std::enable_if<is_container<T>::value>::type* = nullptr>
+template <typename T, std::enable_if_t<is_container<T>::value>* = nullptr>
 void debug(const T& c);
 template <typename T, typename U>
 void debug(const std::pair<T, U>& p);
 
-template <typename T,
-          typename std::enable_if<!is_container<T>::value>::type* = nullptr>
+template <typename T, std::enable_if_t<!is_container<T>::value>* = nullptr>
 void debug(const T& value) {
   std::cerr << value;
 }
-template <typename T,
-          typename std::enable_if<is_container<T>::value>::type* = nullptr>
+template <typename T, std::enable_if_t<is_container<T>::value>* = nullptr>
 void debug(const T& c) {
   std::cerr << "{";
   for (auto it = c.begin(); it != c.end(); ++it) {
