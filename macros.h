@@ -109,7 +109,7 @@ bool chmin(T& a, T b) {
 }
 
 #include <boost/hana/functional/fix.hpp>
-auto Fix = [](auto&& f) { return boost::hana::fix(f); };
+auto Fix = boost::hana::fix;
 
 using ll = long long;
 
