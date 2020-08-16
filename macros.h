@@ -1,38 +1,39 @@
 #include <functional>
 #include <iostream>
 #include <queue>
+#include <type_traits>
 #include <vector>
 
-#if DEBUG
-template <typename Iter>
-void debug_iter(Iter begin, Iter end);
+template <typename T, typename _ = void>
+struct is_container : std::false_type {};
 template <typename T>
-void debug(const T& value) {
-  std::cerr << value;
-}
-template <typename T, size_t N>
-void debug(const std::array<T, N>& a) {
-  debug_iter(a.begin(), a.end());
-}
+struct is_container<T, std::void_t<decltype(std::declval<T>().begin()),
+                                   decltype(std::declval<T>().end())>>
+    : std::true_type {};
+template <typename T, typename _ = void>
+struct is_pair : std::false_type {};
 template <typename T>
-void debug(const std::vector<T>& v) {
-  debug_iter(v.begin(), v.end());
-}
+struct is_pair<T, std::void_t<decltype(std::declval<T>().first),
+                              decltype(std::declval<T>().second)>>
+    : std::true_type {};
 template <typename T>
-void debug(const std::set<T>& s) {
-  debug_iter(s.begin(), s.end());
-}
-template <typename T, typename U>
-void debug(const std::map<T, U>& m) {
-  debug_iter(m.begin(), m.end());
-}
-template <typename T, typename U>
-void debug(const std::pair<T, U>& p) {
-  std::cerr << "{";
-  debug(p.first);
-  std::cerr << ", ";
-  debug(p.second);
-  std::cerr << "}";
+void debug(const T& v) {
+  if constexpr (is_pair<T>::value) {
+    std::cerr << "{";
+    debug(v.first);
+    std::cerr << ", ";
+    debug(v.second);
+    std::cerr << "}";
+  } else if constexpr (is_container<T>::value) {
+    std::cerr << "{";
+    for (auto it = v.begin(); it != v.end(); ++it) {
+      if (it != v.begin()) std::cerr << ", ";
+      debug(*it);
+    }
+    std::cerr << "}";
+  } else {
+    std::cerr << v;
+  }
 }
 template <typename T, typename... Ts>
 void debug(const T& value, const Ts&... args) {
@@ -40,15 +41,7 @@ void debug(const T& value, const Ts&... args) {
   std::cerr << ", ";
   debug(args...);
 }
-template <typename Iter>
-void debug_iter(Iter begin, Iter end) {
-  std::cerr << "{";
-  for (Iter it = begin; it != end; ++it) {
-    if (it != begin) std::cerr << ", ";
-    debug(*it);
-  }
-  std::cerr << "}";
-}
+#if DEBUG
 #define dbg(...)                        \
   do {                                  \
     cerr << #__VA_ARGS__ << ": ";       \

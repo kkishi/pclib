@@ -21,6 +21,7 @@ TEST(macros, V) {
 }
 
 TEST(macros, debug) {
+  using std::array;
   using std::map;
   using std::pair;
   using std::set;
@@ -28,13 +29,16 @@ TEST(macros, debug) {
   using std::vector;
   // Just confirm that it doesn't cause compilation err.r
   vector<int> v = {1, 2, 3};
-  dbg(v);
+  debug(v);
   vector<int> s = {1, 2, 3};
-  dbg(s);
+  debug(s);
   pair<int, double> p = {1, 2.5};
-  dbg(p);
+  debug(p);
   map<int, string> m = {{42, "foo"}};
-  dbg(m);
-  map<pair<set<int>, vector<pair<string, double>>>, string> c;
-  dbg(c);
+  debug(m);
+  array<int, 4> a = {42};
+  debug(a);
+  map<pair<set<int>, vector<pair<string, double>>>, array<string, 1>> c;
+  debug(c);
+  debug(v, s, p, m, a, c);
 }
