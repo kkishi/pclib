@@ -11,33 +11,30 @@ struct is_container<T, std::void_t<decltype(std::declval<T>().begin()),
                                    decltype(std::declval<T>().end())>>
     : std::true_type {};
 
-template <typename T, std::enable_if_t<!is_container<T>::value>* = nullptr>
-void debug(const T& value);
-template <typename T, std::enable_if_t<is_container<T>::value>* = nullptr>
-void debug(const T& c);
-template <typename T, typename U>
-void debug(const std::pair<T, U>& p);
+template <typename T, typename _ = void>
+struct is_pair : std::false_type {};
+template <typename T>
+struct is_pair<T, std::void_t<typename T::first_type, typename T::second_type>>
+    : std::true_type {};
 
-template <typename T, std::enable_if_t<!is_container<T>::value>* = nullptr>
-void debug(const T& value) {
-  std::cerr << value;
-}
-template <typename T, std::enable_if_t<is_container<T>::value>* = nullptr>
-void debug(const T& c) {
-  std::cerr << "{";
-  for (auto it = c.begin(); it != c.end(); ++it) {
-    if (it != c.begin()) std::cerr << ", ";
-    debug(*it);
+template <typename T>
+void debug(const T& v) {
+  if constexpr (is_pair<T>::value) {
+    std::cerr << "{";
+    debug(v.first);
+    std::cerr << ", ";
+    debug(v.second);
+    std::cerr << "}";
+  } else if constexpr (is_container<T>::value) {
+    std::cerr << "{";
+    for (auto it = v.begin(); it != v.end(); ++it) {
+      if (it != v.begin()) std::cerr << ", ";
+      debug(*it);
+    }
+    std::cerr << "}";
+  } else {
+    std::cerr << v;
   }
-  std::cerr << "}";
-}
-template <typename T, typename U>
-void debug(const std::pair<T, U>& p) {
-  std::cerr << "{";
-  debug(p.first);
-  std::cerr << ", ";
-  debug(p.second);
-  std::cerr << "}";
 }
 template <typename T, typename... Ts>
 void debug(const T& value, const Ts&... args) {
