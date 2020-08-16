@@ -1,16 +1,47 @@
+#include <functional>
 #include <iostream>
+#include <queue>
+#include <type_traits>
 #include <vector>
 
-#if DEBUG
+template <typename T, typename _ = void>
+struct is_container : std::false_type {};
 template <typename T>
-void debug(const T& value) {
-  std::cerr << value;
+struct is_container<T, std::void_t<decltype(std::declval<T>().begin()),
+                                   decltype(std::declval<T>().end())>>
+    : std::true_type {};
+template <typename T, typename _ = void>
+struct is_pair : std::false_type {};
+template <typename T>
+struct is_pair<T, std::void_t<decltype(std::declval<T>().first),
+                              decltype(std::declval<T>().second)>>
+    : std::true_type {};
+template <typename T>
+void debug(const T& v) {
+  if constexpr (is_pair<T>::value) {
+    std::cerr << "{";
+    debug(v.first);
+    std::cerr << ", ";
+    debug(v.second);
+    std::cerr << "}";
+  } else if constexpr (is_container<T>::value) {
+    std::cerr << "{";
+    for (auto it = v.begin(); it != v.end(); ++it) {
+      if (it != v.begin()) std::cerr << ", ";
+      debug(*it);
+    }
+    std::cerr << "}";
+  } else {
+    std::cerr << v;
+  }
 }
 template <typename T, typename... Ts>
 void debug(const T& value, const Ts&... args) {
-  std::cerr << value << ", ";
+  debug(value);
+  std::cerr << ", ";
   debug(args...);
 }
+#if DEBUG
 #define dbg(...)                        \
   do {                                  \
     cerr << #__VA_ARGS__ << ": ";       \
@@ -53,6 +84,7 @@ void write_to_cout(const T& value, const Ts&... args) {
 
 #define all(x) (x).begin(), (x).end()
 #define rep(i, n) for (int i = 0; i < (int)(n); ++i)
+#define rrep(i, n) for (int i = (int)(n)-1; i >= 0; --i)
 
 template <typename T>
 std::istream& operator>>(std::istream& is, std::vector<T>& v) {
@@ -78,7 +110,14 @@ bool chmin(T& a, T b) {
   return false;
 }
 
+#include <boost/hana/functional/fix.hpp>
+auto Fix = boost::hana::fix;
+
 using ll = long long;
+
+template <typename T>
+using low_priority_queue =
+    std::priority_queue<T, std::vector<T>, std::greater<T>>;
 
 template <typename T>
 using V = std::vector<T>;
