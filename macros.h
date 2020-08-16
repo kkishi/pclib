@@ -33,14 +33,23 @@ void read_from_cin(T& value, Ts&... args) {
 
 template <typename T>
 void write_to_cout(const T& value) {
-  std::cout << value << '\n';
+  if constexpr (std::is_same<T, bool>::value) {
+    std::cout << (value ? "Yes" : "No");
+  } else {
+    std::cout << value;
+  }
 }
 template <typename T, typename... Ts>
 void write_to_cout(const T& value, const Ts&... args) {
-  std::cout << value << ' ';
+  write_to_cout(value);
+  std::cout << ' ';
   write_to_cout(args...);
 }
-#define wt(...) write_to_cout(__VA_ARGS__);
+#define wt(...)                 \
+  do {                          \
+    write_to_cout(__VA_ARGS__); \
+    cout << '\n';               \
+  } while (0)
 
 #define all(x) (x).begin(), (x).end()
 #define rep(i, n) for (int i = 0; i < (int)(n); ++i)
