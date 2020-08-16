@@ -92,8 +92,8 @@ std::istream& operator>>(std::istream& is, std::vector<T>& v) {
   return is;
 }
 
-template <typename T>
-bool chmax(T& a, T b) {
+template <typename T, typename U>
+bool chmax(T& a, U b) {
   if (a < b) {
     a = b;
     return true;
@@ -101,8 +101,8 @@ bool chmax(T& a, T b) {
   return false;
 }
 
-template <typename T>
-bool chmin(T& a, T b) {
+template <typename T, typename U>
+bool chmin(T& a, U b) {
   if (a > b) {
     a = b;
     return true;
