@@ -373,3 +373,19 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "edmonds_karp",
+    srcs = ["edmonds_karp.h"],
+    deps = [":graph"],
+)
+
+cc_test(
+    name = "edmonds_karp_test",
+    srcs = ["edmonds_karp_test.cc"],
+    deps = [
+        ":edmonds_karp",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
