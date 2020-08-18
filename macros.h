@@ -121,6 +121,11 @@ bool chmin(T& a, U b) {
   return false;
 }
 
+template <typename T>
+int sz(const T& v) {
+  return v.size();
+}
+
 #include <boost/hana/functional/fix.hpp>
 const auto& Fix = boost::hana::fix;
 
