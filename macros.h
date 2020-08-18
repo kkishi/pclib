@@ -4,18 +4,20 @@
 #include <type_traits>
 #include <vector>
 
-template <typename T, typename _ = void>
-struct is_container : std::false_type {};
+template <typename T, typename = void>
+struct is_iterable : std::false_type {};
 template <typename T>
-struct is_container<T, std::void_t<decltype(std::declval<T>().begin()),
-                                   decltype(std::declval<T>().end())>>
+struct is_iterable<T, std::void_t<decltype(std::begin(std::declval<T>())),
+                                  decltype(std::end(std::declval<T>()))>>
     : std::true_type {};
-template <typename T, typename _ = void>
+
+template <typename T, typename = void>
 struct is_pair : std::false_type {};
 template <typename T>
 struct is_pair<T, std::void_t<decltype(std::declval<T>().first),
                               decltype(std::declval<T>().second)>>
     : std::true_type {};
+
 template <typename T>
 void debug(const T& v) {
   if constexpr (is_pair<T>::value) {
@@ -24,7 +26,8 @@ void debug(const T& v) {
     std::cerr << ", ";
     debug(v.second);
     std::cerr << "}";
-  } else if constexpr (is_container<T>::value) {
+  } else if constexpr (is_iterable<T>::value &&
+                       !std::is_same<T, std::string>::value) {
     std::cerr << "{";
     for (auto it = v.begin(); it != v.end(); ++it) {
       if (it != v.begin()) std::cerr << ", ";
