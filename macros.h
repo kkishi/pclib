@@ -88,7 +88,13 @@ void write_to_cout(const T& value, const Ts&... args) {
   } while (0)
 
 #define all(x) (x).begin(), (x).end()
-#define rep(i, n) for (int i = 0; i < (int)(n); ++i)
+
+#define rep_dispatch(_1, _2, _3, name, ...) name
+#define rep3(i, a, b) for (int i = (int)(a); i < (int)(b); ++i)
+#define rep2(i, n) rep3(i, 0, n)
+#define rep1(n) rep2(_loop_variable_, n)
+#define rep(...) rep_dispatch(__VA_ARGS__, rep3, rep2, rep1)(__VA_ARGS__)
+
 #define rrep(i, n) for (int i = (int)(n)-1; i >= 0; --i)
 
 template <typename T>
