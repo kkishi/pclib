@@ -61,6 +61,8 @@ void read_from_cin(T& value, Ts&... args) {
 #define rd(type, ...) \
   type __VA_ARGS__;   \
   read_from_cin(__VA_ARGS__);
+#define ints(...) rd(int, __VA_ARGS__);
+#define strings(...) rd(string, __VA_ARGS__);
 
 template <typename T>
 void write_to_cout(const T& value) {
