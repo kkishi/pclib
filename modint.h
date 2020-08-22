@@ -2,6 +2,9 @@
 #include <ostream>
 #include <vector>
 
+#define BIN_OPS(F) F(+) F(-) F(*) F(/)
+#define CMP_OPS(F) F(!=) F(<) F(<=) F(==) F(>) F(>=)
+
 template <int Mod = 1000000007>
 class ModInt {
  public:
@@ -37,22 +40,14 @@ class ModInt {
     *this *= m.Inv();
     return *this;
   }
-#define DEFINE_BINARY_OPERATOR(op) \
+#define DEFINE(op) \
   ModInt operator op(const ModInt& m) const { return ModInt(*this) op## = m; }
-  DEFINE_BINARY_OPERATOR(+)
-  DEFINE_BINARY_OPERATOR(-)
-  DEFINE_BINARY_OPERATOR(*)
-  DEFINE_BINARY_OPERATOR(/)
-#undef DEFINE_BINARY_OPERATOR
-#define DEFINE_COMPARISON_OPERATOR(op) \
+  BIN_OPS(DEFINE)
+#undef DEFINE
+#define DEFINE(op) \
   bool operator op(const ModInt& m) const { return n_ op m.n_; }
-  DEFINE_COMPARISON_OPERATOR(!=)
-  DEFINE_COMPARISON_OPERATOR(<)
-  DEFINE_COMPARISON_OPERATOR(<=)
-  DEFINE_COMPARISON_OPERATOR(==)
-  DEFINE_COMPARISON_OPERATOR(>)
-  DEFINE_COMPARISON_OPERATOR(>=)
-#undef BDEFINE_COMPARISON_OPERATOR
+  CMP_OPS(DEFINE)
+#undef DEFINE
   ModInt operator-() const { return ModInt(-n_); }
   ModInt Pow(int n) const {
     if (n < 0) {
@@ -107,6 +102,15 @@ class ModInt {
 
 template <int Mod>
 std::vector<ModInt<Mod>> ModInt<Mod>::fact_;
+
+#define DEFINE(op)                                            \
+  template <int Mod, typename T>                              \
+  ModInt<Mod> operator op(const T& t, const ModInt<Mod>& m) { \
+    return ModInt<Mod>(t) op m;                               \
+  }
+BIN_OPS(DEFINE)
+CMP_OPS(DEFINE)
+#undef DEFINE
 
 template <int Mod>
 std::ostream& operator<<(std::ostream& out, const ModInt<Mod>& m) {

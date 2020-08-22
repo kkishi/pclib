@@ -73,8 +73,7 @@ TEST(modint, auto_conversion) {
   int b = 456;
   EXPECT_EQ(a + b, 579);
 
-  // TODO: Make this work. This sometimes causes a surprising compile error.
-  // EXPECT_EQ(b + a, 579);
+  EXPECT_EQ(b + a, 579);
 }
 
 TEST(modint, div) {
