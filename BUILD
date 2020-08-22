@@ -47,6 +47,18 @@ cc_test(
     ],
 )
 
+cc_test(
+    name = "modint_bench_test",
+    srcs = ["modint_bench_test.cc"],
+    tags = ["manual"],
+    deps = [
+        ":modint",
+        "@benchmark",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
 cc_library(
     name = "compress",
     srcs = ["compress.h"],
