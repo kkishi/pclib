@@ -8,9 +8,10 @@
 using testing::ElementsAre;
 
 TEST(rollinghash, simple) {
-  std::unordered_set<RollingHash> s;
+  using rhash = RollingHash<>;
+  std::unordered_set<rhash> s;
   for (auto& str : std::vector<std::string>{"abc", "def", "ghi"}) {
-    RollingHash h;
+    rhash h;
     for (char c : str) h.Add(c);
     s.insert(h);
   }

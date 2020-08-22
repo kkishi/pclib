@@ -6,6 +6,12 @@ git_repository(
     remote = "https://github.com/google/googletest",
 )
 
+git_repository(
+    name = "benchmark",
+    branch = "v1.5.1",
+    remote = "https://github.com/google/benchmark",
+)
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(

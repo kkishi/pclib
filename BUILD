@@ -127,6 +127,18 @@ cc_test(
     ],
 )
 
+cc_test(
+    name = "segment_tree_bench_test",
+    srcs = ["segment_tree_bench_test.cc"],
+    tags = ["manual"],
+    deps = [
+        ":segment_tree",
+        "@benchmark",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
 cc_library(
     name = "dual_segment_tree",
     srcs = ["dual_segment_tree.h"],
