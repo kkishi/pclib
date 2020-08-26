@@ -14,7 +14,7 @@ TEST(grid, simple) {
       grid.Set(i, j, v[i][j]);
     }
   }
-  std::optional<int> d = grid.Distance(0, 0, 2, 0);
-  ASSERT_TRUE(d);
-  EXPECT_EQ(*d, 6);
+  std::vector<std::vector<std::optional<int>>> d = grid.Distance(0, 0);
+  ASSERT_TRUE(d[2][0]);
+  EXPECT_EQ(*d[2][0], 6);
 }

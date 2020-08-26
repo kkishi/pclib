@@ -1,3 +1,4 @@
+#include <cassert>
 #include <map>
 #include <optional>
 #include <queue>
@@ -8,46 +9,49 @@ template <typename T>
 class Grid {
   template <typename U>
   using pqueue = std::priority_queue<U, std::vector<U>, std::greater<U>>;
+  using grid = std::vector<std::vector<std::optional<T>>>;
 
  public:
-  Grid(int height, int width) : grid_(height, std::vector<T>(width)) {}
-  void Set(int row, int col, T value) { grid_[row][col] = value; }
-  std::optional<T> Distance(int src_row, int src_col, int dst_row,
-                            int dst_col) {
-    if (grid_[src_row][src_col] < 0) {
-      return std::nullopt;
-    }
+  Grid(int r, int c)
+      : r_(r), c_(c), grid_(r, std::vector<std::optional<T>>(c)) {}
+  bool Inside(int r, int c) const {
+    return 0 <= r && r < r_ && 0 <= c && c < c_;
+  }
+  void Set(int r, int c, T v) {
+    assert(Inside(r, c));
+    grid_[r][c] = v;
+  }
+  grid Distance(int sr, int sc) const {
+    assert(Inside(sr, sc));
+    assert(grid_[sr][sc]);
     pqueue<std::tuple<T, int, int>> que;
-    que.push({0, src_row, src_col});
-    std::map<std::pair<int, int>, T> visited;
-    visited[{src_row, src_col}] = 0;
+    que.emplace(0, sr, sc);
+    grid dist(r_, std::vector<std::optional<T>>(c_));
+    dist[sr][sc] = 0;
     while (!que.empty()) {
-      auto [dist, row, col] = que.top();
+      auto [d, r, c] = que.top();
       que.pop();
-      if (row == dst_row && col == dst_col) {
-        return dist;
-      }
-      int dr[] = {1, -1, 0, 0};
-      int dc[] = {0, 0, 1, -1};
       for (int i = 0; i < 4; ++i) {
-        int nrow = row + dr[i];
-        int ncol = col + dc[i];
-        if (nrow < 0 || grid_.size() <= nrow || ncol < 0 ||
-            grid_[0].size() <= ncol || grid_[nrow][ncol] < 0) {
+        const int dr[] = {1, -1, 0, 0};
+        const int dc[] = {0, 0, 1, -1};
+        int nr = r + dr[i];
+        int nc = c + dc[i];
+        if (!Inside(nr, nc) || !grid_[nr][nc]) {
           continue;
         }
-        int ndist = dist + grid_[nrow][ncol];
-        const auto it = visited.find({nrow, ncol});
-        if (it != visited.end() && it->second <= ndist) {
+        T nd = d + *grid_[nr][nc];
+        std::optional<T>& di = dist[nr][nc];
+        if (di && *di <= nd) {
           continue;
         }
-        visited[{nrow, ncol}] = ndist;
-        que.push({ndist, nrow, ncol});
+        di = nd;
+        que.emplace(nd, nr, nc);
       }
     }
-    return std::nullopt;
+    return dist;
   }
 
  private:
-  std::vector<std::vector<T>> grid_;
+  const int r_, c_;
+  grid grid_;
 };
