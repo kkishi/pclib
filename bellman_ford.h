@@ -4,12 +4,11 @@
 #include "graph.h"
 
 template <typename T>
-bool BellmanFord(const Graph<T>& graph, int start, std::vector<T>& dist) {
-  std::size_t n = graph.NumVertices();
+std::pair<std::vector<T>, bool> BellmanFord(const Graph<T>& graph, int start) {
+  const std::size_t n = graph.NumVertices();
 
-  dist.resize(n);
   T inf = std::numeric_limits<T>::max();
-  fill(dist.begin(), dist.end(), inf);
+  std::vector<T> dist(n, inf);
   dist[start] = 0;
 
   for (std::size_t iter = 0; iter < n; ++iter) {
@@ -17,11 +16,11 @@ bool BellmanFord(const Graph<T>& graph, int start, std::vector<T>& dist) {
       if (dist[i] == inf) continue;
       for (const Edge<T>& e : graph.Edges(i)) {
         if (T d = dist[i] + e.weight; dist[e.to] > d) {
-          if (iter == n - 1) return false;
+          if (iter == n - 1) return {dist, false};
           dist[e.to] = d;
         }
       }
     }
   }
-  return true;
+  return {dist, true};
 }

@@ -12,9 +12,9 @@ TEST(bellman_ford, simple) {
   g.AddEdge(0, 2, 2);
   g.AddEdge(1, 2, 3);
 
-  std::vector<int> dist;
+  auto [dist, ok] = BellmanFord(g, 0);
 
-  EXPECT_TRUE(BellmanFord(g, 0, dist));
+  EXPECT_TRUE(ok);
   EXPECT_THAT(dist, ElementsAre(0, 1, 2));
 }
 
@@ -24,9 +24,9 @@ TEST(bellman_ford, negative_cycle) {
   g.AddEdge(1, 2, 1);
   g.AddEdge(2, 0, 1);
 
-  std::vector<int> dist;
+  auto [_, ok] = BellmanFord(g, 0);
 
-  EXPECT_FALSE(BellmanFord(g, 0, dist));
+  EXPECT_FALSE(ok);
 }
 
 TEST(bellman_ford, negative_noncycle) {
@@ -35,8 +35,8 @@ TEST(bellman_ford, negative_noncycle) {
   g.AddEdge(1, 2, 1);
   g.AddEdge(2, 0, 1);
 
-  std::vector<int> dist;
+  auto [dist, ok] = BellmanFord(g, 0);
 
-  EXPECT_TRUE(BellmanFord(g, 0, dist));
+  EXPECT_TRUE(ok);
   EXPECT_THAT(dist, ElementsAre(0, -2, -1));
 }
