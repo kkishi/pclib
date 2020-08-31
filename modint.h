@@ -97,11 +97,8 @@ class ModInt {
 
  private:
   long long n_;
-  static std::vector<ModInt> fact_;
+  inline static std::vector<ModInt> fact_;
 };
-
-template <int Mod>
-std::vector<ModInt<Mod>> ModInt<Mod>::fact_;
 
 #define DEFINE(op)                                            \
   template <int Mod, typename T>                              \
