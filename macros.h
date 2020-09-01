@@ -1,3 +1,4 @@
+#include <bitset>
 #include <functional>
 #include <iostream>
 #include <queue>
@@ -130,6 +131,11 @@ bool chmin(T& a, U b) {
 template <typename T>
 int sz(const T& v) {
   return v.size();
+}
+
+template <typename T>
+int popcount(T i) {
+  return std::bitset<std::numeric_limits<T>::digits>(i).count();
 }
 
 #include <boost/hana/functional/fix.hpp>
