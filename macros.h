@@ -19,7 +19,7 @@ struct is_pair<T, std::void_t<decltype(std::declval<T>().first),
     : std::true_type {};
 
 template <typename T>
-void debug(const T& v) {
+void debug(T&& v) {
   if constexpr (is_pair<T>::value) {
     std::cerr << "{";
     debug(v.first);
@@ -29,8 +29,8 @@ void debug(const T& v) {
   } else if constexpr (is_iterable<T>::value &&
                        !std::is_same<T, std::string>::value) {
     std::cerr << "{";
-    for (auto it = v.begin(); it != v.end(); ++it) {
-      if (it != v.begin()) std::cerr << ", ";
+    for (auto it = std::begin(v); it != std::end(v); ++it) {
+      if (it != std::begin(v)) std::cerr << ", ";
       debug(*it);
     }
     std::cerr << "}";
@@ -39,7 +39,7 @@ void debug(const T& v) {
   }
 }
 template <typename T, typename... Ts>
-void debug(const T& value, const Ts&... args) {
+void debug(T&& value, Ts&&... args) {
   debug(value);
   std::cerr << ", ";
   debug(args...);
