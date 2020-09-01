@@ -104,6 +104,12 @@ std::istream& operator>>(std::istream& is, std::vector<T>& v) {
 }
 
 template <typename T, typename U>
+std::istream& operator>>(std::istream& is, std::pair<T, U>& p) {
+  is >> p.first >> p.second;
+  return is;
+}
+
+template <typename T, typename U>
 bool chmax(T& a, U b) {
   if (a < b) {
     a = b;
