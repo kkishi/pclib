@@ -20,7 +20,7 @@ struct is_pair<T, std::void_t<decltype(std::declval<T>().first),
     : std::true_type {};
 
 template <typename T>
-void debug(T&& v) {
+void debug(const T& v) {
   if constexpr (is_pair<T>::value) {
     std::cerr << "{";
     debug(v.first);
@@ -40,7 +40,7 @@ void debug(T&& v) {
   }
 }
 template <typename T, typename... Ts>
-void debug(T&& value, Ts&&... args) {
+void debug(const T& value, const Ts&... args) {
   debug(value);
   std::cerr << ", ";
   debug(args...);
