@@ -132,6 +132,16 @@ bool chmin(T& a, U b) {
   return false;
 }
 
+template <typename T, typename U>
+T max(T a, U b) {
+  return a > b ? a : b;
+}
+
+template <typename T, typename U>
+T mix(T a, U b) {
+  return a < b ? a : b;
+}
+
 template <typename T>
 int sz(const T& v) {
   return v.size();
@@ -142,10 +152,8 @@ int popcount(T i) {
   return std::bitset<std::numeric_limits<T>::digits>(i).count();
 }
 
-#include <boost/hana/functional/fix.hpp>
-const auto& Fix = boost::hana::fix;
-
-using ll = long long;
+using i64 = std::int64_t;
+using i32 = std::int32_t;
 
 template <typename T>
 using low_priority_queue =
