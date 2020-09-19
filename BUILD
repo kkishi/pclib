@@ -413,3 +413,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "topological_sort",
+    srcs = ["topological_sort.h"],
+)
+
+cc_test(
+    name = "topological_sort_test",
+    srcs = ["topological_sort_test.cc"],
+    deps = [
+        ":topological_sort",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
