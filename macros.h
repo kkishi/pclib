@@ -133,12 +133,12 @@ bool chmin(T& a, U b) {
 }
 
 template <typename T, typename U>
-T max(T a, U b) {
+auto max(T a, U b) {
   return a > b ? a : b;
 }
 
 template <typename T, typename U>
-T mix(T a, U b) {
+auto min(T a, U b) {
   return a < b ? a : b;
 }
 
