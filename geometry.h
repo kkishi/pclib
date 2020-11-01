@@ -6,6 +6,9 @@ template <typename T>
 struct Vector {
   T x, y;
   T Norm() const { return std::sqrt(x * x + y * y); }
+  Vector Conj() const { return {x, -y}; }
+  T Real() const { return x; }
+  T Imag() const { return y; }
   Vector& operator+=(const Vector& v) {
     (*this).x += v.x;
     (*this).y += v.y;
@@ -24,6 +27,14 @@ struct Vector {
     return *this;
   }
   Vector operator*(T t) const { return Vector(*this) *= t; }
+  Vector& operator*=(const Vector& v) {
+    T r = x * v.x - y * v.y;
+    T i = x * v.y + y * v.x;
+    (*this).x = r;
+    (*this).y = i;
+    return *this;
+  }
+  Vector operator*(const Vector& v) const { return Vector(*this) *= v; }
   bool operator<(const Vector& v) const {
     if (x != v.x) {
       return x < v.x;
@@ -49,6 +60,11 @@ struct Vector {
 };
 
 template <typename T>
+T Cross(const Vector<T>& a, const Vector<T>& b) {
+  return (a.Conj() * b).Imag();
+}
+
+template <typename T>
 std::istream& operator>>(std::istream& is, Vector<T>& v) {
   is >> v.x >> v.y;
   return is;
@@ -59,6 +75,16 @@ std::ostream& operator<<(std::ostream& os, const Vector<T>& v) {
   os << "(" << v.x << "," << v.y << ")";
   return os;
 }
+
+template <typename T>
+struct LineSegment {
+  Vector<T> a, b;
+  bool Intersect(const LineSegment& l) {
+    const double eps = 1e-8;
+    return Cross(b - a, l.a - a) * Cross(b - a, l.b - a) < eps &&
+           Cross(l.b - l.a, a - l.a) * Cross(l.b - l.a, b - l.a) < eps;
+  }
+};
 
 template <typename T>
 struct Circle {
