@@ -152,6 +152,11 @@ int popcount(T i) {
   return std::bitset<std::numeric_limits<T>::digits>(i).count();
 }
 
+template <typename T>
+bool hasbit(T s, int i) {
+  return std::bitset<std::numeric_limits<T>::digits>(s)[i];
+}
+
 using i64 = std::int64_t;
 using i32 = std::int32_t;
 
