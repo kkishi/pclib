@@ -42,3 +42,63 @@ TEST(macros, debug) {
   debug(c);
   debug(v, s, p, m, a, c);
 }
+
+TEST(macros, popcount) {
+  EXPECT_EQ(popcount(std::numeric_limits<int64_t>::max()), 63);
+}
+
+TEST(macros, hasbit) {
+  EXPECT_TRUE(hasbit(7, 2));
+  EXPECT_FALSE(hasbit(7, 3));
+}
+
+TEST(macros, rep) {
+  {
+    int cnt = 0;
+    rep(3)++ cnt;
+    EXPECT_EQ(cnt, 3);
+  }
+  {
+    int cnt = 0;
+    rep(i, 3)++ cnt;
+    EXPECT_EQ(cnt, 3);
+  }
+  {
+    int cnt = 0;
+    rep(i, 1, 3)++ cnt;
+    EXPECT_EQ(cnt, 2);
+  }
+}
+
+TEST(macros, rrep) {
+  {
+    int cnt = 0;
+    rrep(3)++ cnt;
+    EXPECT_EQ(cnt, 3);
+  }
+  {
+    int cnt = 0;
+    rrep(i, 3)++ cnt;
+    EXPECT_EQ(cnt, 3);
+  }
+  {
+    int cnt = 0;
+    rrep(i, 1, 3)++ cnt;
+    EXPECT_EQ(cnt, 2);
+  }
+}
+
+TEST(macros, each) {
+  {
+    std::vector<int> v{1, 2, 3};
+    int sum = 0;
+    each(vi, v) sum += vi;
+    EXPECT_EQ(sum, 6);
+  }
+  {
+    std::map<int, int> m{{1, 2}, {3, 4}};
+    int sum = 0;
+    each(k, v, m) sum += k * v;
+    EXPECT_EQ(sum, 14);
+  }
+}

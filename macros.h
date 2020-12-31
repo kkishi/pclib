@@ -90,17 +90,21 @@ void write_to_cout(const T& value, const Ts&... args) {
 
 #define all(x) (x).begin(), (x).end()
 
-#define rep_dispatch(_1, _2, _3, name, ...) name
+#define dispatch(_1, _2, _3, name, ...) name
 
 #define rep3(i, a, b) for (int i = (int)(a); i < (int)(b); ++i)
 #define rep2(i, n) rep3(i, 0, n)
 #define rep1(n) rep2(_loop_variable_, n)
-#define rep(...) rep_dispatch(__VA_ARGS__, rep3, rep2, rep1)(__VA_ARGS__)
+#define rep(...) dispatch(__VA_ARGS__, rep3, rep2, rep1)(__VA_ARGS__)
 
 #define rrep3(i, a, b) for (int i = (int)(b)-1; i >= a; --i)
 #define rrep2(i, n) rrep3(i, 0, n)
 #define rrep1(n) rrep2(_loop_variable_, n)
-#define rrep(...) rep_dispatch(__VA_ARGS__, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define rrep(...) dispatch(__VA_ARGS__, rrep3, rrep2, rrep1)(__VA_ARGS__)
+
+#define each3(k, v, c) for (auto&& [k, v] : c)
+#define each2(e, c) for (auto&& e : c)
+#define each(...) dispatch(__VA_ARGS__, each3, each2)(__VA_ARGS__)
 
 template <typename T>
 std::istream& operator>>(std::istream& is, std::vector<T>& v) {
