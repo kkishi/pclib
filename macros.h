@@ -92,13 +92,26 @@ void write_to_cout(const T& value, const Ts&... args) {
 
 #define dispatch(_1, _2, _3, name, ...) name
 
-#define rep3(i, a, b) for (int i = (int)(a); i < (int)(b); ++i)
-#define rep2(i, n) rep3(i, 0, n)
+template <typename T, bool = std::is_unsigned<T>::value>
+struct maybe_make_signed : std::make_signed<T> {};
+template <typename T>
+struct maybe_make_signed<T, false> {
+  using type = T;
+};
+
+#define signed_type_of(x) maybe_make_signed<decltype(x)>::type
+
+#define rep3(i, a, b)                                           \
+  for (signed_type_of(a) i = static_cast<signed_type_of(a)>(a); \
+       i < static_cast<signed_type_of(a)>(b); ++i)
+#define rep2(i, n) rep3(i, std::int64_t(0), n)
 #define rep1(n) rep2(_loop_variable_, n)
 #define rep(...) dispatch(__VA_ARGS__, rep3, rep2, rep1)(__VA_ARGS__)
 
-#define rrep3(i, a, b) for (int i = (int)(b)-1; i >= a; --i)
-#define rrep2(i, n) rrep3(i, 0, n)
+#define rrep3(i, a, b)                                              \
+  for (signed_type_of(a) i = static_cast<signed_type_of(a)>(b) - 1; \
+       i >= static_cast<signed_type_of(a)>(a); --i)
+#define rrep2(i, n) rrep3(i, std::int64_t(0), n)
 #define rrep1(n) rrep2(_loop_variable_, n)
 #define rrep(...) dispatch(__VA_ARGS__, rrep3, rrep2, rrep1)(__VA_ARGS__)
 

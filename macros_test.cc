@@ -68,6 +68,14 @@ TEST(macros, rep) {
     rep(i, 1, 3)++ cnt;
     EXPECT_EQ(cnt, 2);
   }
+  {
+    {
+      int cnt = 0;
+      __int128_t a = std::numeric_limits<__int128_t>::max() - 1, b = a + 1;
+      rep(i, a, b)++ cnt;
+      EXPECT_EQ(cnt, 1);
+    }
+  }
 }
 
 TEST(macros, rrep) {
@@ -85,6 +93,11 @@ TEST(macros, rrep) {
     int cnt = 0;
     rrep(i, 1, 3)++ cnt;
     EXPECT_EQ(cnt, 2);
+  }
+  {
+    int cnt = 0;
+    rrep(i, uint(0), uint(1))++ cnt;
+    EXPECT_EQ(cnt, 1);
   }
 }
 
