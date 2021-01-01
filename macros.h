@@ -12,17 +12,17 @@ struct is_iterable<T, std::void_t<decltype(std::begin(std::declval<T>())),
                                   decltype(std::end(std::declval<T>()))>>
     : std::true_type {};
 
-template <template <typename...> class T, typename U>
-struct is_specialization_of : std::false_type {};
-template <template <typename...> class T, typename... Us>
-struct is_specialization_of<T, T<Us...>> : std::true_type {};
+template <typename T, typename = void>
+struct is_applicable : std::false_type {};
+template <typename T>
+struct is_applicable<T, std::void_t<decltype(std::tuple_size<T>::value)>>
+    : std::true_type {};
 
 template <typename T, typename... Ts>
 void debug(const T& value, const Ts&... args);
 template <typename T>
 void debug(const T& v) {
-  if constexpr (is_specialization_of<std::pair, T>::value ||
-                is_specialization_of<std::tuple, T>::value) {
+  if constexpr (is_applicable<T>::value) {
     std::cerr << "{";
     std::apply([](const auto&... args) { debug(args...); }, v);
     std::cerr << "}";
