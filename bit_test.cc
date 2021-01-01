@@ -12,3 +12,11 @@ TEST(bit, find) {
   }
   EXPECT_EQ(bit.Sum(7), 8 * 9 / 2);
 }
+
+TEST(bit, set) {
+  BIT<int> bit(10);
+  bit.Add(9, 3);
+  EXPECT_EQ(bit.Get(9), 3);
+  bit.Set(9, -2);
+  EXPECT_EQ(bit.Get(9), -2);
+}

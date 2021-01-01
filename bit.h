@@ -19,6 +19,7 @@ class BIT {
       i |= i + 1;
     }
   }
+  void Set(int i, T v) { Add(i, v - Get(i)); }
 
  private:
   std::vector<T> v_;
