@@ -26,6 +26,7 @@ TEST(macros, debug) {
   using std::pair;
   using std::set;
   using std::string;
+  using std::tuple;
   using std::vector;
   // Just confirm that it doesn't cause compilation err.r
   vector<int> v = {1, 2, 3};
@@ -34,11 +35,13 @@ TEST(macros, debug) {
   debug(s);
   pair<int, double> p = {1, 2.5};
   debug(p);
+  tuple<int, int, int> t = {4, 5, 6};
+  debug(t);
   map<int, string> m = {{42, "foo"}};
   debug(m);
   array<int, 4> a = {42};
   debug(a);
-  map<pair<set<int>, vector<pair<string, double>>>, array<string, 1>> c;
+  map<pair<set<int>, vector<pair<string, double>>>, array<tuple<string>, 1>> c;
   debug(c);
   debug(v, s, p, m, a, c);
 }
