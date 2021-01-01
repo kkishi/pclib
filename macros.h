@@ -105,26 +105,23 @@ void write_to_cout(const T& value, const Ts&... args) {
 
 #define dispatch(_1, _2, _3, name, ...) name
 
-template <typename T, bool = std::is_unsigned<T>::value>
-struct maybe_make_signed : std::make_signed<T> {};
-template <typename T>
-struct maybe_make_signed<T, false> {
-  using type = T;
-};
+#define as_i64(x)                                                          \
+  (                                                                        \
+      [] {                                                                 \
+        static_assert(                                                     \
+            std::is_integral<                                              \
+                typename std::remove_reference<decltype(x)>::type>::value, \
+            "rep macro supports std integral types only");                 \
+      },                                                                   \
+      static_cast<std::int64_t>(x))
 
-#define signed_type_of(x) maybe_make_signed<decltype(x)>::type
-
-#define rep3(i, a, b)                                           \
-  for (signed_type_of(a) i = static_cast<signed_type_of(a)>(a); \
-       i < static_cast<signed_type_of(a)>(b); ++i)
-#define rep2(i, n) rep3(i, std::int64_t(0), n)
+#define rep3(i, a, b) for (std::int64_t i = as_i64(a); i < as_i64(b); ++i)
+#define rep2(i, n) rep3(i, 0, n)
 #define rep1(n) rep2(_loop_variable_, n)
 #define rep(...) dispatch(__VA_ARGS__, rep3, rep2, rep1)(__VA_ARGS__)
 
-#define rrep3(i, a, b)                                              \
-  for (signed_type_of(a) i = static_cast<signed_type_of(a)>(b) - 1; \
-       i >= static_cast<signed_type_of(a)>(a); --i)
-#define rrep2(i, n) rrep3(i, std::int64_t(0), n)
+#define rrep3(i, a, b) for (std::int64_t i = as_i64(b) - 1; i >= as_i64(a); --i)
+#define rrep2(i, n) rrep3(i, 0, n)
 #define rrep1(n) rrep2(_loop_variable_, n)
 #define rrep(...) dispatch(__VA_ARGS__, rrep3, rrep2, rrep1)(__VA_ARGS__)
 
@@ -186,6 +183,13 @@ template <typename T>
 bool hasbit(T s, int i) {
   return std::bitset<std::numeric_limits<T>::digits>(s)[i];
 }
+
+template <typename T, typename U>
+auto div_ceil(T n, U d) {
+  return (n + d - 1) / d;
+}
+
+const std::int64_t big = std::numeric_limits<std::int64_t>::max() / 10;
 
 using i64 = std::int64_t;
 using i32 = std::int32_t;

@@ -50,13 +50,6 @@ TEST(macros, sfinae) {
   EXPECT_TRUE((is_applicable<tuple<int, int>>::value));
   EXPECT_FALSE(is_applicable<vector<int>>::value);
   EXPECT_TRUE((is_applicable<array<int, 1000000>>::value));
-
-  // Converts known unsigned types to their corresponding signed types, but
-  // leaves unknown types as is.
-  EXPECT_TRUE((is_same<maybe_make_signed<uint>::type, int>::value));
-  EXPECT_TRUE((is_same<maybe_make_signed<int>::type, int>::value));
-  EXPECT_TRUE(
-      (is_same<maybe_make_signed<__int128_t>::type, __int128_t>::value));
 }
 
 TEST(macros, debug) {
@@ -112,6 +105,9 @@ TEST(macros, rep) {
     rep(i, 1, 3)++ cnt;
     EXPECT_EQ(cnt, 2);
   }
+  // This test case causes a complication error as expected (used with a type
+  // that is not a known integral type).
+  /*
   {
     {
       int cnt = 0;
@@ -120,6 +116,7 @@ TEST(macros, rep) {
       EXPECT_EQ(cnt, 1);
     }
   }
+  */
 }
 
 TEST(macros, rrep) {
