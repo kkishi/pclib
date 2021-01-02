@@ -102,6 +102,8 @@ void write_to_cout(const T& value, const Ts&... args) {
   } while (0)
 
 #define all(x) (x).begin(), (x).end()
+#define eb(...) emplace_back(__VA_ARGS__)
+#define pb(...) push_back(__VA_ARGS__)
 
 #define dispatch(_1, _2, _3, name, ...) name
 
