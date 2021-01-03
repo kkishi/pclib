@@ -55,7 +55,7 @@ class TreeDP {
       auto [node, parent, parent_result] = s.top();
       s.pop();
 
-      const std::vector<int> edges = edges_[node];
+      const std::vector<int>& edges = edges_[node];
       std::vector<T>& dp = dp_[node];
 
       if (parent != -1) {

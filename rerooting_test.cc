@@ -26,7 +26,7 @@ TEST(rerooting, diameter) {
   EXPECT_EQ(tdp.Result()[2], 3);
 }
 
-using mint = ModInt<1000000000 + 7>;
+using mint = ModInt<>;
 
 struct DP {
   int size;
