@@ -18,7 +18,7 @@ std::pair<std::vector<int>, std::vector<int>> EulerTour(const Graph<T>& g) {
       for (const auto& e : g.Edges(u))
         if (in[e.to] == -1) st.push(e.to);
     } else {
-      out[u] = idx++;
+      out[u] = idx;
     }
   }
   return {in, out};
