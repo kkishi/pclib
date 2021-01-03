@@ -11,7 +11,7 @@ std::vector<std::vector<int>> StronglyConnectedComponents(
   std::vector<bool> visited(n);
   std::function<void(int)> dfs = [&](int u) {
     visited[u] = true;
-    for (const Edge<T>& e : graph.Edges(u)) {
+    for (const auto& e : graph.Edges(u)) {
       if (!visited[e.to]) {
         dfs(e.to);
       }
@@ -23,7 +23,7 @@ std::vector<std::vector<int>> StronglyConnectedComponents(
   }
   std::vector<std::vector<int>> rgraph(n);
   for (int u = 0; u < n; ++u) {
-    for (const Edge<T> e : graph.Edges(u)) {
+    for (const auto& e : graph.Edges(u)) {
       rgraph[e.to].push_back(u);
     }
   }

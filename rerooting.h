@@ -4,102 +4,109 @@
 #include <utility>
 #include <vector>
 
-template <typename T>
+#include "bidirected_graph.h"
+
+template <typename T, typename U>
 class TreeDP {
+  using Edge = typename BidirectedGraph<U>::Edge;
+  struct Weight {
+    Edge* edge;
+    T result;
+  };
+  using MetaEdge = typename BidirectedGraph<Weight>::Edge;
+
  public:
-  TreeDP(const std::vector<std::vector<int>>& edges, std::function<T(T, T)> op2,
-         std::function<T(T)> op1, T identity = T())
-      : edges_(edges), op2_(op2), op1_(op1), identity_(identity) {
-    dp_.resize(edges.size());
-    for (std::size_t i = 0; i < edges.size(); ++i) {
-      dp_[i].resize(edges[i].size());
+  TreeDP(const BidirectedGraph<U>& graph, std::function<T(T, T)> op2,
+         std::function<T(const Edge&, T)> op1, T identity = T())
+      : graph_(graph.NumVertices()), op2_(op2), op1_(op1), identity_(identity) {
+    for (int i = 0; i < graph.NumVertices(); ++i) {
+      for (const auto& e : graph.Edges(i)) {
+        if (e->from > e->to) continue;
+        auto [f, b] = graph_.AddEdge(e->from, e->to);
+        f.weight.edge = e.get();
+        b.weight.edge = e->back;
+      }
     }
-    result_.resize(edges.size());
   }
 
   void DFS(int root) {
     // Use a stack to avoid potential stack overflows.
-    std::stack<std::tuple<int, int, int, bool>> s;
-    s.push({root, -1, -1, true});
+    std::stack<std::tuple<MetaEdge*, bool>> s;
+    s.emplace(nullptr, true);
 
     while (!s.empty()) {
-      auto [node, parent, parent_index, enter] = s.top();
+      auto [in_edge, enter] = s.top();
       s.pop();
 
+      int node = in_edge ? in_edge->to : root;
       if (enter) {
-        s.push({node, parent, parent_index, false});
-        for (std::size_t i = 0; i < edges_[node].size(); ++i) {
-          if (int child = edges_[node][i]; child != parent) {
-            s.push({child, node, i, true});
+        s.emplace(in_edge, false);
+        for (const auto& e : graph_.Edges(node)) {
+          if (e->back != in_edge) {
+            s.emplace(e.get(), true);
           }
         }
       } else {
         T t = identity_;
-        for (std::size_t i = 0; i < edges_[node].size(); ++i) {
-          if (int child = edges_[node][i]; child != parent) {
-            t = op2_(t, dp_[node][i]);
+        for (const auto& e : graph_.Edges(node)) {
+          if (e->back != in_edge) {
+            t = op2_(t, e->weight.result);
           }
         }
-        if (parent != -1) {
-          dp_[parent][parent_index] = op1_(t);
+        if (in_edge) {
+          in_edge->weight.result = op1_(*in_edge->weight.edge, t);
         }
       }
     }
   }
 
-  void Rerooting(int root) {
-    std::stack<std::tuple<int, int, T>> s;
-    s.push({root, -1, identity_});
+  std::vector<T> Rerooting(int root) {
+    std::vector<T> result(graph_.NumVertices());
+
+    std::stack<std::tuple<const MetaEdge*, T>> s;
+    s.emplace(nullptr, identity_);
 
     while (!s.empty()) {
-      auto [node, parent, parent_result] = s.top();
+      auto [in_edge, in_result] = s.top();
       s.pop();
 
-      const std::vector<int>& edges = edges_[node];
-      std::vector<T>& dp = dp_[node];
-
-      if (parent != -1) {
-        for (std::size_t i = 0; i < edges.size(); ++i) {
-          if (edges[i] == parent) {
-            dp[i] = parent_result;
-          }
-        }
+      if (in_edge) {
+        in_edge->back->weight.result = in_result;
       }
+
+      int node = in_edge ? in_edge->to : root;
+      const auto& edges = graph_.Edges(node);
 
       // lower[i] = op2_(dp[i - 1], op2_(dp[i - 2], ...))
       std::vector<T> lower(edges.size() + 1);
       lower[0] = identity_;
       for (std::size_t i = 0; i < edges.size(); ++i) {
-        lower[i + 1] = op2_(lower[i], dp[i]);
+        lower[i + 1] = op2_(lower[i], edges[i]->weight.result);
       }
 
       // higher[i] = op2_(dp[i], op2_(dp[i + 1], ...))
       std::vector<T> higher(edges.size() + 1);
       higher[edges.size()] = identity_;
       for (std::size_t i = edges.size() - 1; i < edges.size(); --i) {
-        higher[i] = op2_(higher[i + 1], dp[i]);
+        higher[i] = op2_(higher[i + 1], edges[i]->weight.result);
       }
 
-      result_[node] = op1_(higher[0]);
+      result[node] = higher[0];
 
       for (std::size_t i = 0; i < edges.size(); ++i) {
-        if (int child = edges[i]; child != parent) {
-          s.push({child, node, op1_(op2_(lower[i], higher[i + 1]))});
+        if (const auto& e = edges[i]; e->back != in_edge) {
+          s.emplace(e.get(),
+                    op1_(*e->back->weight.edge, op2_(lower[i], higher[i + 1])));
         }
       }
     }
+    return result;
   }
 
-  const std::vector<std::vector<T>>& DP() const { return dp_; }
-  const std::vector<T>& Result() const { return result_; }
-
  private:
-  std::vector<std::vector<int>> edges_;
+  BidirectedGraph<Weight> graph_;
 
   const std::function<T(T, T)> op2_;
-  const std::function<T(T)> op1_;
+  const std::function<T(const Edge&, T)> op1_;
   const T identity_;
-
-  std::vector<std::vector<T>> dp_;
-  std::vector<T> result_;
 };

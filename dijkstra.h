@@ -24,7 +24,7 @@ std::vector<std::optional<T>> Dijkstra(const Graph<T>& graph, int start) {
   while (!que.empty()) {
     auto [c, u] = que.top();
     que.pop();
-    for (const Edge<T>& e : graph.Edges(u)) {
+    for (const auto& e : graph.Edges(u)) {
       push(e.to, c + e.weight);
     }
   }

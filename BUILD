@@ -216,6 +216,9 @@ cc_test(
 cc_library(
     name = "rerooting",
     srcs = ["rerooting.h"],
+    deps = [
+        ":bidirected_graph",
+    ],
 )
 
 cc_test(
@@ -316,6 +319,21 @@ cc_test(
     srcs = ["graph_test.cc"],
     deps = [
         ":graph",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "bidirected_graph",
+    srcs = ["bidirected_graph.h"],
+)
+
+cc_test(
+    name = "bidirected_graph_test",
+    srcs = ["bidirected_graph_test.cc"],
+    deps = [
+        ":bidirected_graph",
         "@gtest",
         "@gtest//:gtest_main",
     ],

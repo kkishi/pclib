@@ -5,25 +5,19 @@
 
 using std::vector;
 
-int Max(int a, int b) { return std::max(a, b); }
-int Increment(int v) { return v + 1; }
-
 TEST(rerooting, diameter) {
-  vector<vector<int>> edges(3);
-  edges[0].push_back(1);
-  edges[1].push_back(0);
-  edges[0].push_back(2);
-  edges[2].push_back(0);
+  BidirectedGraph<int> g(3);
+  g.AddEdge(0, 1, 1);
+  g.AddEdge(0, 2, 2);
 
-  TreeDP<int> tdp(edges, Max, Increment);
+  TreeDP<int, int> tdp(
+      g, [](int a, int b) { return std::max(a, b); },
+      [](const auto& e, int v) { return e.weight + v; });
   tdp.DFS(0);
-  EXPECT_EQ(tdp.DP()[0][0], 1);
-  EXPECT_EQ(tdp.DP()[0][1], 1);
-
-  tdp.Rerooting(0);
-  EXPECT_EQ(tdp.Result()[0], 2);
-  EXPECT_EQ(tdp.Result()[1], 3);
-  EXPECT_EQ(tdp.Result()[2], 3);
+  vector<int> result = tdp.Rerooting(0);
+  EXPECT_EQ(result[0], 2);
+  EXPECT_EQ(result[1], 3);
+  EXPECT_EQ(result[2], 3);
 }
 
 using mint = ModInt<>;
@@ -45,25 +39,21 @@ DP Calc(DP x) {
 
 // https://atcoder.jp/contests/abc160/tasks/abc160_f
 TEST(rerooting, distributing_integers) {
-  vector<vector<int>> edges(5);
-  auto add_edge = [&edges](int a, int b) {
-    --a, --b;
-    edges[a].push_back(b);
-    edges[b].push_back(a);
-  };
+  BidirectedGraph<int> g(5);
+  auto add_edge = [&g](int a, int b) { g.AddEdge(a - 1, b - 1); };
   add_edge(1, 2);
   add_edge(2, 3);
   add_edge(3, 4);
   add_edge(3, 5);
 
-  TreeDP<DP> tdp(edges, Combine, Calc, {0, 1, 1});
+  TreeDP<DP, int> tdp(g, Combine, [](const auto&, DP x) { return Calc(x); },
+                      {0, 1, 1});
   tdp.DFS(0);
-  tdp.Rerooting(0);
+  vector<DP> result = tdp.Rerooting(0);
 
-  const vector<DP>& result = tdp.Result();
-  EXPECT_EQ(result[0].cnt, 2);
-  EXPECT_EQ(result[1].cnt, 8);
-  EXPECT_EQ(result[2].cnt, 12);
-  EXPECT_EQ(result[3].cnt, 3);
-  EXPECT_EQ(result[4].cnt, 3);
+  EXPECT_EQ(Calc(result[0]).cnt, 2);
+  EXPECT_EQ(Calc(result[1]).cnt, 8);
+  EXPECT_EQ(Calc(result[2]).cnt, 12);
+  EXPECT_EQ(Calc(result[3]).cnt, 3);
+  EXPECT_EQ(Calc(result[4]).cnt, 3);
 }
