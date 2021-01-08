@@ -6,8 +6,11 @@
 
 #include "bidirected_graph.h"
 
+namespace pclib {
+namespace internal {
+
 template <typename T, typename U>
-class TreeDP {
+class DP {
   using Edge = typename BidirectedGraph<U>::Edge;
   struct Weight {
     Edge* edge;
@@ -16,8 +19,8 @@ class TreeDP {
   using MetaEdge = typename BidirectedGraph<Weight>::Edge;
 
  public:
-  TreeDP(const BidirectedGraph<U>& graph, std::function<T(T, T)> op2,
-         std::function<T(const Edge&, T)> op1, T identity = T())
+  DP(const BidirectedGraph<U>& graph, std::function<T(T, T)> op2,
+     std::function<T(const Edge&, T)> op1, T identity = T())
       : graph_(graph.NumVertices()), op2_(op2), op1_(op1), identity_(identity) {
     for (int i = 0; i < graph.NumVertices(); ++i) {
       for (const auto& e : graph.Edges(i)) {
@@ -29,7 +32,7 @@ class TreeDP {
     }
   }
 
-  void DFS(int root) {
+  void Dfs(int root) {
     // Use a stack to avoid potential stack overflows.
     std::stack<std::tuple<MetaEdge*, bool>> s;
     s.emplace(nullptr, true);
@@ -103,10 +106,22 @@ class TreeDP {
     return result;
   }
 
- private:
   BidirectedGraph<Weight> graph_;
 
   const std::function<T(T, T)> op2_;
   const std::function<T(const Edge&, T)> op1_;
   const T identity_;
 };
+
+}  // namespace internal
+}  // namespace pclib
+
+template <typename T, typename U>
+std::vector<T> Rerooting(
+    const BidirectedGraph<U>& graph, std::function<T(T, T)> op2,
+    std::function<T(const typename BidirectedGraph<U>::Edge&, T)> op1,
+    T identity = T()) {
+  pclib::internal::DP dp(graph, op2, op1, identity);
+  dp.Dfs(0);
+  return dp.Rerooting(0);
+}

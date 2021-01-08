@@ -10,11 +10,9 @@ TEST(rerooting, diameter) {
   g.AddEdge(0, 1, 1);
   g.AddEdge(0, 2, 2);
 
-  TreeDP<int, int> tdp(
+  vector<int> result = Rerooting<int, int>(
       g, [](int a, int b) { return std::max(a, b); },
       [](const auto& e, int v) { return e.weight + v; });
-  tdp.DFS(0);
-  vector<int> result = tdp.Rerooting(0);
   EXPECT_EQ(result[0], 2);
   EXPECT_EQ(result[1], 3);
   EXPECT_EQ(result[2], 3);
@@ -46,10 +44,8 @@ TEST(rerooting, distributing_integers) {
   add_edge(3, 4);
   add_edge(3, 5);
 
-  TreeDP<DP, int> tdp(g, Combine, [](const auto&, DP x) { return Calc(x); },
-                      {0, 1, 1});
-  tdp.DFS(0);
-  vector<DP> result = tdp.Rerooting(0);
+  vector<DP> result = Rerooting<DP, int>(
+      g, Combine, [](const auto&, DP x) { return Calc(x); }, {0, 1, 1});
 
   EXPECT_EQ(Calc(result[0]).cnt, 2);
   EXPECT_EQ(Calc(result[1]).cnt, 8);
