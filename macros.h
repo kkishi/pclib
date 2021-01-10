@@ -172,12 +172,12 @@ auto min(T a, U b) {
 }
 
 template <typename T>
-int sz(const T& v) {
-  return v.size();
+std::int64_t sz(const T& v) {
+  return std::size(v);
 }
 
 template <typename T>
-int popcount(T i) {
+std::int64_t popcount(T i) {
   return std::bitset<std::numeric_limits<T>::digits>(i).count();
 }
 
