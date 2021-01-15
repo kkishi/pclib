@@ -1,8 +1,8 @@
 #include <random>
 
-class Random {
+class Rand {
  public:
-  Random() : generator_(device_()) {}
+  Rand() : generator_(device_()) {}
   int64_t Int(int64_t a, int64_t b) {
     return std::uniform_int_distribution<int64_t>(a, b)(generator_);
   }

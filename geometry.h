@@ -4,11 +4,12 @@
 
 template <typename T>
 struct Vector {
-  T x, y;
+  T x = T(), y = T();
   T Norm() const { return std::sqrt(x * x + y * y); }
   Vector Conj() const { return {x, -y}; }
   T Real() const { return x; }
   T Imag() const { return y; }
+  T Arg() const { return std::atan2(Imag(), Real()); }
   Vector& operator+=(const Vector& v) {
     (*this).x += v.x;
     (*this).y += v.y;
@@ -35,6 +36,16 @@ struct Vector {
     return *this;
   }
   Vector operator*(const Vector& v) const { return Vector(*this) *= v; }
+  Vector& operator/=(const Vector& v) {
+    T q = v.x * v.x + v.y * v.y;
+    assert(q != 0);
+    T r = x * v.x + y * v.y;
+    T i = x * v.y - y * v.x;
+    (*this).x = r;
+    (*this).y = i;
+    return *this;
+  }
+  Vector operator/(const Vector& v) const { return Vector(*this) /= v; }
   bool operator<(const Vector& v) const {
     if (x != v.x) {
       return x < v.x;
