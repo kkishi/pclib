@@ -446,3 +446,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "i128",
+    srcs = ["i128.h"],
+)
+
+cc_test(
+    name = "i128_test",
+    srcs = ["i128_test.cc"],
+    deps = [
+        ":i128",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
