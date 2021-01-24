@@ -461,3 +461,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "matrix",
+    srcs = ["matrix.h"],
+)
+
+cc_test(
+    name = "matrix_test",
+    srcs = ["matrix_test.cc"],
+    deps = [
+        ":matrix",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
