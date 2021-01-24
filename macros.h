@@ -196,7 +196,7 @@ bool even(T x) {
   return x % 2 == 0;
 }
 
-const std::int64_t big = std::numeric_limits<std::int64_t>::max() / 10;
+const std::int64_t big = std::numeric_limits<std::int64_t>::max() / 4;
 
 using i64 = std::int64_t;
 using i32 = std::int32_t;
