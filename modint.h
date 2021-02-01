@@ -65,10 +65,17 @@ class ModInt {
     return a;
   }
   ModInt Inv() const {
-    // Compute the inverse based on Fermat's little theorem. Note that this only
-    // works when n_ and Mod are relatively prime. The theorem says that
-    // n_^(Mod-1) = 1 (mod Mod). So we can compute n_^(Mod-2).
-    return Pow(Mod - 2);
+    assert(n_ != 0);
+    if (n_ > 1000000) {
+      // Compute the inverse based on Fermat's little theorem. Note that this
+      // only works when n_ and Mod are relatively prime. The theorem says that
+      // n_^(Mod-1) = 1 (mod Mod). So we can compute n_^(Mod-2).
+      return Pow(Mod - 2);
+    }
+    for (int i = inv_.size(); i <= n_; ++i) {
+      inv_.push_back(i <= 1 ? i : (Mod / i * -inv_[Mod % i]));
+    }
+    return inv_[n_];
   }
   long long value() const { return n_; }
 
@@ -98,6 +105,7 @@ class ModInt {
  private:
   long long n_;
   inline static std::vector<ModInt> fact_;
+  inline static std::vector<ModInt> inv_;
 };
 
 #define DEFINE(op)                                            \
