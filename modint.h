@@ -65,10 +65,19 @@ class ModInt {
     return a;
   }
   ModInt Inv() const {
-    // Compute the inverse based on Fermat's little theorem. Note that this only
-    // works when n_ and Mod are relatively prime. The theorem says that
-    // n_^(Mod-1) = 1 (mod Mod). So we can compute n_^(Mod-2).
-    return Pow(Mod - 2);
+#if DEBUG
+    assert(n_ != 0);
+#endif
+    if (n_ > kMaxCacheSize) {
+      // Compute the inverse based on Fermat's little theorem. Note that this
+      // only works when n_ and Mod are relatively prime. The theorem says that
+      // n_^(Mod-1) = 1 (mod Mod). So we can compute n_^(Mod-2).
+      return Pow(Mod - 2);
+    }
+    for (int i = inv_.size(); i <= n_; ++i) {
+      inv_.push_back(i <= 1 ? i : (Mod / i * -inv_[Mod % i]));
+    }
+    return inv_[n_];
   }
   long long value() const { return n_; }
 
@@ -78,14 +87,20 @@ class ModInt {
     }
     return fact_[n];
   }
-  static ModInt Comb(int n, int k) { return Perm(n, k) / Fact(k); }
-  static ModInt CombSlow(int n, int k) { return PermSlow(n, k) / Fact(k); }
+  static ModInt InvFact(int n) {
+    for (int i = inv_fact_.size(); i <= n; ++i) {
+      inv_fact_.push_back(i == 0 ? 1 : inv_fact_.back() / i);
+    }
+    return inv_fact_[n];
+  }
+  static ModInt Comb(int n, int k) { return Perm(n, k) * InvFact(k); }
+  static ModInt CombSlow(int n, int k) { return PermSlow(n, k) * InvFact(k); }
   static ModInt Perm(int n, int k) {
 #if DEBUG
-    assert(n <= 1000000 &&
+    assert(n <= kMaxCacheSize &&
            "n is too large. If k is small, consider using PermSlow.");
 #endif
-    return Fact(n) / Fact(n - k);
+    return Fact(n) * InvFact(n - k);
   }
   static ModInt PermSlow(int n, int k) {
     ModInt p = 1;
@@ -98,6 +113,9 @@ class ModInt {
  private:
   long long n_;
   inline static std::vector<ModInt> fact_;
+  inline static std::vector<ModInt> inv_fact_;
+  inline static std::vector<ModInt> inv_;
+  static const int kMaxCacheSize = 1000000;
 };
 
 #define DEFINE(op)                                            \
