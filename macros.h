@@ -85,6 +85,12 @@ template <typename T>
 void write_to_cout(const T& value) {
   if constexpr (std::is_same<T, bool>::value) {
     std::cout << (value ? "Yes" : "No");
+  } else if constexpr (is_iterable<T>::value &&
+                       !std::is_same<T, std::string>::value) {
+    for (auto it = std::begin(value); it != std::end(value); ++it) {
+      if (it != std::begin(value)) std::cout << " ";
+      std::cout << *it;
+    }
   } else {
     std::cout << value;
   }
