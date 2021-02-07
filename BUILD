@@ -95,15 +95,15 @@ cc_library(
 )
 
 cc_library(
-    name = "factorize",
-    srcs = ["factorize.h"],
+    name = "factors",
+    srcs = ["factors.h"],
 )
 
 cc_test(
-    name = "factorize_test",
-    srcs = ["factorize_test.cc"],
+    name = "factors_test",
+    srcs = ["factors_test.cc"],
     deps = [
-        ":factorize",
+        ":factors",
         "@gtest",
         "@gtest//:gtest_main",
     ],
@@ -490,6 +490,24 @@ cc_test(
     srcs = ["int_sqrt_test.cc"],
     deps = [
         ":int_sqrt",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "divisors",
+    srcs = ["divisors.h"],
+    deps = [
+        ":binary_search",
+    ],
+)
+
+cc_test(
+    name = "divisors_test",
+    srcs = ["divisors_test.cc"],
+    deps = [
+        ":divisors",
         "@gtest",
         "@gtest//:gtest_main",
     ],

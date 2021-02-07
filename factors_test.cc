@@ -1,5 +1,4 @@
-#include "factorize.h"
-
+#include "factors.h"
 #include "gtest/gtest.h"
 
 TEST(factorize, factors) {
@@ -15,8 +14,4 @@ TEST(factorize, factors) {
                                     {13, 1},
                                     {17, 1},
                                     {19, 1}}));
-}
-
-TEST(factorize, divisers) {
-  EXPECT_EQ(Divisors(6), (std::vector<int>{1, 2, 3, 6}));
 }
