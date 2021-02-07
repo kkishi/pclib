@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-TEST(factorize, simple) {
+TEST(factorize, factorize) {
   EXPECT_EQ(Factorize(1), (std::map<int, int>{}));
   EXPECT_EQ(Factorize(2), (std::map<int, int>{{2, 1}}));
   EXPECT_EQ(Factorize(18), (std::map<int, int>{{2, 1}, {3, 2}}));
@@ -15,4 +15,8 @@ TEST(factorize, simple) {
                                       {13, 1},
                                       {17, 1},
                                       {19, 1}}));
+}
+
+TEST(factorize, divisers) {
+  EXPECT_EQ(Divisors(6), (std::vector<int>{1, 2, 3, 6}));
 }
