@@ -1,4 +1,4 @@
-#include "disjointset.h"
+#include "disjoint_set.h"
 
 #include "gtest/gtest.h"
 

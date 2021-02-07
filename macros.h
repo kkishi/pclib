@@ -85,6 +85,12 @@ template <typename T>
 void write_to_cout(const T& value) {
   if constexpr (std::is_same<T, bool>::value) {
     std::cout << (value ? "Yes" : "No");
+  } else if constexpr (is_iterable<T>::value &&
+                       !std::is_same<T, std::string>::value) {
+    for (auto it = std::begin(value); it != std::end(value); ++it) {
+      if (it != std::begin(value)) std::cout << " ";
+      std::cout << *it;
+    }
   } else {
     std::cout << value;
   }
@@ -187,7 +193,26 @@ bool hasbit(T s, int i) {
 }
 
 template <typename T, typename U>
+auto div_floor(T n, U d) {
+  if (d < 0) {
+    n = -n;
+    d = -d;
+  }
+  if (n < 0) {
+    return -((-n + d - 1) / d);
+  }
+  return n / d;
+};
+
+template <typename T, typename U>
 auto div_ceil(T n, U d) {
+  if (d < 0) {
+    n = -n;
+    d = -d;
+  }
+  if (n < 0) {
+    return -(-n / d);
+  }
   return (n + d - 1) / d;
 }
 

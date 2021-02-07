@@ -156,3 +156,25 @@ TEST(macros, each) {
     EXPECT_EQ(sum, 14);
   }
 }
+
+// Floored division
+// https://en.wikipedia.org/wiki/Modulo_operation
+TEST(macros, div) {
+  EXPECT_EQ(div_floor(10, 3), 3);
+  EXPECT_EQ(div_floor(9, 3), 3);
+
+  EXPECT_EQ(div_floor(-10, 3), -4);
+  EXPECT_EQ(div_floor(-9, 3), -3);
+
+  EXPECT_EQ(div_floor(10, -3), -4);
+  EXPECT_EQ(div_floor(9, -3), -3);
+
+  EXPECT_EQ(div_ceil(10, 3), 4);
+  EXPECT_EQ(div_ceil(9, 3), 3);
+
+  EXPECT_EQ(div_ceil(-10, 3), -3);
+  EXPECT_EQ(div_ceil(-9, 3), -3);
+
+  EXPECT_EQ(div_ceil(10, -3), -3);
+  EXPECT_EQ(div_ceil(9, -3), -3);
+}

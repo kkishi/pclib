@@ -95,30 +95,30 @@ cc_library(
 )
 
 cc_library(
-    name = "factorize",
-    srcs = ["factorize.h"],
+    name = "factors",
+    srcs = ["factors.h"],
 )
 
 cc_test(
-    name = "factorize_test",
-    srcs = ["factorize_test.cc"],
+    name = "factors_test",
+    srcs = ["factors_test.cc"],
     deps = [
-        ":factorize",
+        ":factors",
         "@gtest",
         "@gtest//:gtest_main",
     ],
 )
 
 cc_library(
-    name = "prime",
-    srcs = ["prime.h"],
+    name = "primes",
+    srcs = ["primes.h"],
 )
 
 cc_test(
-    name = "prime_test",
-    srcs = ["prime_test.cc"],
+    name = "primes_test",
+    srcs = ["primes_test.cc"],
     deps = [
-        ":prime",
+        ":primes",
         "@gtest",
         "@gtest//:gtest_main",
     ],
@@ -184,15 +184,15 @@ cc_test(
 )
 
 cc_library(
-    name = "disjointset",
-    srcs = ["disjointset.h"],
+    name = "disjoint_set",
+    srcs = ["disjoint_set.h"],
 )
 
 cc_test(
-    name = "disjointset_test",
-    srcs = ["disjointset_test.cc"],
+    name = "disjoint_set_test",
+    srcs = ["disjoint_set_test.cc"],
     deps = [
-        ":disjointset",
+        ":disjoint_set",
         "@gtest",
         "@gtest//:gtest_main",
     ],
@@ -472,6 +472,42 @@ cc_test(
     srcs = ["matrix_test.cc"],
     deps = [
         ":matrix",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "int_sqrt",
+    srcs = ["int_sqrt.h"],
+    deps = [
+        ":binary_search",
+    ],
+)
+
+cc_test(
+    name = "int_sqrt_test",
+    srcs = ["int_sqrt_test.cc"],
+    deps = [
+        ":int_sqrt",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "divisors",
+    srcs = ["divisors.h"],
+    deps = [
+        ":binary_search",
+    ],
+)
+
+cc_test(
+    name = "divisors_test",
+    srcs = ["divisors_test.cc"],
+    deps = [
+        ":divisors",
         "@gtest",
         "@gtest//:gtest_main",
     ],
