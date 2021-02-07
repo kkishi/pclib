@@ -476,3 +476,21 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "int_sqrt",
+    srcs = ["int_sqrt.h"],
+    deps = [
+        ":binary_search",
+    ],
+)
+
+cc_test(
+    name = "int_sqrt_test",
+    srcs = ["int_sqrt_test.cc"],
+    deps = [
+        ":int_sqrt",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
