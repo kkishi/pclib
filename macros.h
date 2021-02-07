@@ -193,7 +193,26 @@ bool hasbit(T s, int i) {
 }
 
 template <typename T, typename U>
+auto div_floor(T n, U d) {
+  if (d < 0) {
+    n = -n;
+    d = -d;
+  }
+  if (n < 0) {
+    return -((-n + d - 1) / d);
+  }
+  return n / d;
+};
+
+template <typename T, typename U>
 auto div_ceil(T n, U d) {
+  if (d < 0) {
+    n = -n;
+    d = -d;
+  }
+  if (n < 0) {
+    return -(-n / d);
+  }
   return (n + d - 1) / d;
 }
 
