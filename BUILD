@@ -110,15 +110,15 @@ cc_test(
 )
 
 cc_library(
-    name = "prime",
-    srcs = ["prime.h"],
+    name = "primes",
+    srcs = ["primes.h"],
 )
 
 cc_test(
-    name = "prime_test",
-    srcs = ["prime_test.cc"],
+    name = "primes_test",
+    srcs = ["primes_test.cc"],
     deps = [
-        ":prime",
+        ":primes",
         "@gtest",
         "@gtest//:gtest_main",
     ],
@@ -184,15 +184,15 @@ cc_test(
 )
 
 cc_library(
-    name = "disjointset",
-    srcs = ["disjointset.h"],
+    name = "disjoint_set",
+    srcs = ["disjoint_set.h"],
 )
 
 cc_test(
-    name = "disjointset_test",
-    srcs = ["disjointset_test.cc"],
+    name = "disjoint_set_test",
+    srcs = ["disjoint_set_test.cc"],
     deps = [
-        ":disjointset",
+        ":disjoint_set",
         "@gtest",
         "@gtest//:gtest_main",
     ],

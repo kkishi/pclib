@@ -1,4 +1,4 @@
-#include "prime.h"
+#include "primes.h"
 
 #include "gtest/gtest.h"
 
