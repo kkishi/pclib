@@ -2,11 +2,11 @@
 
 #include "gtest/gtest.h"
 
-TEST(factorize, factorize) {
-  EXPECT_EQ(Factorize(1), (std::map<int, int>{}));
-  EXPECT_EQ(Factorize(2), (std::map<int, int>{{2, 1}}));
-  EXPECT_EQ(Factorize(18), (std::map<int, int>{{2, 1}, {3, 2}}));
-  EXPECT_EQ(Factorize<long long>(2432902008176640000L),
+TEST(factorize, factors) {
+  EXPECT_EQ(Factors(1), (std::map<int, int>{}));
+  EXPECT_EQ(Factors(2), (std::map<int, int>{{2, 1}}));
+  EXPECT_EQ(Factors(18), (std::map<int, int>{{2, 1}, {3, 2}}));
+  EXPECT_EQ(Factors<long long>(2432902008176640000L),
             (std::map<long long, int>{{2, 18},
                                       {3, 8},
                                       {5, 4},
