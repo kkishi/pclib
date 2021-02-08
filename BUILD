@@ -512,3 +512,21 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "lca",
+    srcs = ["lca.h"],
+    deps = [
+        ":graph",
+    ],
+)
+
+cc_test(
+    name = "lca_test",
+    srcs = ["lca_test.cc"],
+    deps = [
+        ":lca",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
