@@ -1,11 +1,12 @@
+#include <cassert>
 #include <vector>
 
 #include "graph.h"
 
 template <typename T>
-class LCA {
+class RootedTree {
  public:
-  LCA(const Graph<T>& graph, int root = 0) : graph_(graph) {
+  RootedTree(const Graph<T>& graph, int root = 0) : graph_(graph) {
     const int n = graph.NumVertices();
 
     int p = 0;
@@ -20,22 +21,25 @@ class LCA {
       p.resize(n);
     }
     depth_.resize(n);
+    ascending_edge_.resize(n);
 
     Dfs(root, -1, 0);
 
     for (int i = 1; i < p; ++i) {
       for (int j = 0; j < n; ++j) {
-        parent_[i][j] = parent_[i - 1][parent_[i - 1][j]];
+        int k = parent_[i - 1][j];
+        if (k != -1) k = parent_[i - 1][k];
+        parent_[i][j] = k;
       }
     }
   }
 
-  int Of(int u, int v) const {
-    if (depth_[u] > depth_[v]) {
+  int LCA(int u, int v) const {
+    if (Depth(u) > Depth(v)) {
       std::swap(u, v);
     }
     for (int i = parent_.size() - 1; i >= 0; --i) {
-      if (depth_[v] - (1 << i) >= depth_[u]) {
+      if (Depth(v) - (1 << i) >= Depth(u)) {
         v = parent_[i][v];
       }
     }
@@ -48,24 +52,34 @@ class LCA {
         v = pv;
       }
     }
-    return parent_[0][u];
+    return Parent(u);
   }
 
   int Depth(int i) const { return depth_[i]; }
   int Parent(int i) const { return parent_[0][i]; }
+  const Graph<int>::Edge& AscendingEdge(int i) const {
+    assert(parent_[0][i] != -1);  // Check that i is not the root.
+    return graph_.Edges(i)[ascending_edge_[i]];
+  }
 
  private:
   void Dfs(int node, int parent, int depth) {
+    parent_[0][node] = parent;
     depth_[node] = depth;
-    for (auto& e : graph_.Edges(node)) {
+    const auto& edges = graph_.Edges(node);
+    for (size_t i = 0; i < edges.size(); ++i) {
+      auto& e = edges[i];
       int child = e.to;
-      if (child == parent) continue;
-      parent_[0][child] = node;
+      if (child == parent) {
+        ascending_edge_[node] = i;
+        continue;
+      }
       Dfs(child, node, depth + 1);
     }
   }
 
   const Graph<int>& graph_;
   std::vector<std::vector<int>> parent_;
+  std::vector<int> ascending_edge_;
   std::vector<int> depth_;
 };

@@ -9,6 +9,6 @@ TEST(lca, small) {
   g.AddEdge(1, 2);
   g.AddEdge(0, 3);
   g.AddEdge(3, 4);
-  LCA lca(g);
-  EXPECT_EQ(lca.Of(2, 4), 0);
+  RootedTree tree(g);
+  EXPECT_EQ(tree.LCA(2, 4), 0);
 }
