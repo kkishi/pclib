@@ -8,14 +8,8 @@ class RootedTree {
  public:
   RootedTree(const Graph<T>& graph, int root = 0) : graph_(graph) {
     const int n = graph.NumVertices();
-
-    int p = 0;
-    int two = 1;
-    while (two - 1 < n) {
-      ++p;
-      two *= 2;
-    }
-
+    int p = 1;
+    while ((1 << p) < n) ++p;
     parent_.resize(p);
     for (auto& p : parent_) {
       p.resize(n);
