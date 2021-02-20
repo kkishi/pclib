@@ -2,14 +2,19 @@
 #include <ostream>
 #include <vector>
 
+namespace {
+using i32 = int32_t;
+using i64 = int64_t;
+}  // namespace
+
 #define BIN_OPS(F) F(+) F(-) F(*) F(/)
 #define CMP_OPS(F) F(!=) F(<) F(<=) F(==) F(>) F(>=)
 
-template <int Mod = 1000000007>
+template <i32 Mod = 1000000007>
 class ModInt {
  public:
   ModInt() : n_(0) {}
-  ModInt(long long n) : n_(n % Mod) {
+  ModInt(i64 n) : n_(n % Mod) {
     if (n_ < 0) {
       // In C++, (-n)%m == -(n%m).
       n_ += Mod;
@@ -32,8 +37,7 @@ class ModInt {
   }
   ModInt& operator--() { return (*this) -= 1; }
   ModInt& operator*=(const ModInt& m) {
-    n_ *= m.n_;
-    n_ %= Mod;
+    n_ = i64(n_) * m.n_ % Mod;
     return *this;
   }
   ModInt& operator/=(const ModInt& m) {
@@ -49,7 +53,7 @@ class ModInt {
   CMP_OPS(DEFINE)
 #undef DEFINE
   ModInt operator-() const { return ModInt(-n_); }
-  ModInt Pow(int n) const {
+  ModInt Pow(i64 n) const {
     if (n < 0) {
       return Inv().Pow(-n);
     }
@@ -74,52 +78,52 @@ class ModInt {
       // n_^(Mod-1) = 1 (mod Mod). So we can compute n_^(Mod-2).
       return Pow(Mod - 2);
     }
-    for (int i = inv_.size(); i <= n_; ++i) {
+    for (i64 i = inv_.size(); i <= n_; ++i) {
       inv_.push_back(i <= 1 ? i : (Mod / i * -inv_[Mod % i]));
     }
     return inv_[n_];
   }
-  long long value() const { return n_; }
+  i64 value() const { return n_; }
 
-  static ModInt Fact(int n) {
-    for (int i = fact_.size(); i <= n; ++i) {
+  static ModInt Fact(i64 n) {
+    for (i64 i = fact_.size(); i <= n; ++i) {
       fact_.push_back(i == 0 ? 1 : fact_.back() * i);
     }
     return fact_[n];
   }
-  static ModInt InvFact(int n) {
-    for (int i = inv_fact_.size(); i <= n; ++i) {
+  static ModInt InvFact(i64 n) {
+    for (i64 i = inv_fact_.size(); i <= n; ++i) {
       inv_fact_.push_back(i == 0 ? 1 : inv_fact_.back() / i);
     }
     return inv_fact_[n];
   }
-  static ModInt Comb(int n, int k) { return Perm(n, k) * InvFact(k); }
-  static ModInt CombSlow(int n, int k) { return PermSlow(n, k) * InvFact(k); }
-  static ModInt Perm(int n, int k) {
+  static ModInt Comb(i64 n, i64 k) { return Perm(n, k) * InvFact(k); }
+  static ModInt CombSlow(i64 n, i64 k) { return PermSlow(n, k) * InvFact(k); }
+  static ModInt Perm(i64 n, i64 k) {
 #if DEBUG
     assert(n <= kMaxCacheSize &&
            "n is too large. If k is small, consider using PermSlow.");
 #endif
     return Fact(n) * InvFact(n - k);
   }
-  static ModInt PermSlow(int n, int k) {
+  static ModInt PermSlow(i64 n, i64 k) {
     ModInt p = 1;
-    for (int i = 0; i < k; ++i) {
+    for (i64 i = 0; i < k; ++i) {
       p *= (n - i);
     }
     return p;
   }
 
  private:
-  long long n_;
+  i32 n_;
   inline static std::vector<ModInt> fact_;
   inline static std::vector<ModInt> inv_fact_;
   inline static std::vector<ModInt> inv_;
-  static const int kMaxCacheSize = 1000000;
+  static const i64 kMaxCacheSize = 1000000;
 };
 
 #define DEFINE(op)                                            \
-  template <int Mod, typename T>                              \
+  template <i32 Mod, typename T>                              \
   ModInt<Mod> operator op(const T& t, const ModInt<Mod>& m) { \
     return ModInt<Mod>(t) op m;                               \
   }
@@ -127,7 +131,7 @@ BIN_OPS(DEFINE)
 CMP_OPS(DEFINE)
 #undef DEFINE
 
-template <int Mod>
+template <i32 Mod>
 std::ostream& operator<<(std::ostream& out, const ModInt<Mod>& m) {
   out << m.value();
   return out;
