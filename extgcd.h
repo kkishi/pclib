@@ -1,12 +1,4 @@
-#include <utility>
-
-template <typename T>
-T Gcd(T a, T b) {
-  if (b == 0) {
-    return a;
-  }
-  return Gcd(b, a % b);
-}
+#include <tuple>
 
 // auto [g, x, y] = ExtGcd(a, b);
 // => a * x + b * y = g = gcd(a, b)

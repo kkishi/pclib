@@ -3,15 +3,15 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary")
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
-    name = "gcd",
-    srcs = ["gcd.h"],
+    name = "extgcd",
+    srcs = ["extgcd.h"],
 )
 
 cc_test(
-    name = "gcd_test",
-    srcs = ["gcd_test.cc"],
+    name = "extgcd_test",
+    srcs = ["extgcd_test.cc"],
     deps = [
-        ":gcd",
+        ":extgcd",
         "@gtest",
         "@gtest//:gtest_main",
     ],
