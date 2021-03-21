@@ -81,10 +81,14 @@ void read_from_cin(T& value, Ts&... args) {
 #define ints(...) rd(int, __VA_ARGS__);
 #define strings(...) rd(string, __VA_ARGS__);
 
+// Strings used for yes/no questions. Defined as variables so that it can be
+// adjusted for each contest site.
+const char *yes_str = "Yes", *no_str = "No";
+
 template <typename T>
 void write_to_cout(const T& value) {
   if constexpr (std::is_same<T, bool>::value) {
-    std::cout << (value ? "Yes" : "No");
+    std::cout << (value ? yes_str : no_str);
   } else if constexpr (is_iterable<T>::value &&
                        !std::is_same<T, std::string>::value) {
     for (auto it = std::begin(value); it != std::end(value); ++it) {
