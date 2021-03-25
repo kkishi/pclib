@@ -221,6 +221,15 @@ bool even(T x) {
   return x % 2 == 0;
 }
 
+std::array<std::pair<std::int64_t, std::int64_t>, 4> adjacent(std::int64_t i,
+                                                              std::int64_t j) {
+  return {{{i + 1, j}, {i, j + 1}, {i - 1, j}, {i, j - 1}}};
+}
+
+bool inside(int i, int j, int I, int J) {
+  return 0 <= i && i < I && 0 <= j && j < J;
+}
+
 const std::int64_t big = std::numeric_limits<std::int64_t>::max() / 4;
 
 using i64 = std::int64_t;
