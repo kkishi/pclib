@@ -30,7 +30,7 @@ Matrix<T, N, M> Plus(const Matrix<T, N, M>& a, const Matrix<T, N, M>& b) {
 }
 
 template <typename T, std::size_t N>
-Matrix<T, N, N> Pow(const Matrix<T, N, N>& x, std::int64_t y) {
+Matrix<T, N, N> Pow(const Matrix<T, N, N>& x, int64_t y) {
   if (y == 0) {
     Matrix<T, N, N> e{};
     for (std::size_t i = 0; i < N; ++i) {
