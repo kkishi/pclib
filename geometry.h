@@ -36,6 +36,12 @@ struct Vector {
     return *this;
   }
   Vector operator*(const Vector& v) const { return Vector(*this) *= v; }
+  Vector& operator/=(T v) {
+    (*this).x /= v;
+    (*this).y /= v;
+    return *this;
+  }
+  Vector operator/(T v) const { return Vector(*this) /= v; }
   Vector& operator/=(const Vector& v) {
     T q = v.x * v.x + v.y * v.y;
     assert(q != 0);

@@ -125,14 +125,14 @@ void write_to_cout(const T& value, const Ts&... args) {
                 typename std::remove_reference<decltype(x)>::type>::value, \
             "rep macro supports std integral types only");                 \
       },                                                                   \
-      static_cast<std::int64_t>(x))
+      static_cast<int64_t>(x))
 
-#define rep3(i, a, b) for (std::int64_t i = as_i64(a); i < as_i64(b); ++i)
+#define rep3(i, a, b) for (int64_t i = as_i64(a); i < as_i64(b); ++i)
 #define rep2(i, n) rep3(i, 0, n)
 #define rep1(n) rep2(_loop_variable_, n)
 #define rep(...) dispatch(__VA_ARGS__, rep3, rep2, rep1)(__VA_ARGS__)
 
-#define rrep3(i, a, b) for (std::int64_t i = as_i64(b) - 1; i >= as_i64(a); --i)
+#define rrep3(i, a, b) for (int64_t i = as_i64(b) - 1; i >= as_i64(a); --i)
 #define rrep2(i, n) rrep3(i, 0, n)
 #define rrep1(n) rrep2(_loop_variable_, n)
 #define rrep(...) dispatch(__VA_ARGS__, rrep3, rrep2, rrep1)(__VA_ARGS__)
@@ -182,12 +182,12 @@ auto min(T a, U b) {
 }
 
 template <typename T>
-std::int64_t sz(const T& v) {
+int64_t sz(const T& v) {
   return std::size(v);
 }
 
 template <typename T>
-std::int64_t popcount(T i) {
+int64_t popcount(T i) {
   return std::bitset<std::numeric_limits<T>::digits>(i).count();
 }
 
@@ -225,10 +225,18 @@ bool even(T x) {
   return x % 2 == 0;
 }
 
-const std::int64_t big = std::numeric_limits<std::int64_t>::max() / 4;
+std::array<std::pair<int64_t, int64_t>, 4> adjacent(int64_t i, int64_t j) {
+  return {{{i + 1, j}, {i, j + 1}, {i - 1, j}, {i, j - 1}}};
+}
 
-using i64 = std::int64_t;
-using i32 = std::int32_t;
+bool inside(int64_t i, int64_t j, int64_t I, int64_t J) {
+  return 0 <= i && i < I && 0 <= j && j < J;
+}
+
+const int64_t big = std::numeric_limits<int64_t>::max() / 4;
+
+using i64 = int64_t;
+using i32 = int32_t;
 
 template <typename T>
 using low_priority_queue =
