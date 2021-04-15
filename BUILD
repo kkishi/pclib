@@ -166,6 +166,18 @@ cc_test(
     ],
 )
 
+cc_test(
+    name = "dual_segment_tree_bench_test",
+    srcs = ["dual_segment_tree_bench_test.cc"],
+    tags = ["manual"],
+    deps = [
+        ":dual_segment_tree",
+        "@benchmark",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
 cc_library(
     name = "dijkstra",
     srcs = ["dijkstra.h"],

@@ -14,33 +14,34 @@ class DualSegmentTree {
     v_.resize(two * 2 - 1, identity_);
   }
   void Update(int begin, int end, T v) {
-    std::function<void(int, int, int)> rec = [&](int cbegin, int cend,
-                                                 int index) {
-      if (begin <= cbegin && cend <= end) {
-        v_[index] = operation_(v_[index], v);
-        return;
+    int l = Leaf(begin), r = Leaf(end);
+    while (l < r) {
+      if (IsRight(l)) {
+        v_[l] = operation_(v_[l], v);
+        ++l;
       }
-      if (cend <= begin || end <= cbegin) {
-        return;
+      l = Parent(l);
+      if (IsRight(r)) {
+        v_[r - 1] = operation_(v_[r - 1], v);
       }
-      int cmid = (cbegin + cend) / 2;
-      rec(cbegin, cmid, index * 2 + 1);
-      rec(cmid, cend, index * 2 + 2);
-    };
-    rec(0, (v_.size() + 1) / 2, 0);
+      r = Parent(r);
+    }
   }
   T Get(int i) const {
     T v = identity_;
-    int index = v_.size() / 2 + i;
+    int index = Leaf(i);
     while (true) {
       v = operation_(v, v_[index]);
       if (index == 0) break;
-      index = (index - 1) / 2;
+      index = Parent(index);
     }
     return v;
   }
 
  private:
+  int Leaf(int i) const { return i + (v_.size() >> 1); }
+  bool IsRight(int i) const { return !(i & 1); }
+  int Parent(int i) const { return (i - 1) >> 1; }
   const Operation operation_;
   const T identity_;
   std::vector<T> v_;
