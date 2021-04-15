@@ -8,7 +8,8 @@ git_repository(
 
 git_repository(
     name = "benchmark",
-    branch = "v1.5.1",
+    commit = "8039b4030795b1c9b8cedb78e3a2a6fb89574b6e",
+    shallow_since = "1591692620 +0100",
     remote = "https://github.com/google/benchmark",
 )
 
