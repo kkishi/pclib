@@ -14,31 +14,36 @@ class SegmentTree {
     v_.resize(two * 2 - 1, identity_);
   }
   void Set(int i, T v) {
-    int index = v_.size() / 2 + i;
+    int index = Leaf(i);
     while (true) {
       v_[index] = v;
       if (index == 0) break;
-      v = operation_(v, v_[index + (index % 2 == 0 ? -1 : 1)]);
-      index = (index - 1) / 2;
+      v = operation_(v, v_[index + (IsRight(index) ? -1 : 1)]);
+      index = Parent(index);
     }
   }
   T Get(int i) const { return Aggregate(i, i + 1); }
   T Aggregate(int begin, int end) const {
-    std::function<T(int, int, int)> rec = [&](int cbegin, int cend, int index) {
-      if (begin <= cbegin && cend <= end) {
-        return v_[index];
+    int l = Leaf(begin), r = Leaf(end);
+    T v = identity_;
+    while (l < r) {
+      if (IsRight(l)) {
+        v = operation_(v, v_[l]);
+        ++l;
       }
-      if (cend <= begin || end <= cbegin) {
-        return identity_;
+      l = Parent(l);
+      if (IsRight(r)) {
+        v = operation_(v, v_[r - 1]);
       }
-      int cmid = (cbegin + cend) / 2;
-      return operation_(rec(cbegin, cmid, index * 2 + 1),
-                        rec(cmid, cend, index * 2 + 2));
-    };
-    return rec(0, (v_.size() + 1) / 2, 0);
+      r = Parent(r);
+    }
+    return v;
   }
 
  private:
+  int Leaf(int i) const { return i + (v_.size() >> 1); }
+  bool IsRight(int i) const { return !(i & 1); }
+  int Parent(int i) const { return (i - 1) >> 1; }
   const Operation operation_;
   const T identity_;
   std::vector<T> v_;
