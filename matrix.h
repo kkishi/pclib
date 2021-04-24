@@ -31,16 +31,15 @@ Matrix<T, N, M> Plus(const Matrix<T, N, M>& a, const Matrix<T, N, M>& b) {
 
 template <typename T, std::size_t N>
 Matrix<T, N, N> Pow(const Matrix<T, N, N>& x, int64_t y) {
-  if (y == 0) {
-    Matrix<T, N, N> e{};
-    for (std::size_t i = 0; i < N; ++i) {
-      e[i][i] = T(1);
+  Matrix<T, N, N> a = {}, b = x;
+  for (std::size_t i = 0; i < N; ++i) {
+    a[i][i] = 1;
+  }
+  for (; y; y >>= 1) {
+    if (y & 1) {
+      a = Mult(a, b);
     }
-    return e;
+    b = Mult(b, b);
   }
-  if (y % 2 == 0) {
-    Matrix<T, N, N> z = Pow(x, y / 2);
-    return Mult(z, z);
-  }
-  return Mult(Pow(x, y - 1), x);
+  return a;
 }
