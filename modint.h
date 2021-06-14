@@ -119,7 +119,7 @@ class ModInt {
   inline static std::vector<ModInt> fact_;
   inline static std::vector<ModInt> inv_fact_;
   inline static std::vector<ModInt> inv_;
-  static const i64 kMaxCacheSize = 1000000;
+  static const i64 kMaxCacheSize = 10000000;
 };
 
 #define DEFINE(op)                                            \

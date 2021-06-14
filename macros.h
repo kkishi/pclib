@@ -233,6 +233,15 @@ bool inside(int64_t i, int64_t j, int64_t I, int64_t J) {
   return 0 <= i && i < I && 0 <= j && j < J;
 }
 
+constexpr int64_t int_pow(int64_t b, int64_t e) {
+  int64_t x = 1;
+  for (int64_t i = 0; i < e; ++i) {
+    x *= b;
+  }
+  return x;
+}
+
+// big = 2305843009213693951 = 2^61-1 ~= 2.3*10^18
 const int64_t big = std::numeric_limits<int64_t>::max() / 4;
 
 using i64 = int64_t;

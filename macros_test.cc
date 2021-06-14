@@ -178,3 +178,13 @@ TEST(macros, div) {
   EXPECT_EQ(div_ceil(10, -3), -3);
   EXPECT_EQ(div_ceil(9, -3), -3);
 }
+
+constexpr int64_t thousand = int_pow(10, 3);
+constexpr int64_t sixteen = int_pow(2, 4);
+
+TEST(macros, int_pow) {
+  EXPECT_EQ(thousand, 1000);
+  EXPECT_EQ(sixteen, 16);
+  int64_t x = 5, y = 7;
+  EXPECT_EQ(int_pow(x, y), 78125);
+}
