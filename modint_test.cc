@@ -90,6 +90,11 @@ TEST(modint, comb) {
   EXPECT_EQ(ModInt<1000000007>::CombSlow(1000000000, 141421), 516595147);
 }
 
+TEST(modint, comb_invalid) {
+  EXPECT_EQ(ModInt<1000000007>::Comb(3, -10), 0);
+  EXPECT_EQ(ModInt<1000000007>::Comb(3, 10), 0);
+}
+
 TEST(modint, perm) {
   EXPECT_EQ(ModInt<1000000007>::Perm(100000, 50000), 466765821);
   EXPECT_EQ(ModInt<1000000007>::PermSlow(1000000000, 141421), 780321549);

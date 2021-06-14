@@ -86,20 +86,33 @@ class ModInt {
   i64 value() const { return n_; }
 
   static ModInt Fact(i64 n) {
+#if DEBUG
+    assert(0 <= n && n <= kMaxCacheSize);
+#endif
     for (i64 i = fact_.size(); i <= n; ++i) {
       fact_.push_back(i == 0 ? 1 : fact_.back() * i);
     }
     return fact_[n];
   }
   static ModInt InvFact(i64 n) {
+#if DEBUG
+    assert(0 <= n && n <= kMaxCacheSize);
+#endif
     for (i64 i = inv_fact_.size(); i <= n; ++i) {
       inv_fact_.push_back(i == 0 ? 1 : inv_fact_.back() / i);
     }
     return inv_fact_[n];
   }
-  static ModInt Comb(i64 n, i64 k) { return Perm(n, k) * InvFact(k); }
-  static ModInt CombSlow(i64 n, i64 k) { return PermSlow(n, k) * InvFact(k); }
+  static ModInt Comb(i64 n, i64 k) {
+    if (!Valid(n, k)) return 0;
+    return Perm(n, k) * InvFact(k);
+  }
+  static ModInt CombSlow(i64 n, i64 k) {
+    if (!Valid(n, k)) return 0;
+    return PermSlow(n, k) * InvFact(k);
+  }
   static ModInt Perm(i64 n, i64 k) {
+    if (!Valid(n, k)) return 0;
 #if DEBUG
     assert(n <= kMaxCacheSize &&
            "n is too large. If k is small, consider using PermSlow.");
@@ -107,6 +120,7 @@ class ModInt {
     return Fact(n) * InvFact(n - k);
   }
   static ModInt PermSlow(i64 n, i64 k) {
+    if (!Valid(n, k)) return 0;
     ModInt p = 1;
     for (i64 i = 0; i < k; ++i) {
       p *= (n - i);
@@ -115,6 +129,8 @@ class ModInt {
   }
 
  private:
+  static bool Valid(i64 n, i64 k) { return 0 <= k && k <= n; }
+
   i32 n_;
   inline static std::vector<ModInt> fact_;
   inline static std::vector<ModInt> inv_fact_;
