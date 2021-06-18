@@ -129,7 +129,7 @@ class ModInt {
   }
 
  private:
-  static bool Valid(i64 n, i64 k) { return 0 <= k && k <= n; }
+  static bool Valid(i64 n, i64 k) { return 0 <= n && 0 <= k && k <= n; }
 
   i32 n_;
   inline static std::vector<ModInt> fact_;
