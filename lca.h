@@ -49,6 +49,9 @@ class RootedTree {
     return Parent(u);
   }
 
+  int Distance(int i, int j) const {
+    return Depth(i) + Depth(j) - 2 * Depth(LCA(i, j));
+  }
   int Depth(int i) const { return depth_[i]; }
   int Parent(int i) const { return parent_[0][i]; }
   const Graph<int>::Edge& AscendingEdge(int i) const {

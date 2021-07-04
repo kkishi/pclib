@@ -3,7 +3,7 @@
 #include "graph.h"
 
 template <typename T>
-std::vector<int> DFSOrder(const Graph<T>& g, int root) {
+std::vector<int> DFSOrder(const Graph<T>& g, int root = 0) {
   std::vector<bool> seen(g.NumVertices());
   std::vector<int> order;
   auto rec = [&](auto rec, int node) -> void {
