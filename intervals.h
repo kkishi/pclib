@@ -3,72 +3,67 @@
 #include <set>
 #include <vector>
 
-class Intervals {
+// Interval represents [left, right) with value.
+struct Interval {
+  int left, right, value;
+  bool Contains(int x) const { return left <= x && x < right; }
+  bool operator<(const Interval& i) const { return left < i.left; };
+};
+
+std::ostream& operator<<(std::ostream& os, const Interval& i) {
+  os << "[" << i.left << "," << i.right << ")";
+  if (i.value != 0) os << "=" << i.value;
+  return os;
+}
+
+class Intervals : public std::set<Interval> {
  public:
-  struct Interval {
-    int begin, end, value;
-    bool operator<(const Interval& i) const { return begin < i.begin; };
-  };
-  void Insert(int begin, int end, int value = 0) {
-    auto it = s_.lower_bound({begin, 0, 0});
-    if (it != s_.begin()) {
+  void Insert(int left, int right, int value = 0) {
+    auto it = LowerBound(left);
+    if (it != begin()) {
       auto pit = prev(it);
-      assert(pit->end <= begin);
-      if (pit->end == begin && pit->value == value) {
-        begin = pit->begin;
-        s_.erase(pit);
+      if (pit->right == left && pit->value == value) {
+        left = pit->left;
+        erase(pit);
       }
     }
-    if (it != s_.end()) {
-      assert(end <= it->begin);
-      if (end == it->begin && value == it->value) {
-        end = it->end;
-        s_.erase(it);
+    if (it != end()) {
+      if (right == it->left && value == it->value) {
+        right = it->right;
+        erase(it);
       }
     }
-    s_.insert({begin, end, value});
+    insert({left, right, value});
   }
-  std::vector<Interval> Erase(int begin, int end) {
-    auto it = s_.lower_bound({begin, 0, 0});
-    if (it != s_.begin() && begin < prev(it)->end) --it;
-    auto jt = it;
-    while (jt != s_.end() && jt->begin < end) ++jt;
+  std::vector<Interval> Erase(int left, int right) {
+    auto it = LowerBound(left), jt = it;
+    while (jt != end() && jt->left < right) ++jt;
     std::vector<Interval> erased(it, jt);
-    s_.erase(it, jt);
+    erase(it, jt);
     if (!erased.empty()) {
-      if (auto& i = erased[0]; i.begin < begin) {
-        s_.insert({i.begin, begin, i.value});
-        i.begin = begin;
+      if (auto& i = erased[0]; i.left < left) {
+        insert({i.left, left, i.value});
+        i.left = left;
       }
-      if (auto& i = erased.back(); end < i.end) {
-        s_.insert({end, i.end, i.value});
-        i.end = end;
+      if (auto& i = erased.back(); right < i.right) {
+        insert({right, i.right, i.value});
+        i.right = right;
       }
     }
     return erased;
   }
-  std::optional<Interval> Find(int x) {
-    auto it = s_.lower_bound({x, 0, 0});
-    if (it != s_.end() && it->begin == x) return *it;
-    if (it != s_.begin() && x < prev(it)->end) return *prev(it);
+  std::set<Interval>::iterator LowerBound(int x) const {
+    auto it = lower_bound({x, 0, 0});
+    if (it != begin() && x < prev(it)->right) --it;
+    return it;
+  }
+  std::optional<Interval> Find(int x) const {
+    auto it = LowerBound(x);
+    if (it != end() && it->Contains(x)) return *it;
     return std::nullopt;
   }
-  int Mex(int begin) {
-    auto i = Find(begin);
-    return i ? i->end : begin;
+  int Mex(int left) const {
+    auto i = Find(left);
+    return i ? i->right : left;
   }
-  friend std::ostream& operator<<(std::ostream&, const Intervals&);
-
- private:
-  std::set<Interval> s_;
 };
-
-std::ostream& operator<<(std::ostream& os, const Intervals& is) {
-  os << "{";
-  for (auto it = std::begin(is.s_); it != std::end(is.s_); ++it) {
-    if (it != std::begin(is.s_)) os << ",";
-    os << "{" << it->begin << "," << it->end << " " << it->value << "}";
-  }
-  os << "}";
-  return os;
-}
