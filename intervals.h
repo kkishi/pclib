@@ -22,12 +22,14 @@ class Intervals : public std::set<Interval> {
     auto it = LowerBound(left);
     if (it != begin()) {
       auto pit = prev(it);
+      assert(pit->right <= left);
       if (pit->right == left && pit->value == value) {
         left = pit->left;
         erase(pit);
       }
     }
     if (it != end()) {
+      assert(right <= it->left);
       if (right == it->left && value == it->value) {
         right = it->right;
         erase(it);
