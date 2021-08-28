@@ -1,11 +1,10 @@
 #include <cstdint>
 #include <limits>
-#include <string>
 #include <vector>
 
-int64_t EditDistance(const std::string& a, const std::string& b,
-                     int64_t deletion = 1, int64_t insertion = 1,
-                     int64_t substitution = 1) {
+template <typename T>
+int64_t EditDistance(const T& a, const T& b, int64_t deletion = 1,
+                     int64_t insertion = 1, int64_t substitution = 1) {
   int n = a.size(), m = b.size();
   std::vector dp(n + 1,
                  std::vector(m + 1, std::numeric_limits<int64_t>::max()));
