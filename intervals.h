@@ -77,9 +77,15 @@ class Intervals : public std::set<Interval> {
     return std::nullopt;
   }
 
-  // Returns mex[left, infinity).
+  // Returns the minimum excluded value for [left, infinity).
   int64_t Mex(int64_t left) const {
     auto i = Find(left);
     return i ? i->right : left;
+  }
+
+  // Returns the maximum excluded value for (-infinity, right].
+  int64_t Max(int64_t right) const {
+    auto i = Find(right);
+    return i ? (i->left - 1) : right;
   }
 };
