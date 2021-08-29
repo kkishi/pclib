@@ -542,3 +542,35 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "pow",
+    srcs = ["pow.h"],
+)
+
+cc_test(
+    name = "pow_test",
+    srcs = ["pow_test.cc"],
+    deps = [
+        ":pow",
+        ":modint",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "numeric_sequence",
+    srcs = ["numeric_sequence.h"],
+    deps = [":pow"],
+)
+
+cc_test(
+    name = "numeric_sequence_test",
+    srcs = ["numeric_sequence_test.cc"],
+    deps = [
+        ":numeric_sequence",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
