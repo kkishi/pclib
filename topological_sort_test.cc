@@ -14,7 +14,8 @@ TEST(topological_sort, simple) {
   g.AddEdge(11, 10);
   g.AddEdge(8, 9);
 
-  std::vector<int> v = TopologicalSort(g);
+  auto [v, ok] = TopologicalSort(g);
+  EXPECT_TRUE(ok);
 
   std::vector<int> index(v.size());
   for (std::size_t i = 0; i < v.size(); ++i) {
@@ -23,7 +24,17 @@ TEST(topological_sort, simple) {
   for (int u = 0; u < g.NumVertices(); ++u) {
     for (const auto& e : g.Edges(u)) {
       int v = e.to;
-      EXPECT_TRUE(index[u] < index[v]);
+      EXPECT_LT(index[u], index[v]);
     }
   }
+}
+
+TEST(topological_sort, loop) {
+  Graph<int> g(3);
+  g.AddEdge(0, 1);
+  g.AddEdge(1, 2);
+  g.AddEdge(2, 0);
+
+  auto [v, ok] = TopologicalSort(g);
+  EXPECT_FALSE(ok);
 }
