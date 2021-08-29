@@ -37,10 +37,10 @@ class Intervals : public std::set<Interval> {
       assert(right <= it->left);  // Assert no overlap on the right.
       if (right == it->left && value == it->value) {
         right = it->right;
-        erase(it);
+        erase(prev(++it));  // Adjust it so that it can later be used as a hint.
       }
     }
-    insert({left, right, value});
+    insert(it, {left, right, value});
   }
 
   // Erases intervals that overlap with [left, right). Partial overlaps are
@@ -52,11 +52,11 @@ class Intervals : public std::set<Interval> {
     erase(it, jt);
     if (!erased.empty()) {
       if (auto& i = erased[0]; i.left < left) {
-        insert({i.left, left, i.value});
+        insert(jt, {i.left, left, i.value});
         i.left = left;
       }
       if (auto& i = erased.back(); right < i.right) {
-        insert({right, i.right, i.value});
+        insert(jt, {right, i.right, i.value});
         i.right = right;
       }
     }
