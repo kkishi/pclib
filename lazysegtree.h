@@ -1,13 +1,15 @@
 #include <atcoder/lazysegtree>
 
+// NOTE: This implementation assumes that the value equal id() will never be
+// passed to the methods, such as apply. If it happens, it fails to update.
 namespace update_min {
 using S = int64_t;
 using F = int64_t;
 S e() { return std::numeric_limits<S>::max(); }
 F id() { return std::numeric_limits<F>::max(); }
 S op(S a, S b) { return std::min(a, b); }
-S mapping(F f, S x) { return (f == id() ? x : f); }
-F composition(F f, F g) { return (f == id() ? g : f); }
+S mapping(F f, S x) { return f == id() ? x : f; }
+F composition(F f, F g) { return f == id() ? g : f; }
 using segtree = atcoder::lazy_segtree<S, op, e, F, mapping, composition, id>;
 }  // namespace update_min
 
@@ -22,6 +24,8 @@ F composition(F f, F g) { return f + g; }
 using segtree = atcoder::lazy_segtree<S, op, e, F, mapping, composition, id>;
 }  // namespace add_min
 
+// NOTE: This implementation assumes that the value equal id() will never be
+// passed to the methods, such as apply. If it happens, it fails to update.
 namespace update_sum {
 struct S {
   int64_t val;
@@ -35,7 +39,7 @@ S mapping(F f, S x) {
   if (f != id()) x.val = f * x.len;
   return x;
 }
-F composition(F f, F g) { return (f == id() ? g : f); }
+F composition(F f, F g) { return f == id() ? g : f; }
 class segtree
     : public atcoder::lazy_segtree<S, op, e, F, mapping, composition, id> {
  public:
