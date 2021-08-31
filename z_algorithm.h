@@ -13,13 +13,15 @@ std::vector<int64_t> ZAlgorithm(const std::string& s) {
       int j = 0;
       while (i + j < n && s[j] == s[i + j]) ++j;
       z[i] = j;
-      l = i, r = i + j;
+      if (j > 0) {
+        l = i, r = i + j;
+      }
     } else {
       if (z[i - l] < r - i) {
         z[i] = z[i - l];
       } else {
         int j = 0;
-        while (r + j < n && s[r - l + j] == s[r + j]) ++j;
+        while (r + j < n && s[z[i - l] + j] == s[r + j]) ++j;
         z[i] = r + j - i;
         l = i, r = r + j;
       }
