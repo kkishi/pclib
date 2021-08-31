@@ -5,27 +5,24 @@
 // https://www.cs.cmu.edu/~ckingsf/bioinfo-lectures/zalg.pdf
 std::vector<int64_t> ZAlgorithm(const std::string& s) {
   int n = s.size();
-  std::vector<int64_t> z(n);
-  z[0] = n;
+  std::vector<int64_t> Z(n);
+  Z[0] = n;
   int l = 0, r = 0;
-  for (int i = 1; i < n; ++i) {
-    if (r <= i) {
-      int j = 0;
-      while (i + j < n && s[j] == s[i + j]) ++j;
-      z[i] = j;
-      if (j > 0) {
-        l = i, r = i + j;
-      }
-    } else {
-      if (z[i - l] < r - i) {
-        z[i] = z[i - l];
-      } else {
-        int j = 0;
-        while (r + j < n && s[z[i - l] + j] == s[r + j]) ++j;
-        z[i] = r + j - i;
-        l = i, r = r + j;
-      }
+  for (int k = 1; k < n; ++k) {
+    if (r <= k) {
+      l = r = k;
+      while (r < n && s[r - l] == s[r]) ++r;
+      Z[k] = r - l;
+      continue;
     }
+    int Zkd = Z[k - l];
+    if (Zkd < r - k) {
+      Z[k] = Zkd;
+      continue;
+    }
+    l = k;
+    while (r < n && s[Zkd] == s[r]) ++Zkd, ++r;
+    Z[k] = r - l;
   }
-  return z;
+  return Z;
 }
