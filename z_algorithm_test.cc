@@ -14,3 +14,7 @@ TEST(z_algorithm, simple) {
                           0, 0, 0, 31, 0, 0, 0, 2, 0, 0, 0, 14, 0, 0, 0, 2, 0,
                           0, 0, 6, 0, 0, 0, 11, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0));
 }
+
+TEST(z_algorithm, zmatch) {
+  EXPECT_THAT(ZMatch("aardvark", "ar"), ElementsAre(1, 5));
+}

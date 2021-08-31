@@ -26,3 +26,15 @@ std::vector<int64_t> ZAlgorithm(const std::string& s) {
   }
   return Z;
 }
+
+std::vector<int> ZMatch(const std::string& t, const std::string& p) {
+  auto v = ZAlgorithm(p + '$' + t);
+  int n = t.size(), m = p.size();
+  std::vector<int> ret;
+  for (int i = 0; i < n; ++i) {
+    if (v[m + 1 + i] == m) {
+      ret.push_back(i);
+    }
+  }
+  return ret;
+}
