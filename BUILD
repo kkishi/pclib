@@ -574,3 +574,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "z_algorithm",
+    srcs = ["z_algorithm.h"],
+)
+
+cc_test(
+    name = "z_algorithm_test",
+    srcs = ["z_algorithm_test.cc"],
+    deps = [
+        ":z_algorithm",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
