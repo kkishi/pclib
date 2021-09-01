@@ -228,9 +228,7 @@ cc_test(
 cc_library(
     name = "rerooting",
     srcs = ["rerooting.h"],
-    deps = [
-        ":bidirected_graph",
-    ],
+    deps = [":bidirected_graph"],
 )
 
 cc_test(
@@ -386,6 +384,7 @@ cc_test(
 cc_library(
     name = "rolling_hash",
     srcs = ["rolling_hash.h"],
+    deps = [":pow"],
 )
 
 cc_test(
@@ -393,6 +392,7 @@ cc_test(
     srcs = ["rolling_hash_test.cc"],
     deps = [
         ":rolling_hash",
+        ":primitive_root",
         "@gtest",
         "@gtest//:gtest_main",
     ],
@@ -492,9 +492,7 @@ cc_test(
 cc_library(
     name = "int_sqrt",
     srcs = ["int_sqrt.h"],
-    deps = [
-        ":binary_search",
-    ],
+    deps = [":binary_search"],
 )
 
 cc_test(
@@ -510,9 +508,6 @@ cc_test(
 cc_library(
     name = "divisors",
     srcs = ["divisors.h"],
-    deps = [
-        ":binary_search",
-    ],
 )
 
 cc_test(
@@ -528,9 +523,7 @@ cc_test(
 cc_library(
     name = "lca",
     srcs = ["lca.h"],
-    deps = [
-        ":graph",
-    ],
+    deps = [":graph"],
 )
 
 cc_test(
@@ -593,6 +586,10 @@ cc_test(
 cc_library(
     name = "primitive_root",
     srcs = ["primitive_root.h"],
+    deps = [
+        ":divisors",
+        ":pow",
+        ]
 )
 
 cc_test(

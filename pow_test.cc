@@ -7,8 +7,7 @@ TEST(pow, simple) {
   EXPECT_EQ(Pow(2, 0), 1);
   EXPECT_EQ(Pow(2, 10), 1024);
   int64_t e = 1234567890123456789LL;
-  using mint = ModInt<>;
-  EXPECT_EQ(Pow(mint(2), e), mint(2).Pow(e));
+  EXPECT_EQ(Pow(2, e, 1000000007), ModInt<>(2).Pow(e).value());
 }
 
 constexpr int64_t thousand = Pow(10, 3);

@@ -2,18 +2,19 @@
 
 #include <unordered_set>
 
-#include "gmock/gmock.h"
 #include "gtest/gtest.h"
-
-using testing::ElementsAre;
+#include "primitive_root.h"
 
 TEST(rollinghash, simple) {
-  using rhash = RollingHash<>;
-  std::unordered_set<rhash> s;
+  std::unordered_set<RollingHash> s;
   for (auto& str : std::vector<std::string>{"abc", "def", "ghi"}) {
-    rhash h;
+    RollingHash h;
     for (char c : str) h.Add(c);
     s.insert(h);
   }
   EXPECT_EQ(s.size(), 3);
+}
+
+TEST(rollinghash, base) {
+  EXPECT_TRUE(IsPrimitiveRoot(RollingHash::base(), RollingHash::mod()));
 }
