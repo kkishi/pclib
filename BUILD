@@ -589,3 +589,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "primitive_root",
+    srcs = ["primitive_root.h"],
+)
+
+cc_test(
+    name = "primitive_root_test",
+    srcs = ["primitive_root_test.cc"],
+    deps = [
+        ":primitive_root",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
