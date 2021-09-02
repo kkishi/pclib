@@ -9,19 +9,19 @@ std::vector<int64_t> ZAlgorithm(const std::string& s) {
   z[0] = n;
   int l = 0, r = 0;
   for (int k = 1; k < n; ++k) {
-    if (r <= k) {
-      l = r = k;
+    auto extend = [&] {
       while (r < n && s[r - l] == s[r]) ++r;
       z[k] = r - l;
-      continue;
-    }
-    if (z[k - l] < r - k) {
+    };
+    if (r <= k) {
+      l = r = k;
+      extend();
+    } else if (z[k - l] < r - k) {
       z[k] = z[k - l];
-      continue;
+    } else {
+      l = k;
+      extend();
     }
-    l = k;
-    while (r < n && s[r - l] == s[r]) ++r;
-    z[k] = r - l;
   }
   return z;
 }
