@@ -8,9 +8,9 @@ class SparseTable {
   SparseTable(const std::vector<T>& v, Operation op) : op_(op) {
     int n = v.size(), p = 0;
     while ((1 << p) < n) ++p;
-    v_.resize(p);
+    v_.resize(p + 1);
     v_[0] = v;
-    for (int i = 1; i < p; ++i) {
+    for (int i = 1; i <= p; ++i) {
       v_[i].resize(n);
       for (int j = 0; j < n; ++j) {
         v_[i][j] = v_[i - 1][j];
