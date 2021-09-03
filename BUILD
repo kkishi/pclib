@@ -601,3 +601,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "sparse_table",
+    srcs = ["sparse_table.h"],
+)
+
+cc_test(
+    name = "sparse_table_test",
+    srcs = ["sparse_table_test.cc"],
+    deps = [
+        ":sparse_table",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
