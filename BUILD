@@ -616,3 +616,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "rotate90",
+    srcs = ["rotate90.h"],
+)
+
+cc_test(
+    name = "rotate90_test",
+    srcs = ["rotate90_test.cc"],
+    deps = [
+        ":rotate90",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
