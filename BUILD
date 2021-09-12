@@ -60,15 +60,15 @@ cc_test(
 )
 
 cc_library(
-    name = "compress",
-    srcs = ["compress.h"],
+    name = "compressor",
+    srcs = ["compressor.h"],
 )
 
 cc_test(
-    name = "compress_test",
-    srcs = ["compress_test.cc"],
+    name = "compressor_test",
+    srcs = ["compressor_test.cc"],
     deps = [
-        ":compress",
+        ":compressor",
         "@gtest",
         "@gtest//:gtest_main",
     ],
