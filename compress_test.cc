@@ -3,8 +3,11 @@
 #include "gtest/gtest.h"
 
 TEST(compress, simple) {
-  std::vector<int> v = {-1, 2, 7, 2, 5};
-  std::vector<int> c = Compress(v);
-  EXPECT_EQ(c, std::vector<int>({-1, 2, 5, 7}));
-  EXPECT_EQ(Uncompress(c, 5), 2);
+  std::vector<int64_t> v = {-1, 2, 7, 2, 5};
+  std::vector<int64_t> w = {-1, 2, 5, 7};
+  Compressor c(v);
+  for (int i = 0; i < w.size(); ++i) {
+    EXPECT_EQ(c(w[i]), i);
+    EXPECT_EQ(c[i], w[i]);
+  }
 }
