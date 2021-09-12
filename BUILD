@@ -631,3 +631,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "pbds",
+    srcs = ["pbds.h"],
+)
+
+cc_test(
+    name = "pbds_test",
+    srcs = ["pbds_test.cc"],
+    deps = [
+        ":pbds",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
