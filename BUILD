@@ -646,3 +646,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "binary_trie",
+    srcs = ["binary_trie.h"],
+)
+
+cc_test(
+    name = "binary_trie_test",
+    srcs = ["binary_trie_test.cc"],
+    deps = [
+        ":binary_trie",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
