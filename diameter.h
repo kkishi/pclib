@@ -5,7 +5,7 @@
 
 template <typename T>
 std::tuple<int, int, int> Diameter(const Graph<T>& g) {
-  auto dist = Dijkstra(g, 0);
+  auto dist = Dijkstra(g, 0).dist;
   int furthest = -1;
   int u;
   for (int i = 0; i < g.NumVertices(); ++i) {
@@ -14,7 +14,7 @@ std::tuple<int, int, int> Diameter(const Graph<T>& g) {
       u = i;
     }
   }
-  dist = Dijkstra(g, u);
+  dist = Dijkstra(g, u).dist;
   furthest = -1;
   int v;
   for (int i = 0; i < g.NumVertices(); ++i) {

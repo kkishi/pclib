@@ -14,6 +14,7 @@ class Graph {
     edges_[from].push_back({from, to, weight});
   }
   const std::vector<Edge> &Edges(int from) const { return edges_[from]; }
+  std::vector<Edge> &MutableEdges(int from) { return edges_[from]; }
   int NumVertices() const { return edges_.size(); }
 
  private:
