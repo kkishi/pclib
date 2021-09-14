@@ -10,10 +10,10 @@ class BinaryTrie {
   };
 
  public:
-  BinaryTrie() : root_(new Node) {}
+  BinaryTrie() {}
   void Insert(int64_t x) {
     if (int b = bits(x); b > bits_) {
-      if (Size() > 0) {
+      if (root_) {
         for (int i = 0; i < (b - bits_); ++i) {
           Node* n = new Node;
           n->size = root_->size;
@@ -23,28 +23,31 @@ class BinaryTrie {
       }
       bits_ = b;
     }
-    Node* n = root_;
-    ++n->size;
+    Node** n = &root_;
     for (int i = bits_ - 1; i >= 0; --i) {
-      Node*& c = n->children[(x >> i) & 1];
-      if (c == nullptr) c = new Node;
-      n = c;
-      ++n->size;
+      if (!*n) *n = new Node;
+      ++(*n)->size;
+      n = &(*n)->children[(x >> i) & 1];
     }
+    if (!*n) *n = new Node;
+    ++(*n)->size;
   }
   void Erase(int64_t x) {
     assert(bits(x) <= bits_);
-    Node* n = root_;
-    --n->size;
+    Node** n = &root_;
     for (int i = bits_ - 1; i >= 0; --i) {
-      Node* c = n->children[(x >> i) & 1];
-      assert(c != nullptr);
-      if (c->size == 1) n->children[(x >> i) & 1] = nullptr;
-      if (n != root_ && n->size == 0) delete n;
+      Node** c = &(*n)->children[(x >> i) & 1];
+      assert(*c);
+      if (--(*n)->size == 0) {
+        *n = nullptr;
+        delete (*n);
+      }
       n = c;
-      --n->size;
     }
-    if (n != root_ && n->size == 0) delete n;
+    if (--(*n)->size == 0) {
+      *n = nullptr;
+      delete (*n);
+    }
   }
   int64_t MinElement() const { return FindByOrder(0); }
   int64_t MaxElement() const { return FindByOrder(Size() - 1); }
@@ -54,13 +57,13 @@ class BinaryTrie {
     int x = 0;
     for (int i = bits_ - 1; i >= 0; --i) {
       Node* l = n->children[0];
-      if (l != nullptr && o < l->size) {
+      if (l && o < l->size) {
         n = l;
       } else {
         x |= 1LL << i;
         n = n->children[1];
-        o -= l == nullptr ? 0 : l->size;
-        assert(n != nullptr);
+        o -= l ? l->size : 0;
+        assert(n);
       }
     }
     return x;
@@ -68,7 +71,7 @@ class BinaryTrie {
   int Size() const { return root_->size; }
 
   void Debug(Node* n, int depth, int x) {
-    if (n == nullptr) return;
+    if (!n) return;
     std::cout << '(' << x << ":" << n->size;
     Debug(n->children[0], depth + 1, x);
     Debug(n->children[1], depth + 1, x | (1LL << (bits_ - 1 - depth)));
