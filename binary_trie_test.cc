@@ -4,6 +4,7 @@
 
 TEST(binary_trie, simple) {
   BinaryTrie t;
+  EXPECT_EQ(t.Size(), 0);
   t.Insert(1);
   t.Insert(1);
   t.Insert(3);

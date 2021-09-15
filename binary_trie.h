@@ -11,8 +11,8 @@ class BinaryTrie {
 
  public:
   BinaryTrie() {}
-  void Insert(int64_t x) {
-    if (int b = bits(x); b > bits_) {
+  void Insert(int64_t v) {
+    if (int b = bits(v); b > bits_) {
       if (root_) {
         for (int i = 0; i < (b - bits_); ++i) {
           Node* n = new Node;
@@ -27,16 +27,16 @@ class BinaryTrie {
     for (int i = bits_ - 1; i >= 0; --i) {
       if (!*n) *n = new Node;
       ++(*n)->size;
-      n = &(*n)->children[(x >> i) & 1];
+      n = &(*n)->children[(v >> i) & 1];
     }
     if (!*n) *n = new Node;
     ++(*n)->size;
   }
-  void Erase(int64_t x) {
-    assert(bits(x) <= bits_);
+  void Erase(int64_t v) {
+    assert(bits(v) <= bits_);
     Node** n = &root_;
     for (int i = bits_ - 1; i >= 0; --i) {
-      Node** c = &(*n)->children[(x >> i) & 1];
+      Node** c = &(*n)->children[(v >> i) & 1];
       assert(*c);
       if (--(*n)->size == 0) {
         *n = nullptr;
@@ -49,26 +49,30 @@ class BinaryTrie {
       delete (*n);
     }
   }
-  int64_t MinElement() const { return FindByOrder(0); }
-  int64_t MaxElement() const { return FindByOrder(Size() - 1); }
-  int64_t FindByOrder(int64_t o) const {
-    assert(o < root_->size);
+  int64_t MinElement(int64_t x = 0) const { return FindByOrder(0, x); }
+  int64_t MaxElement(int64_t x = 0) const { return FindByOrder(Size() - 1, x); }
+  int64_t FindByOrder(int64_t o, int64_t x = 0) const {
+    assert(o < Size());
     const Node* n = root_;
-    int x = 0;
+    int64_t v = 0;
     for (int i = bits_ - 1; i >= 0; --i) {
-      Node* l = n->children[0];
-      if (l && o < l->size) {
+      int64_t L = (x >> i) & 1;
+      Node* l = n->children[L];
+      int ls = l ? l->size : 0;
+      if (o < ls) {
+        v |= L << i;
         n = l;
       } else {
-        x |= 1LL << i;
-        n = n->children[1];
-        o -= l ? l->size : 0;
+        int64_t R = 1 - L;
+        v |= R << i;
+        n = n->children[R];
+        o -= ls;
         assert(n);
       }
     }
-    return x;
+    return v;
   }
-  int Size() const { return root_->size; }
+  int Size() const { return root_ ? root_->size : 0; }
 
   void Debug(Node* n, int depth, int x) {
     if (!n) return;
