@@ -671,6 +671,7 @@ cc_test(
     name = "suffix_array_test",
     srcs = ["suffix_array_test.cc"],
     deps = [
+        ":binary_search",
         ":suffix_array",
         "@gtest",
         "@gtest//:gtest_main",

@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "binary_search.h"
+
 std::vector<int64_t> SuffixArray(const std::string& s) {
   int n = s.size();
   std::vector<int64_t> r(n), nr(n), v(n);
@@ -25,4 +27,26 @@ std::vector<int64_t> SuffixArray(const std::string& s) {
     swap(r, nr);
   }
   return v;
+}
+
+std::pair<int64_t, int64_t> SuffixArraySearch(const std::string& s,
+                                              const std::vector<int64_t>& sa,
+                                              const std::string& p) {
+  int n = s.size();
+  int64_t l = 0, r = n;
+  for (size_t i = 0; i < p.size(); ++i) {
+    l = BinarySearch<int64_t>(l, r + 1, [&](int x) {
+      if (x == l) return true;
+      int y = sa[x - 1] + i;
+      if (y >= n) return true;
+      return s[y] < p[i];
+    });
+    r = BinarySearch<int64_t>(l, r + 1, [&](int x) {
+      if (x == l) return true;
+      int y = sa[x - 1] + i;
+      if (y >= n) return true;
+      return s[y] <= p[i];
+    });
+  }
+  return {l, r};
 }
