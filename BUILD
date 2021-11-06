@@ -661,3 +661,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "suffix_array",
+    srcs = ["suffix_array.h"],
+)
+
+cc_test(
+    name = "suffix_array_test",
+    srcs = ["suffix_array_test.cc"],
+    deps = [
+        ":suffix_array",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
