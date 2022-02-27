@@ -3,12 +3,13 @@
 #include "graph.h"
 
 template <typename T>
-std::pair<std::vector<int>, std::vector<int>> EulerTour(const Graph<T>& g) {
+std::pair<std::vector<int>, std::vector<int>> EulerTour(const Graph<T>& g,
+                                                        int root = 0) {
   const int n = g.NumVertices();
   std::vector<int> in(n, -1), out(n);
   int idx = 0;
   std::stack<int> st;
-  st.push(0);
+  st.push(root);
   while (!st.empty()) {
     int u = st.top();
     st.pop();
