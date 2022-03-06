@@ -1,54 +1,44 @@
 #include <math.h>
 
+#include <numeric>
 #include <vector>
 
-template <typename T, class DS>
-class Mo {
- public:
-  Mo(DS& ds) : ds_(ds) {}
-  void AddQuery(int begin, int end) {
-    int index = queries_.size();
-    queries_.push_back({begin, end, index});
-  }
-  std::vector<T> ProcessQueries() {
-    int bin = sqrt(queries_.size());
-    sort(queries_.begin(), queries_.end(),
-         [&bin](const Query& a, const Query& b) {
-           int c = a.begin / bin, d = b.begin / bin;
-           if (c != d) return c < d;
-           if (c % 2 == 0) {
-             return a.end < b.end;
-           }
-           return a.end > b.end;
-         });
-    std::vector<T> ret(queries_.size());
-    Query p = {0, 0, 0};
-    for (std::size_t i = 0; i < queries_.size(); ++i) {
-      const Query& c = queries_[i];
-      Add(c.begin, p.begin);
-      Del(p.begin, c.begin);
-      Add(p.end, c.end);
-      Del(c.end, p.end);
-      ret[c.index] = ds_.Get();
-      p = c;
-    }
-    return ret;
-  }
+template <typename Add, typename Del, typename Get>
+std::vector<int64_t> Mo(
+    Add add, Del del, Get get,
+    const std::vector<std::pair<int64_t, int64_t>>& queries) {
+  using Range = std::pair<int64_t, int64_t>;  // [first, second)
 
- private:
-  struct Query {
-    int begin, end, index;
-  };
-  void Add(int begin, int end) {
-    for (int i = begin; i < end; ++i) {
-      ds_.Add(i);
+  const int n = queries.size();
+  std::vector<int32_t> idx(n);
+  std::iota(idx.begin(), idx.end(), 0);
+
+  const int32_t bin = sqrt(n);
+  sort(idx.begin(), idx.end(), [&](int32_t ai, int32_t bi) {
+    const Range &a = queries[ai], &b = queries[bi];
+    int32_t c = a.first / bin, d = b.first / bin;
+    if (c != d) return c < d;
+    if (c % 2 == 0) {
+      return a.second < b.second;
     }
+    return a.second > b.second;
+  });
+
+  std::vector<int64_t> ret(n);
+  Range p = {0, 0};
+  for (int i : idx) {
+    const Range& c = queries[i];
+    auto range = [&](auto fun, int begin, int end) {
+      for (int i = begin; i < end; ++i) {
+        fun(i);
+      }
+    };
+    range(add, c.first, p.first);
+    range(del, p.first, c.first);
+    range(add, p.second, c.second);
+    range(del, c.second, p.second);
+    ret[i] = get();
+    p = c;
   }
-  void Del(int begin, int end) {
-    for (int i = begin; i < end; ++i) {
-      ds_.Del(i);
-    }
-  }
-  DS& ds_;
-  std::vector<Query> queries_;
-};
+  return ret;
+}
