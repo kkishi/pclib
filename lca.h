@@ -75,7 +75,7 @@ class RootedTree {
     }
   }
 
-  const Graph<int>& graph_;
+  const Graph<T>& graph_;
   std::vector<std::vector<int>> parent_;
   std::vector<int> ascending_edge_;
   std::vector<int> depth_;
