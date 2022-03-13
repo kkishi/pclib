@@ -677,3 +677,19 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "rational_reconstruction",
+    srcs = ["rational_reconstruction.h"],
+    deps = [":modint"],
+)
+
+cc_test(
+    name = "rational_reconstruction_test",
+    srcs = ["rational_reconstruction_test.cc"],
+    deps = [
+        ":rational_reconstruction",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)

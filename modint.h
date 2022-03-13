@@ -1,3 +1,6 @@
+#ifndef MODINT_H_
+#define MODINT_H_
+
 #include <cassert>
 #include <ostream>
 #include <vector>
@@ -152,3 +155,5 @@ std::ostream& operator<<(std::ostream& out, const ModInt<Mod>& m) {
   out << m.value();
   return out;
 }
+
+#endif
