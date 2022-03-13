@@ -183,6 +183,16 @@ auto min(T a, U b) {
 }
 
 template <typename T>
+auto max(const T& v) {
+  return *std::max_element(v.begin(), v.end());
+}
+
+template <typename T>
+auto min(const T& v) {
+  return *std::min_element(v.begin(), v.end());
+}
+
+template <typename T>
 int64_t sz(const T& v) {
   return std::size(v);
 }
