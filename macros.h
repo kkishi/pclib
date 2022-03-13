@@ -1,6 +1,7 @@
 #include <bitset>
 #include <functional>
 #include <iostream>
+#include <numeric>
 #include <queue>
 #include <type_traits>
 #include <vector>
@@ -231,6 +232,11 @@ std::array<std::pair<int64_t, int64_t>, 4> adjacent(int64_t i, int64_t j) {
 
 bool inside(int64_t i, int64_t j, int64_t I, int64_t J) {
   return 0 <= i && i < I && 0 <= j && j < J;
+}
+
+template <typename T>
+typename T::value_type accumulate(const T& v) {
+  return std::accumulate(v.begin(), v.end(), typename T::value_type());
 }
 
 // big = 2305843009213693951 = 2^61-1 ~= 2.3*10^18
