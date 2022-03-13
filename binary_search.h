@@ -1,3 +1,6 @@
+#ifndef BINARY_SEARCH_H_
+#define BINARY_SEARCH_H_
+
 #include <functional>
 
 template <typename T>
@@ -15,3 +18,5 @@ T BinarySearch(T ok, T ng, std::function<bool(T)> pred) {
   }
   return ok;
 }
+
+#endif

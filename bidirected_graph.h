@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BIDIRECTED_GRAPH_
+#define BIDIRECTED_GRAPH_
+
 #include <memory>
 #include <vector>
 
@@ -34,3 +36,5 @@ class BidirectedGraph {
 
   std::vector<std::vector<std::unique_ptr<Edge>>> edges_;
 };
+
+#endif

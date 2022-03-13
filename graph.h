@@ -1,4 +1,6 @@
-#pragma once
+#ifndef GRAPH_H_
+#define GRAPH_H_
+
 #include <vector>
 
 template <typename T>
@@ -20,3 +22,5 @@ class Graph {
  private:
   std::vector<std::vector<Edge>> edges_;
 };
+
+#endif
