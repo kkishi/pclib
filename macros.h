@@ -239,6 +239,11 @@ void sort(T& v) {
   return std::sort(v.begin(), v.end());
 }
 
+template <typename T, typename Compare>
+void sort(T& v, Compare comp) {
+  return std::sort(v.begin(), v.end(), comp);
+}
+
 template <typename T>
 typename T::value_type accumulate(const T& v) {
   return std::accumulate(v.begin(), v.end(), typename T::value_type());
