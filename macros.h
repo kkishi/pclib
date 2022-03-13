@@ -245,6 +245,11 @@ void sort(T& v, Compare comp) {
 }
 
 template <typename T>
+void reverse(T& v) {
+  return std::reverse(v.begin(), v.end());
+}
+
+template <typename T>
 typename T::value_type accumulate(const T& v) {
   return std::accumulate(v.begin(), v.end(), typename T::value_type());
 }
