@@ -235,6 +235,11 @@ bool inside(int64_t i, int64_t j, int64_t I, int64_t J) {
 }
 
 template <typename T>
+void sort(T& v) {
+  return std::sort(v.begin(), v.end());
+}
+
+template <typename T>
 typename T::value_type accumulate(const T& v) {
   return std::accumulate(v.begin(), v.end(), typename T::value_type());
 }
