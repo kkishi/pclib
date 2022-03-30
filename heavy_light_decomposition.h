@@ -16,7 +16,8 @@ class HeavyLightDecomposition {
     int index = 0;
     Dfs2(root, -1, root, index);
   }
-  std::vector<std::pair<int32_t, int32_t>> Query(int u, int v) const {
+  std::vector<std::pair<int32_t, int32_t>> Query(
+      int u, int v, bool include_lca = false) const {
     std::vector<std::pair<int32_t, int32_t>> ret;
     while (Begin(u) != Begin(v)) {
       if (Depth(Begin(u)) < Depth(Begin(v))) std::swap(u, v);
@@ -25,7 +26,7 @@ class HeavyLightDecomposition {
     }
     u = Index(u), v = Index(v);
     if (u > v) std::swap(u, v);
-    ret.emplace_back(u + 1, v + 1);
+    ret.emplace_back(u + (include_lca ? 0 : 1), v + 1);
     return ret;
   }
   int LCA(int u, int v) const {
