@@ -5,6 +5,9 @@
 template <typename T>
 std::pair<std::vector<int>, std::vector<int>> EulerTour(const Graph<T>& g,
                                                         int root = 0) {
+#ifdef DEBUG
+  assert(g.IsTree());
+#endif
   const int n = g.NumVertices();
   std::vector<int> in(n, -1), out(n);
   int idx = 0;

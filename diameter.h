@@ -5,6 +5,10 @@
 
 template <typename T>
 std::tuple<int, int, int> Diameter(const Graph<T>& g) {
+#ifdef DEBUG
+  assert(g.IsTree());
+#endif
+
   auto dist = Dijkstra(g, 0).dist;
   int furthest = -1;
   int u;

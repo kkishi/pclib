@@ -7,6 +7,9 @@ template <typename T>
 class RootedTree {
  public:
   RootedTree(const Graph<T>& graph, int root = 0) : graph_(graph) {
+#ifdef DEBUG
+    assert(graph.IsTree());
+#endif
     const int n = graph.NumVertices();
     int p = 1;
     while ((1 << p) < n) ++p;
