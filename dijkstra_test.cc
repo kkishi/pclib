@@ -12,5 +12,5 @@ TEST(dijkstra, simple) {
   EXPECT_TRUE(res.dist[2]);
   EXPECT_EQ(*res.dist[2], 2);
 
-  EXPECT_EQ(res.Path(2), (std::vector<int64_t>{0, 1, 2}));
+  EXPECT_EQ(res.Path(2), (std::vector<int32_t>{0, 1, 2}));
 }

@@ -9,12 +9,12 @@
 template <typename T>
 struct Result {
   std::vector<std::optional<T>> dist;
-  std::vector<std::optional<int64_t>> prev;
-  std::vector<int64_t> Path(int64_t dest) const {
-    std::vector<int64_t> v;
-    while (true) {
+  std::vector<std::optional<int32_t>> prev;
+  std::vector<int32_t> Path(int32_t dest) const {
+    dassert(prev[dest]);
+    std::vector<int32_t> v;
+    while (dest >= 0) {
       v.push_back(dest);
-      if (!prev[dest]) break;
       dest = *prev[dest];
     }
     std::reverse(v.begin(), v.end());
@@ -23,28 +23,32 @@ struct Result {
 };
 
 template <typename T>
-Result<T> Dijkstra(const WeightedGraph<T>& graph, int start) {
-  const int n = graph.size();
+struct DijkstraState {
+  T dist;
+  int32_t node;
+  int32_t prev;
+  bool operator<(const DijkstraState& s) const { return dist > s.dist; }
+};
+
+template <typename T>
+Result<T> Dijkstra(const WeightedGraph<T>& graph, int32_t source) {
+  const int32_t n = graph.size();
 
   std::vector<std::optional<T>> dist(n);
-  std::vector<std::optional<int64_t>> prev(n);
+  std::vector<std::optional<int32_t>> prev(n);
 
-  using element = std::pair<T, int>;
-  std::priority_queue<element, std::vector<element>, std::greater<>> que;
-
-  dist[start] = 0;
-  que.emplace(0, start);
+  std::priority_queue<DijkstraState<T>> que;
+  que.push({0, source, -1});
 
   while (!que.empty()) {
-    auto [c, u] = que.top();
+    auto [d, n, p] = que.top();
     que.pop();
-    if (c > dist[u]) continue;
-    for (auto [v, w] : graph[u]) {
-      T d = c + w;
-      if (dist[v] && *dist[v] <= d) continue;
-      dist[v] = d;
-      prev[v] = u;
-      que.emplace(d, v);
+    if (dist[n]) continue;
+    dist[n] = d;
+    prev[n] = p;
+    for (auto [c, w] : graph[n]) {
+      dassert(w >= 0);
+      que.push({d + w, c, n});
     }
   }
   return {dist, prev};
