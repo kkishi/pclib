@@ -322,6 +322,7 @@ cc_test(
 cc_library(
     name = "graph",
     srcs = ["graph.h"],
+    deps = [":fix"],
 )
 
 cc_test(

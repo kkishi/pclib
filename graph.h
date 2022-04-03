@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "fix.h"
+
 template <typename T>
 class Graph {
  public:
@@ -20,17 +22,16 @@ class Graph {
   int NumVertices() const { return edges_.size(); }
   bool IsTree() const {
     std::vector<bool> visited(NumVertices());
-    auto rec = [&](auto rec, int node, int parent) -> bool {
+    return Fix([&](auto rec, int node, int parent) -> bool {
       if (visited[node]) return false;
       visited[node] = true;
       for (const Edge &e : Edges(node)) {
-        if (e.to != parent && !rec(rec, e.to, node)) {
+        if (e.to != parent && !rec(e.to, node)) {
           return false;
         }
       }
       return true;
-    };
-    return rec(rec, 0, -1);
+    })(0, -1);
   }
 
  private:
