@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "dassert.h"
+#include "fix.h"
 #include "graph.h"
 
 enum AttributeLocation { attr_on_node, attr_on_edge };
@@ -13,10 +14,39 @@ class HeavyLightDecomposition {
       : g_(g), loc_(loc) {
     dassert(IsTree(g));
     attr_.resize(g.size());
-    Dfs1(root, -1, 0);
+
+    Fix([&](auto rec, int node, int parent, int depth) -> void {
+      Attr& a = attr_[node];
+      a.depth = depth;
+      a.parent = parent;
+      a.size = 1;
+      a.heavy = -1;
+      for (int child : g_[node]) {
+        if (child == parent) continue;
+        rec(child, node, depth + 1);
+        a.size += Size(child);
+        if (a.heavy == -1 || Size(a.heavy) < Size(child)) {
+          a.heavy = child;
+        }
+      }
+    })(root, -1, 0);
+
     int index = 0;
-    Dfs2(root, -1, root, index);
+    Fix([&](auto rec, int node, int parent, int head) -> void {
+      Attr& a = attr_[node];
+      a.in = index++;
+      a.head = head;
+      if (a.heavy != -1) {
+        rec(a.heavy, node, head);
+        for (int child : g_[node]) {
+          if (child == parent || child == a.heavy) continue;
+          rec(child, node, child);
+        }
+      }
+      a.out = index;
+    })(root, -1, root);
   }
+
   // Returns intervals that corresponds to the path from u to v.
   std::vector<std::pair<int32_t, int32_t>> Path(int u, int v) const {
     std::vector<std::pair<int32_t, int32_t>> ret;
@@ -53,34 +83,6 @@ class HeavyLightDecomposition {
   int32_t Parent(int node) const { return attr_[node].parent; }
 
  private:
-  void Dfs1(int node, int parent, int depth) {
-    Attr& a = attr_[node];
-    a.depth = depth;
-    a.parent = parent;
-    a.size = 1;
-    a.heavy = -1;
-    for (int child : g_[node]) {
-      if (child == parent) continue;
-      Dfs1(child, node, depth + 1);
-      a.size += Size(child);
-      if (a.heavy == -1 || Size(a.heavy) < Size(child)) {
-        a.heavy = child;
-      }
-    }
-  }
-  void Dfs2(int node, int parent, int head, int& index) {
-    Attr& a = attr_[node];
-    a.in = index++;
-    a.head = head;
-    if (a.heavy != -1) {
-      Dfs2(a.heavy, node, head, index);
-      for (int child : g_[node]) {
-        if (child == parent || child == a.heavy) continue;
-        Dfs2(child, node, child, index);
-      }
-    }
-    a.out = index;
-  }
   int32_t Depth(int node) const { return attr_[node].depth; }
   int32_t Head(int node) const { return attr_[node].head; }
   int32_t Heavy(int node) const { return attr_[node].heavy; }

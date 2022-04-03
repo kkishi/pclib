@@ -524,7 +524,10 @@ cc_test(
 cc_library(
     name = "lca",
     srcs = ["lca.h"],
-    deps = [":graph"],
+    deps = [
+        ":graph",
+        ":fix",
+    ],
 )
 
 cc_test(

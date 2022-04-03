@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "dassert.h"
+#include "fix.h"
 #include "graph.h"
 
 class RootedTree {
@@ -16,7 +17,14 @@ class RootedTree {
     }
     depth_.resize(n);
 
-    Dfs(root, -1, 0);
+    Fix([&](auto rec, int node, int parent, int depth) -> void {
+      parent_[0][node] = parent;
+      depth_[node] = depth;
+      for (int child : graph_[node]) {
+        if (child == parent) continue;
+        rec(child, node, depth + 1);
+      }
+    })(root, -1, 0);
 
     for (int i = 1; i < p; ++i) {
       for (int j = 0; j < n; ++j) {
@@ -55,15 +63,6 @@ class RootedTree {
   int Parent(int i) const { return parent_[0][i]; }
 
  private:
-  void Dfs(int node, int parent, int depth) {
-    parent_[0][node] = parent;
-    depth_[node] = depth;
-    for (int child : graph_[node]) {
-      if (child == parent) continue;
-      Dfs(child, node, depth + 1);
-    }
-  }
-
   const Graph& graph_;
   std::vector<std::vector<int>> parent_;
   std::vector<int> depth_;
