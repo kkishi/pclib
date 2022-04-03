@@ -17,4 +17,4 @@ constexpr int64_t Pow(int64_t b, int64_t e, int64_t m = 0) {
   return x;
 }
 
-#endif
+#endif  // POW_H_

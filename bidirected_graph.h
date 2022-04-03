@@ -37,4 +37,4 @@ class BidirectedGraph {
   std::vector<std::vector<std::unique_ptr<Edge>>> edges_;
 };
 
-#endif
+#endif  // BIDIRECTED_GRAPH_

@@ -693,3 +693,49 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "type_traits",
+    srcs = ["type_traits.h"],
+)
+
+cc_test(
+    name = "type_traits_test",
+    srcs = ["type_traits_test.cc"],
+    deps = [
+        ":type_traits",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "debug",
+    srcs = ["debug.h"],
+    deps = [":type_traits"],
+)
+
+cc_test(
+    name = "debug_test",
+    srcs = ["debug_test.cc"],
+    deps = [
+        ":debug",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "fix",
+    srcs = ["fix.h"],
+)
+
+cc_test(
+    name = "fix_test",
+    srcs = ["fix_test.cc"],
+    deps = [
+        ":fix",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)

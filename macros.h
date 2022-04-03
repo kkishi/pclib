@@ -1,116 +1,9 @@
+#include <algorithm>
 #include <bitset>
-#include <functional>
-#include <iostream>
 #include <numeric>
 #include <queue>
 #include <type_traits>
 #include <vector>
-
-template <typename T, typename = void>
-struct is_dereferenceable : std::false_type {};
-template <typename T>
-struct is_dereferenceable<T, std::void_t<decltype(*std::declval<T>())>>
-    : std::true_type {};
-
-template <typename T, typename = void>
-struct is_iterable : std::false_type {};
-template <typename T>
-struct is_iterable<T, std::void_t<decltype(std::begin(std::declval<T>())),
-                                  decltype(std::end(std::declval<T>()))>>
-    : std::true_type {};
-
-template <typename T, typename = void>
-struct is_applicable : std::false_type {};
-template <typename T>
-struct is_applicable<T, std::void_t<decltype(std::tuple_size<T>::value)>>
-    : std::true_type {};
-
-template <typename T, typename... Ts>
-void debug(const T& value, const Ts&... args);
-template <typename T>
-void debug(const T& v) {
-  if constexpr (is_dereferenceable<T>::value) {
-    std::cerr << "{";
-    if (v) {
-      debug(*v);
-    } else {
-      std::cerr << "nil";
-    }
-    std::cerr << "}";
-  } else if constexpr (is_iterable<T>::value &&
-                       !std::is_same<T, std::string>::value) {
-    std::cerr << "{";
-    for (auto it = std::begin(v); it != std::end(v); ++it) {
-      if (it != std::begin(v)) std::cerr << ", ";
-      debug(*it);
-    }
-    std::cerr << "}";
-  } else if constexpr (is_applicable<T>::value) {
-    std::cerr << "{";
-    std::apply([](const auto&... args) { debug(args...); }, v);
-    std::cerr << "}";
-  } else {
-    std::cerr << v;
-  }
-}
-template <typename T, typename... Ts>
-void debug(const T& value, const Ts&... args) {
-  debug(value);
-  std::cerr << ", ";
-  debug(args...);
-}
-#if DEBUG
-#define dbg(...)                        \
-  do {                                  \
-    cerr << #__VA_ARGS__ << ": ";       \
-    debug(__VA_ARGS__);                 \
-    cerr << " (L" << __LINE__ << ")\n"; \
-  } while (0)
-#else
-#define dbg(...)
-#endif
-
-void read_from_cin() {}
-template <typename T, typename... Ts>
-void read_from_cin(T& value, Ts&... args) {
-  std::cin >> value;
-  read_from_cin(args...);
-}
-#define rd(type, ...) \
-  type __VA_ARGS__;   \
-  read_from_cin(__VA_ARGS__);
-#define ints(...) rd(int, __VA_ARGS__);
-#define strings(...) rd(string, __VA_ARGS__);
-
-// Strings used for yes/no questions. Defined as variables so that it can be
-// adjusted for each contest site.
-const char *yes_str = "Yes", *no_str = "No";
-
-template <typename T>
-void write_to_cout(const T& value) {
-  if constexpr (std::is_same<T, bool>::value) {
-    std::cout << (value ? yes_str : no_str);
-  } else if constexpr (is_iterable<T>::value &&
-                       !std::is_same<T, std::string>::value) {
-    for (auto it = std::begin(value); it != std::end(value); ++it) {
-      if (it != std::begin(value)) std::cout << " ";
-      std::cout << *it;
-    }
-  } else {
-    std::cout << value;
-  }
-}
-template <typename T, typename... Ts>
-void write_to_cout(const T& value, const Ts&... args) {
-  write_to_cout(value);
-  std::cout << ' ';
-  write_to_cout(args...);
-}
-#define wt(...)                 \
-  do {                          \
-    write_to_cout(__VA_ARGS__); \
-    cout << '\n';               \
-  } while (0)
 
 #define all(x) (x).begin(), (x).end()
 #define eb(...) emplace_back(__VA_ARGS__)
@@ -141,18 +34,6 @@ void write_to_cout(const T& value, const Ts&... args) {
 #define each3(k, v, c) for (auto&& [k, v] : c)
 #define each2(e, c) for (auto&& e : c)
 #define each(...) dispatch(__VA_ARGS__, each3, each2)(__VA_ARGS__)
-
-template <typename T>
-std::istream& operator>>(std::istream& is, std::vector<T>& v) {
-  for (T& vi : v) is >> vi;
-  return is;
-}
-
-template <typename T, typename U>
-std::istream& operator>>(std::istream& is, std::pair<T, U>& p) {
-  is >> p.first >> p.second;
-  return is;
-}
 
 template <typename T, typename U>
 bool chmax(T& a, U b) {
@@ -262,19 +143,6 @@ void reverse(T& v) {
 template <typename T>
 typename T::value_type accumulate(const T& v) {
   return std::accumulate(v.begin(), v.end(), typename T::value_type());
-}
-
-template <class F>
-struct FixPoint {
-  F f;
-  template <class... Args>
-  decltype(auto) operator()(Args&&... args) const {
-    return f(std::ref(*this), std::forward<Args>(args)...);
-  }
-};
-template <class F>
-FixPoint<std::decay_t<F>> Fix(F&& f) {
-  return {std::forward<F>(f)};
 }
 
 // big = 2305843009213693951 = 2^61-1 ~= 2.3*10^18

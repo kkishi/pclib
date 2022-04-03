@@ -149,4 +149,4 @@ std::ostream& operator<<(std::ostream& out, const ModInt<Mod>& m) {
   return out;
 }
 
-#endif
+#endif  // MODINT_H_

@@ -37,4 +37,4 @@ class Graph {
   std::vector<std::vector<Edge>> edges_;
 };
 
-#endif
+#endif  // GRAPH_H_

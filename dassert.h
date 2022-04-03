@@ -8,4 +8,4 @@
 #define dassert(x) ((void)0)
 #endif
 
-#endif
+#endif  // DASSERT_H_

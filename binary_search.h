@@ -19,4 +19,4 @@ T BinarySearch(T ok, T ng, std::function<bool(T)> pred) {
   return ok;
 }
 
-#endif
+#endif  // BINARY_SEARCH_H_
