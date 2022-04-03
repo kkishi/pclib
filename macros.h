@@ -264,6 +264,19 @@ typename T::value_type accumulate(const T& v) {
   return std::accumulate(v.begin(), v.end(), typename T::value_type());
 }
 
+template <class F>
+struct FixPoint {
+  F f;
+  template <class... Args>
+  decltype(auto) operator()(Args&&... args) const {
+    return f(std::ref(*this), std::forward<Args>(args)...);
+  }
+};
+template <class F>
+FixPoint<std::decay_t<F>> Fix(F&& f) {
+  return {std::forward<F>(f)};
+}
+
 // big = 2305843009213693951 = 2^61-1 ~= 2.3*10^18
 const int64_t big = std::numeric_limits<int64_t>::max() / 4;
 
