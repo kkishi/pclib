@@ -1,13 +1,12 @@
 #include <tuple>
 
+#include "dassert.h"
 #include "dijkstra.h"
 #include "graph.h"
 
 template <typename T>
 std::tuple<int, int, int> Diameter(const Graph<T>& g) {
-#ifdef DEBUG
-  assert(g.IsTree());
-#endif
+  dassert(g.IsTree());
 
   auto dist = Dijkstra(g, 0).dist;
   int furthest = -1;

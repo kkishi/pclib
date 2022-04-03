@@ -1,9 +1,10 @@
 #ifndef MODINT_H_
 #define MODINT_H_
 
-#include <cassert>
 #include <ostream>
 #include <vector>
+
+#include "dassert.h"
 
 namespace {
 using i32 = int32_t;
@@ -72,9 +73,7 @@ class ModInt {
     return a;
   }
   ModInt Inv() const {
-#if DEBUG
-    assert(n_ != 0);
-#endif
+    dassert(n_ != 0);
     if (n_ > kMaxCacheSize) {
       // Compute the inverse based on Fermat's little theorem. Note that this
       // only works when n_ and Mod are relatively prime. The theorem says that
@@ -89,18 +88,14 @@ class ModInt {
   i64 value() const { return n_; }
 
   static ModInt Fact(i64 n) {
-#if DEBUG
-    assert(0 <= n && n <= kMaxCacheSize);
-#endif
+    dassert(0 <= n && n <= kMaxCacheSize);
     for (i64 i = fact_.size(); i <= n; ++i) {
       fact_.push_back(i == 0 ? 1 : fact_.back() * i);
     }
     return fact_[n];
   }
   static ModInt InvFact(i64 n) {
-#if DEBUG
-    assert(0 <= n && n <= kMaxCacheSize);
-#endif
+    dassert(0 <= n && n <= kMaxCacheSize);
     for (i64 i = inv_fact_.size(); i <= n; ++i) {
       inv_fact_.push_back(i == 0 ? 1 : inv_fact_.back() / i);
     }
@@ -116,10 +111,8 @@ class ModInt {
   }
   static ModInt Perm(i64 n, i64 k) {
     if (!Valid(n, k)) return 0;
-#if DEBUG
-    assert(n <= kMaxCacheSize &&
-           "n is too large. If k is small, consider using PermSlow.");
-#endif
+    dassert(n <= kMaxCacheSize &&
+            "n is too large. If k is small, consider using PermSlow.");
     return Fact(n) * InvFact(n - k);
   }
   static ModInt PermSlow(i64 n, i64 k) {

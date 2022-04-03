@@ -1,12 +1,13 @@
-#include <cassert>
 #include <numeric>
 #include <ostream>
+
+#include "dassert.h"
 
 template <typename T>
 class Rational {
  public:
   Rational(T p, T q) {
-    assert(q != 0);
+    dassert(q != 0);
     if (p == 0) {
       p_ = 0;
       q_ = 1;

@@ -1,12 +1,14 @@
 #include <atcoder/mincostflow>
 
+#include "dassert.h"
+
 class MinCostFlow {
   using Cap = int64_t;
   using Cost = int64_t;
 
  public:
   void Add(int from, int to, Cap cap, Cost cost, Cap min_flow = 0) {
-    assert(0 <= min_flow && min_flow <= cap);
+    dassert(0 <= min_flow && min_flow <= cap);
     edges_.emplace_back(from, to, cap, cost, min_flow);
     n_ = std::max(n_, std::max(from, to) + 1);
   }

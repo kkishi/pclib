@@ -1,9 +1,9 @@
-#include <cassert>
 #include <cstdint>
 #include <functional>
 #include <random>
 #include <vector>
 
+#include "dassert.h"
 #include "pow.h"
 
 class RollingHash {
@@ -40,7 +40,7 @@ class RollingHash {
 
  private:
   u64 BasePow(int n) {
-    assert(n <= 10000000);
+    dassert(n <= 10000000);
     for (int i = base_pow_.size(); i <= n; ++i) {
       base_pow_.push_back(i == 0 ? 1 : Mul(base_pow_.back(), base()));
     }

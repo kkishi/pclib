@@ -2,6 +2,8 @@
 #include <ostream>
 #include <vector>
 
+#include "dassert.h"
+
 template <typename T>
 struct Vector {
   T x = T(), y = T();
@@ -44,7 +46,7 @@ struct Vector {
   Vector operator/(T v) const { return Vector(*this) /= v; }
   Vector& operator/=(const Vector& v) {
     T q = v.x * v.x + v.y * v.y;
-    assert(q != 0);
+    dassert(q != 0);
     T r = x * v.x + y * v.y;
     T i = x * v.y - y * v.x;
     (*this).x = r;

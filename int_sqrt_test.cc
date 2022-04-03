@@ -1,4 +1,6 @@
+#define DEBUG 1  // Simulate "g++ -DDEBUG" for testing the assertion.
 #include "int_sqrt.h"
+#undef DEBUG
 
 #include "gtest/gtest.h"
 

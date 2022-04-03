@@ -1,9 +1,9 @@
 #include <algorithm>
-#include <cassert>
 #include <optional>
 #include <queue>
 #include <vector>
 
+#include "dassert.h"
 #include "graph.h"
 
 template <typename T>
@@ -12,7 +12,7 @@ struct Result {
   std::vector<std::optional<T>> dist;
   std::vector<std::optional<Edge>> prev;
   std::vector<Edge> Path(int dest) const {
-    assert(prev[dest]);
+    dassert(prev[dest]);
     std::vector<Edge> v;
     for (std::optional<Edge> e = prev[dest]; e; e = prev[e->from]) {
       v.push_back(*e);

@@ -1,6 +1,7 @@
-#include <cassert>
 #include <cstdint>
 #include <iostream>
+
+#include "dassert.h"
 
 class BinaryTrie {
  private:
@@ -33,11 +34,11 @@ class BinaryTrie {
     ++(*n)->size;
   }
   void Erase(int64_t v) {
-    assert(bits(v) <= bits_);
+    dassert(bits(v) <= bits_);
     Node** n = &root_;
     for (int i = bits_ - 1; i >= 0; --i) {
       Node** c = &(*n)->children[(v >> i) & 1];
-      assert(*c);
+      dassert(*c);
       if (--(*n)->size == 0) {
         *n = nullptr;
         delete (*n);
@@ -52,7 +53,7 @@ class BinaryTrie {
   int64_t MinElement(int64_t x = 0) const { return FindByOrder(0, x); }
   int64_t MaxElement(int64_t x = 0) const { return FindByOrder(Size() - 1, x); }
   int64_t FindByOrder(int64_t o, int64_t x = 0) const {
-    assert(o < Size());
+    dassert(o < Size());
     const Node* n = root_;
     int64_t v = 0;
     for (int i = bits_ - 1; i >= 0; --i) {
@@ -67,7 +68,7 @@ class BinaryTrie {
         v |= R << i;
         n = n->children[R];
         o -= ls;
-        assert(n);
+        dassert(n);
       }
     }
     return v;

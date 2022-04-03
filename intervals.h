@@ -1,7 +1,8 @@
-#include <cassert>
 #include <ostream>
 #include <set>
 #include <vector>
+
+#include "dassert.h"
 
 // Interval represents [left, right) with value.
 struct Interval {
@@ -27,14 +28,14 @@ class Intervals : public std::set<Interval> {
     auto it = LowerBound(left);
     if (it != begin()) {
       auto pit = prev(it);
-      assert(pit->right <= left);  // Assert no overlap on the left.
+      dassert(pit->right <= left);  // Assert no overlap on the left.
       if (pit->right == left && pit->value == value) {
         left = pit->left;
         erase(pit);
       }
     }
     if (it != end()) {
-      assert(right <= it->left);  // Assert no overlap on the right.
+      dassert(right <= it->left);  // Assert no overlap on the right.
       if (right == it->left && value == it->value) {
         right = it->right;
         erase(prev(++it));  // Adjust it so that it can later be used as a hint.

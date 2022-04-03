@@ -1,9 +1,10 @@
-#include <cassert>
 #include <map>
 #include <optional>
 #include <queue>
 #include <tuple>
 #include <vector>
+
+#include "dassert.h"
 
 template <typename T>
 class Grid {
@@ -18,12 +19,12 @@ class Grid {
     return 0 <= r && r < r_ && 0 <= c && c < c_;
   }
   void Set(int r, int c, T v) {
-    assert(Inside(r, c));
+    dassert(Inside(r, c));
     grid_[r][c] = v;
   }
   grid Distance(int sr, int sc) const {
-    assert(Inside(sr, sc));
-    assert(grid_[sr][sc]);
+    dassert(Inside(sr, sc));
+    dassert(grid_[sr][sc]);
     pqueue<std::tuple<T, int, int>> que;
     que.emplace(0, sr, sc);
     grid dist(r_, std::vector<std::optional<T>>(c_));

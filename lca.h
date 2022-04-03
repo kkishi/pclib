@@ -1,15 +1,13 @@
-#include <cassert>
 #include <vector>
 
+#include "dassert.h"
 #include "graph.h"
 
 template <typename T>
 class RootedTree {
  public:
   RootedTree(const Graph<T>& graph, int root = 0) : graph_(graph) {
-#ifdef DEBUG
-    assert(graph.IsTree());
-#endif
+    dassert(graph.IsTree());
     const int n = graph.NumVertices();
     int p = 1;
     while ((1 << p) < n) ++p;
@@ -58,7 +56,7 @@ class RootedTree {
   int Depth(int i) const { return depth_[i]; }
   int Parent(int i) const { return parent_[0][i]; }
   const Graph<int>::Edge& AscendingEdge(int i) const {
-    assert(parent_[0][i] != -1);  // Check that i is not the root.
+    dassert(parent_[0][i] != -1);  // Check that i is not the root.
     return graph_.Edges(i)[ascending_edge_[i]];
   }
 
