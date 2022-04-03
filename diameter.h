@@ -5,13 +5,13 @@
 #include "graph.h"
 
 template <typename T>
-std::tuple<int, int, int> Diameter(const Graph<T>& g) {
-  dassert(g.IsTree());
+std::tuple<int, int, int> Diameter(const WeightedGraph<T>& g) {
+  dassert(IsTree(g));
 
   auto dist = Dijkstra(g, 0).dist;
   int furthest = -1;
   int u;
-  for (int i = 0; i < g.NumVertices(); ++i) {
+  for (size_t i = 0; i < g.size(); ++i) {
     if (furthest < *dist[i]) {
       furthest = *dist[i];
       u = i;
@@ -20,7 +20,7 @@ std::tuple<int, int, int> Diameter(const Graph<T>& g) {
   dist = Dijkstra(g, u).dist;
   furthest = -1;
   int v;
-  for (int i = 0; i < g.NumVertices(); ++i) {
+  for (size_t i = 0; i < g.size(); ++i) {
     if (furthest < *dist[i]) {
       furthest = *dist[i];
       v = i;

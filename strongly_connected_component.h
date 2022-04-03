@@ -3,17 +3,15 @@
 
 #include "graph.h"
 
-template <typename T>
-std::vector<std::vector<int>> StronglyConnectedComponents(
-    const Graph<T>& graph) {
-  int n = graph.NumVertices();
+std::vector<std::vector<int>> StronglyConnectedComponents(const Graph& graph) {
+  int n = graph.size();
   std::vector<int> nodes;
   std::vector<bool> visited(n);
   std::function<void(int)> dfs = [&](int u) {
     visited[u] = true;
-    for (const auto& e : graph.Edges(u)) {
-      if (!visited[e.to]) {
-        dfs(e.to);
+    for (int v : graph[u]) {
+      if (!visited[v]) {
+        dfs(v);
       }
     }
     nodes.push_back(u);
@@ -23,8 +21,8 @@ std::vector<std::vector<int>> StronglyConnectedComponents(
   }
   std::vector<std::vector<int>> rgraph(n);
   for (int u = 0; u < n; ++u) {
-    for (const auto& e : graph.Edges(u)) {
-      rgraph[e.to].push_back(u);
+    for (int v : graph[u]) {
+      rgraph[v].push_back(u);
     }
   }
   std::vector<bool> rvisited(n);

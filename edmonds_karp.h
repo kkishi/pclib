@@ -5,8 +5,8 @@
 #include "graph.h"
 
 template <typename T>
-T EdmondsKarp(const Graph<T>& g, int src, int dst) {
-  int N = g.NumVertices();
+T EdmondsKarp(const WeightedGraph<T>& g, int src, int dst) {
+  int N = g.size();
   std::vector<std::vector<T>> flow(N, std::vector<T>(N));
   T total = 0;
   while (true) {
@@ -25,12 +25,12 @@ T EdmondsKarp(const Graph<T>& g, int src, int dst) {
         }
         break;
       }
-      for (auto& e : g.Edges(u)) {
-        if (prev[e.to] != -1) continue;
-        T residue = e.weight - flow[u][e.to];
+      for (auto [v, weight] : g[u]) {
+        if (prev[v] != -1) continue;
+        T residue = weight - flow[u][v];
         if (residue == 0) continue;
-        prev[e.to] = u;
-        que.push({e.to, std::min(f, residue)});
+        prev[v] = u;
+        que.push({v, std::min(f, residue)});
       }
     }
     if (prev[dst] == -1) break;

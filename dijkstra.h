@@ -8,14 +8,14 @@
 
 template <typename T>
 struct Result {
-  using Edge = typename Graph<T>::Edge;
   std::vector<std::optional<T>> dist;
-  std::vector<std::optional<Edge>> prev;
-  std::vector<Edge> Path(int dest) const {
-    dassert(prev[dest]);
-    std::vector<Edge> v;
-    for (std::optional<Edge> e = prev[dest]; e; e = prev[e->from]) {
-      v.push_back(*e);
+  std::vector<std::optional<int64_t>> prev;
+  std::vector<int64_t> Path(int64_t dest) const {
+    std::vector<int64_t> v;
+    while (true) {
+      v.push_back(dest);
+      if (!prev[dest]) break;
+      dest = *prev[dest];
     }
     std::reverse(v.begin(), v.end());
     return v;
@@ -23,11 +23,11 @@ struct Result {
 };
 
 template <typename T>
-Result<T> Dijkstra(const Graph<T>& graph, int start) {
-  const int n = graph.NumVertices();
+Result<T> Dijkstra(const WeightedGraph<T>& graph, int start) {
+  const int n = graph.size();
 
   std::vector<std::optional<T>> dist(n);
-  std::vector<std::optional<typename Graph<T>::Edge>> prev(n);
+  std::vector<std::optional<int64_t>> prev(n);
 
   using element = std::pair<T, int>;
   std::priority_queue<element, std::vector<element>, std::greater<>> que;
@@ -39,12 +39,12 @@ Result<T> Dijkstra(const Graph<T>& graph, int start) {
     auto [c, u] = que.top();
     que.pop();
     if (c > dist[u]) continue;
-    for (const auto& e : graph.Edges(u)) {
-      T d = c + e.weight;
-      if (dist[e.to] && *dist[e.to] <= d) continue;
-      dist[e.to] = d;
-      prev[e.to] = e;
-      que.emplace(d, e.to);
+    for (auto [v, w] : graph[u]) {
+      T d = c + w;
+      if (dist[v] && *dist[v] <= d) continue;
+      dist[v] = d;
+      prev[v] = u;
+      que.emplace(d, v);
     }
   }
   return {dist, prev};

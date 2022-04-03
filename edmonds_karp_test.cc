@@ -5,10 +5,10 @@
 TEST(edmonds_karp, simple) {
   // https://commons.wikimedia.org/wiki/File:Min_cut.png
   int o = 0, p = 1, q = 2, r = 3, s = 4, t = 5;
-  Graph<int> g(t + 1);
+  WeightedGraph<int> g(t + 1);
   auto add = [&g](int u, int v, int w) {
-    g.AddEdge(u, v, w);
-    g.AddEdge(v, u, 0);
+    g[u].emplace_back(v, w);
+    g[v].emplace_back(u, 0);
   };
   add(s, o, 3);
   add(s, p, 3);

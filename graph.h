@@ -5,37 +5,38 @@
 
 #include "fix.h"
 
-template <typename T>
-class Graph {
- public:
-  struct Edge {
-    int from, to;
-    T weight;
-  };
+using Graph = std::vector<std::vector<int64_t>>;
 
-  Graph(int n) : edges_(n) {}
-  void AddEdge(int from, int to, T weight = T()) {
-    edges_[from].push_back({from, to, weight});
-  }
-  const std::vector<Edge> &Edges(int from) const { return edges_[from]; }
-  std::vector<Edge> &MutableEdges(int from) { return edges_[from]; }
-  int NumVertices() const { return edges_.size(); }
-  bool IsTree() const {
-    std::vector<bool> visited(NumVertices());
-    return Fix([&](auto rec, int node, int parent) -> bool {
-      if (visited[node]) return false;
-      visited[node] = true;
-      for (const Edge &e : Edges(node)) {
-        if (e.to != parent && !rec(e.to, node)) {
-          return false;
-        }
+bool IsTree(const Graph& g) {
+  std::vector<bool> visited(g.size());
+  return Fix([&](auto rec, int node, int parent) -> bool {
+    if (visited[node]) return false;
+    visited[node] = true;
+    for (int child : g[node]) {
+      if (child != parent && !rec(child, node)) {
+        return false;
       }
-      return true;
-    })(0, -1);
-  }
+    }
+    return true;
+  })(0, -1);
+}
 
- private:
-  std::vector<std::vector<Edge>> edges_;
-};
+template <typename T>
+using WeightedGraph = std::vector<std::vector<std::pair<int64_t, T>>>;
+
+template <typename T>
+bool IsTree(const WeightedGraph<T>& g) {
+  std::vector<bool> visited(g.size());
+  return Fix([&](auto rec, int node, int parent) -> bool {
+    if (visited[node]) return false;
+    visited[node] = true;
+    for (auto [child, _] : g[node]) {
+      if (child != parent && !rec(child, node)) {
+        return false;
+      }
+    }
+    return true;
+  })(0, -1);
+}
 
 #endif  // GRAPH_H_

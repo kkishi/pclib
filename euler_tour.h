@@ -3,11 +3,10 @@
 #include "dassert.h"
 #include "graph.h"
 
-template <typename T>
-std::pair<std::vector<int>, std::vector<int>> EulerTour(const Graph<T>& g,
+std::pair<std::vector<int>, std::vector<int>> EulerTour(const Graph& g,
                                                         int root = 0) {
-  dassert(g.IsTree());
-  const int n = g.NumVertices();
+  dassert(IsTree(g));
+  const int n = g.size();
   std::vector<int> in(n, -1), out(n);
   int idx = 0;
   std::stack<int> st;
@@ -18,8 +17,9 @@ std::pair<std::vector<int>, std::vector<int>> EulerTour(const Graph<T>& g,
     if (in[u] == -1) {
       in[u] = idx++;
       st.push(u);
-      for (const auto& e : g.Edges(u))
-        if (in[e.to] == -1) st.push(e.to);
+      for (int v : g[u]) {
+        if (in[v] == -1) st.push(v);
+      }
     } else {
       out[u] = idx;
     }

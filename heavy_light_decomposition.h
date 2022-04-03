@@ -6,15 +6,13 @@
 
 enum AttributeLocation { attr_on_node, attr_on_edge };
 
-template <typename T>
 class HeavyLightDecomposition {
  public:
   // Compute Heavy Light Decomposition on a rooted tree.
-  HeavyLightDecomposition(const Graph<T>& g, AttributeLocation loc,
-                          int root = 0)
+  HeavyLightDecomposition(const Graph& g, AttributeLocation loc, int root = 0)
       : g_(g), loc_(loc) {
-    dassert(g.IsTree());
-    attr_.resize(g.NumVertices());
+    dassert(IsTree(g));
+    attr_.resize(g.size());
     Dfs1(root, -1, 0);
     int index = 0;
     Dfs2(root, -1, root, index);
@@ -61,12 +59,12 @@ class HeavyLightDecomposition {
     a.parent = parent;
     a.size = 1;
     a.heavy = -1;
-    for (const auto& e : g_.Edges(node)) {
-      if (e.to == parent) continue;
-      Dfs1(e.to, node, depth + 1);
-      a.size += Size(e.to);
-      if (a.heavy == -1 || Size(a.heavy) < Size(e.to)) {
-        a.heavy = e.to;
+    for (int child : g_[node]) {
+      if (child == parent) continue;
+      Dfs1(child, node, depth + 1);
+      a.size += Size(child);
+      if (a.heavy == -1 || Size(a.heavy) < Size(child)) {
+        a.heavy = child;
       }
     }
   }
@@ -76,9 +74,9 @@ class HeavyLightDecomposition {
     a.head = head;
     if (a.heavy != -1) {
       Dfs2(a.heavy, node, head, index);
-      for (const auto& e : g_.Edges(node)) {
-        if (e.to == parent || e.to == a.heavy) continue;
-        Dfs2(e.to, node, e.to, index);
+      for (int child : g_[node]) {
+        if (child == parent || child == a.heavy) continue;
+        Dfs2(child, node, child, index);
       }
     }
     a.out = index;
@@ -90,7 +88,7 @@ class HeavyLightDecomposition {
   int32_t Out(int node) const { return attr_[node].out; }
   int32_t Size(int node) const { return attr_[node].size; }
 
-  const Graph<T>& g_;
+  const Graph& g_;
   const AttributeLocation loc_;
   struct Attr {
     int32_t depth;

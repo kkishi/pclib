@@ -3,16 +3,15 @@
 #include "fix.h"
 #include "graph.h"
 
-template <typename T>
-std::vector<int> DFSOrder(const Graph<T>& g, int root = 0) {
-  std::vector<bool> seen(g.NumVertices());
-  std::vector<int> order;
+std::vector<int64_t> DFSOrder(const Graph& g, int root = 0) {
+  std::vector<bool> seen(g.size());
+  std::vector<int64_t> order;
   Fix([&](auto rec, int node) -> void {
     if (seen[node]) return;
     seen[node] = true;
     order.push_back(node);
-    for (const auto& e : g.Edges(node)) {
-      rec(e.to);
+    for (int child : g[node]) {
+      rec(child);
     }
   })(root);
   return order;

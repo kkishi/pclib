@@ -740,3 +740,19 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "dfs_order",
+    srcs = ["dfs_order.h"],
+    deps = [":graph"],
+)
+
+cc_test(
+    name = "dfs_order_test",
+    srcs = ["dfs_order_test.cc"],
+    deps = [
+        ":dfs_order",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)

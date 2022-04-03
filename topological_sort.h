@@ -4,9 +4,8 @@
 
 #include "graph.h"
 
-template <typename T>
-std::pair<std::vector<int>, bool> TopologicalSort(const Graph<T>& graph) {
-  const int n = graph.NumVertices();
+std::pair<std::vector<int>, bool> TopologicalSort(const Graph& graph) {
+  const int n = graph.size();
   std::vector<bool> permanent(n), temporary(n);
   std::vector<int> ret;
   bool ok = true;
@@ -17,7 +16,7 @@ std::pair<std::vector<int>, bool> TopologicalSort(const Graph<T>& graph) {
       return;
     }
     temporary[n] = true;
-    for (const auto& e : graph.Edges(n)) visit(e.to);
+    for (int c : graph[n]) visit(c);
     temporary[n] = false;
     permanent[n] = true;
     ret.push_back(n);

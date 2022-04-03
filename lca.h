@@ -3,12 +3,11 @@
 #include "dassert.h"
 #include "graph.h"
 
-template <typename T>
 class RootedTree {
  public:
-  RootedTree(const Graph<T>& graph, int root = 0) : graph_(graph) {
-    dassert(graph.IsTree());
-    const int n = graph.NumVertices();
+  RootedTree(const Graph& graph, int root = 0) : graph_(graph) {
+    dassert(IsTree(graph));
+    const int n = graph.size();
     int p = 1;
     while ((1 << p) < n) ++p;
     parent_.resize(p);
@@ -16,7 +15,6 @@ class RootedTree {
       p.resize(n);
     }
     depth_.resize(n);
-    ascending_edge_.resize(n);
 
     Dfs(root, -1, 0);
 
@@ -55,29 +53,18 @@ class RootedTree {
   }
   int Depth(int i) const { return depth_[i]; }
   int Parent(int i) const { return parent_[0][i]; }
-  const Graph<int>::Edge& AscendingEdge(int i) const {
-    dassert(parent_[0][i] != -1);  // Check that i is not the root.
-    return graph_.Edges(i)[ascending_edge_[i]];
-  }
 
  private:
   void Dfs(int node, int parent, int depth) {
     parent_[0][node] = parent;
     depth_[node] = depth;
-    const auto& edges = graph_.Edges(node);
-    for (size_t i = 0; i < edges.size(); ++i) {
-      auto& e = edges[i];
-      int child = e.to;
-      if (child == parent) {
-        ascending_edge_[node] = i;
-        continue;
-      }
+    for (int child : graph_[node]) {
+      if (child == parent) continue;
       Dfs(child, node, depth + 1);
     }
   }
 
-  const Graph<T>& graph_;
+  const Graph& graph_;
   std::vector<std::vector<int>> parent_;
-  std::vector<int> ascending_edge_;
   std::vector<int> depth_;
 };
