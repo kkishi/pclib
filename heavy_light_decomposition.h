@@ -44,11 +44,11 @@ class HeavyLightDecomposition {
     return Depth(u) < Depth(v) ? u : v;
   }
 
-  int64_t IndexOf(int node) const {
+  int64_t Index(int node) const {
     dassert(loc_ == attr_on_node);
     return In(node);
   }
-  int64_t IndexOf(int u, int v) const {
+  int64_t Index(int u, int v) const {
     dassert(loc_ == attr_on_edge);
     return In(Parent(u) == v ? u : v);
   }
