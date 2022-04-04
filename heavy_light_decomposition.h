@@ -12,7 +12,7 @@ class HeavyLightDecomposition {
   // Compute Heavy Light Decomposition on a rooted tree.
   HeavyLightDecomposition(const Graph& g, AttributeLocation loc, int root = 0)
       : g_(g), loc_(loc) {
-    dassert(IsTree(g));
+    dassert(g.IsTree());
     attr_.resize(g.size());
 
     Fix([&](auto rec, int node, int parent, int depth) -> void {

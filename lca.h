@@ -7,7 +7,7 @@
 class RootedTree {
  public:
   RootedTree(const Graph& graph, int root = 0) : graph_(graph) {
-    dassert(IsTree(graph));
+    dassert(graph.IsTree());
     const int n = graph.size();
     int p = 1;
     while ((1 << p) < n) ++p;

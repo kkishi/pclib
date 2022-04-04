@@ -5,7 +5,7 @@
 
 std::pair<std::vector<int>, std::vector<int>> EulerTour(const Graph& g,
                                                         int root = 0) {
-  dassert(IsTree(g));
+  dassert(g.IsTree());
   const int n = g.size();
   std::vector<int> in(n, -1), out(n);
   int idx = 0;

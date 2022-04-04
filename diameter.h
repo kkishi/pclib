@@ -6,7 +6,7 @@
 
 template <typename T>
 std::tuple<int, int, int> Diameter(const WeightedGraph<T>& g) {
-  dassert(IsTree(g));
+  dassert(g.IsTree());
 
   auto dist = Dijkstra(g, 0).dist;
   int furthest = -1;
