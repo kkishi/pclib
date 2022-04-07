@@ -5,7 +5,7 @@
 
 namespace mermaid {
 
-class Graph {
+class Flowchart {
  public:
   void Node(int i, std::string s) { node_[i].emplace_back(s); }
   void Edge(int u, int v, std::string s) { edge_[{u, v}].emplace_back(s); }
