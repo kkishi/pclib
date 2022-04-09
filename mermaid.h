@@ -1,14 +1,27 @@
 #include <cassert>
 #include <fstream>
 #include <map>
+#include <sstream>
 #include <vector>
+
+#include "debug.h"
 
 namespace mermaid {
 
 class Flowchart {
  public:
-  void Node(int i, std::string s) { node_[i].emplace_back(s); }
-  void Edge(int u, int v, std::string s) { edge_[{u, v}].emplace_back(s); }
+  template <typename... Ts>
+  void Node(int i, const Ts&... args) {
+    std::stringstream ss;
+    debug(ss, args...);
+    node_[i].emplace_back(ss.str());
+  }
+  template <typename... Ts>
+  void Edge(int u, int v, const Ts&... args) {
+    std::stringstream ss;
+    debug(ss, args...);
+    edge_[{u, v}].emplace_back(ss.str());
+  }
   bool WriteTo(std::string file) const {
     std::ofstream fs(file);
     if (!fs.is_open()) return false;
@@ -26,7 +39,7 @@ class Flowchart {
       if (!ss.empty()) {
         fs << "|";
         for (size_t i = 0; i < ss.size(); ++i) {
-          if (i > 0) fs << " ";
+          if (i > 0) fs << "\\n";
           fs << ss[i];
         }
         fs << "|";

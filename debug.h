@@ -7,44 +7,47 @@
 #include "type_traits.h"
 
 template <typename T, typename... Ts>
-void debug(const T& value, const Ts&... args);
+void debug(std::ostream& os, const T& value, const Ts&... args);
 template <typename T>
-void debug(const T& v) {
-  if constexpr (is_dereferenceable<T>::value) {
-    std::cerr << "{";
+void debug(std::ostream& os, const T& v) {
+  if constexpr (std::is_same<char*, std::decay_t<T>>::value ||
+                std::is_same<std::string, T>::value) {
+    os << v;
+  } else if constexpr (is_dereferenceable<T>::value) {
+    os << "{";
     if (v) {
-      debug(*v);
+      debug(os, *v);
     } else {
-      std::cerr << "nil";
+      os << "nil";
     }
-    std::cerr << "}";
-  } else if constexpr (is_iterable<T>::value &&
-                       !std::is_same<T, std::string>::value) {
-    std::cerr << "{";
+    os << "}";
+  } else if constexpr (is_iterable<T>::value) {
+    std::cout << typeid(v).name() << std::endl;
+    os << "{";
     for (auto it = std::begin(v); it != std::end(v); ++it) {
-      if (it != std::begin(v)) std::cerr << ", ";
-      debug(*it);
+      if (it != std::begin(v)) os << ", ";
+      debug(os, *it);
     }
-    std::cerr << "}";
+    os << "}";
   } else if constexpr (is_applicable<T>::value) {
-    std::cerr << "{";
-    std::apply([](const auto&... args) { debug(args...); }, v);
-    std::cerr << "}";
+    os << "{";
+    std::apply([&os](const auto&... args) { debug(os, args...); }, v);
+    os << "}";
   } else {
-    std::cerr << v;
+    os << v;
   }
 }
 template <typename T, typename... Ts>
-void debug(const T& value, const Ts&... args) {
-  debug(value);
-  std::cerr << ", ";
-  debug(args...);
+void debug(std::ostream& os, const T& value, const Ts&... args) {
+  debug(os, value);
+  os << ", ";
+  debug(os, args...);
 }
 #if DEBUG
 #define dbg(...)                        \
   do {                                  \
     cerr << #__VA_ARGS__ << ": ";       \
-    debug(__VA_ARGS__);                 \
+    debug(std::cerr, __VA_ARGS__);      \
     cerr << " (L" << __LINE__ << ")\n"; \
   } while (0)
 #else
