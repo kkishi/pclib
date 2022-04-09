@@ -1,3 +1,6 @@
+#ifndef MACROS_H_
+#define MACROS_H_
+
 #include <algorithm>
 #include <bitset>
 #include <numeric>
@@ -145,9 +148,6 @@ typename T::value_type accumulate(const T& v) {
   return std::accumulate(v.begin(), v.end(), typename T::value_type());
 }
 
-// big = 2305843009213693951 = 2^61-1 ~= 2.3*10^18
-const int64_t big = std::numeric_limits<int64_t>::max() / 4;
-
 using i64 = int64_t;
 using i32 = int32_t;
 
@@ -159,3 +159,5 @@ template <typename T>
 using V = std::vector<T>;
 template <typename T>
 using VV = V<V<T>>;
+
+#endif  // MACROS_H_

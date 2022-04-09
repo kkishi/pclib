@@ -4,14 +4,21 @@
 #include <functional>
 #include <iostream>
 
+#include "constants.h"
 #include "type_traits.h"
 
 template <typename T, typename... Ts>
 void debug(std::ostream& os, const T& value, const Ts&... args);
 template <typename T>
 void debug(std::ostream& os, const T& v) {
-  if constexpr (std::is_same<char*, std::decay_t<T>>::value ||
-                std::is_same<std::string, T>::value) {
+  if constexpr (std::is_same<int64_t, std::decay_t<T>>::value) {
+    if (v == big) {
+      os << "big";
+    } else {
+      os << v;
+    }
+  } else if constexpr (std::is_same<char*, std::decay_t<T>>::value ||
+                       std::is_same<std::string, T>::value) {
     os << v;
   } else if constexpr (is_dereferenceable<T>::value) {
     os << "{";
@@ -22,7 +29,6 @@ void debug(std::ostream& os, const T& v) {
     }
     os << "}";
   } else if constexpr (is_iterable<T>::value) {
-    std::cout << typeid(v).name() << std::endl;
     os << "{";
     for (auto it = std::begin(v); it != std::end(v); ++it) {
       if (it != std::begin(v)) os << ", ";

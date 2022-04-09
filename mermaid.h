@@ -8,6 +8,8 @@
 
 namespace mermaid {
 
+#if DEBUG
+
 class Flowchart {
  public:
   template <typename... Ts>
@@ -22,7 +24,7 @@ class Flowchart {
     debug(ss, args...);
     edge_[{u, v}].emplace_back(ss.str());
   }
-  bool WriteTo(std::string file) const {
+  bool WriteTo(const std::string& file) const {
     std::ofstream fs(file);
     if (!fs.is_open()) return false;
     fs << "flowchart TD;" << std::endl;
@@ -55,5 +57,18 @@ class Flowchart {
   std::map<int32_t, std::vector<std::string>> node_;
   std::map<std::pair<int32_t, int32_t>, std::vector<std::string>> edge_;
 };
+
+#else
+
+class Flowchart {
+ public:
+  template <typename... Ts>
+  void Node(int, const Ts&...) const {}
+  template <typename... Ts>
+  void Edge(int, int, const Ts&...) const {}
+  bool WriteTo(const std::string&) const { return true; }
+};
+
+#endif
 
 }  // namespace mermaid
