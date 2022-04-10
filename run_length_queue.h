@@ -7,6 +7,7 @@ class RunLengthQueue : public std::deque<std::pair<int64_t, int64_t>> {
 #define PUSH(Dir, dir)                       \
   void Push##Dir(int64_t val, int64_t cnt) { \
     size_ += cnt;                            \
+    sum_ += val * cnt;                       \
     if (!empty()) {                          \
       auto& [v, c] = dir();                  \
       if (v == val) {                        \
@@ -30,6 +31,7 @@ class RunLengthQueue : public std::deque<std::pair<int64_t, int64_t>> {
       cnt -= p;                                                    \
       c -= p;                                                      \
       size_ -= p;                                                  \
+      sum_ -= v * p;                                               \
       if (c == 0) pop_##dir();                                     \
     }                                                              \
     return ret;                                                    \
@@ -39,7 +41,9 @@ class RunLengthQueue : public std::deque<std::pair<int64_t, int64_t>> {
 #undef POP
 
   int64_t Size() const { return size_; }
+  int64_t Sum() const { return sum_; }
 
  private:
   int64_t size_ = 0;
+  int64_t sum_ = 0;
 };
