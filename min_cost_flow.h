@@ -45,3 +45,18 @@ class MinCostFlow {
   int n_ = 0;  // The number of nodes in the original graph.
   std::vector<std::tuple<int, int, Cap, Cost, Cap>> edges_;
 };
+
+template <typename Cap, typename Cost>
+std::vector<std::pair<Cap, Cost>> InterpolateSlope(
+    const std::vector<std::pair<Cap, Cost>>& slope) {
+  dassert(slope.size() >= 1);
+  std::vector<std::pair<Cap, Cost>> s = {slope[0]};
+  for (size_t i = 0; i < slope.size() - 1; ++i) {
+    auto [x0, y0] = slope[i];
+    auto [x1, y1] = slope[i + 1];
+    for (Cap x = x0 + 1; x <= x1; ++x) {
+      s.emplace_back(x, y0 + (y1 - y0) / (x1 - x0) * (x - x0));
+    }
+  }
+  return s;
+}
