@@ -29,22 +29,22 @@ class Flowchart {
     if (!fs.is_open()) return false;
     fs << "flowchart TD;" << std::endl;
     for (const auto& [i, ss] : node_) {
-      fs << "  " << i << "((" << i;
+      fs << "  " << i << "((\"" << i;
       for (const auto& s : ss) {
         fs << "\\n" << s;
       }
-      fs << "));" << std::endl;
+      fs << "\"));" << std::endl;
     }
     for (const auto& [p, ss] : edge_) {
       auto [u, v] = p;
       fs << "  " << u << "-->";
       if (!ss.empty()) {
-        fs << "|";
+        fs << "|\"";
         for (size_t i = 0; i < ss.size(); ++i) {
           if (i > 0) fs << "\\n";
           fs << ss[i];
         }
-        fs << "|";
+        fs << "\"|";
       }
       fs << v << ";" << std::endl;
     }
