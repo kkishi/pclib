@@ -1,4 +1,6 @@
+#define DEBUG 1
 #include "debug.h"
+#undef DEBUG
 
 #include <set>
 #include <vector>
@@ -18,19 +20,19 @@ TEST(debug, all) {
   using std::vector;
 
   // Just confirm that it doesn't cause compilation error.
-  debug(int{42});
-  debug((array<int, 4>{42}));
-  debug((map<int, string>{{42, "foo"}}));
-  debug(optional<int>{});
-  debug(optional<int>{42});
-  debug((pair<int, double>{1, 2.5}));
-  debug((set<int>{1, 2, 3}));
-  debug(string{"str"});
-  debug((tuple<int, int, int>{4, 5, 6}));
-  debug((vector<int>{1, 2, 3}));
+  dbg(int{42});
+  dbg((array<int, 4>{42}));
+  dbg((map<int, string>{{42, "foo"}}));
+  dbg(optional<int>{});
+  dbg(optional<int>{42});
+  dbg((pair<int, double>{1, 2.5}));
+  dbg((set<int>{1, 2, 3}));
+  dbg(string{"str"});
+  dbg((tuple<int, int, int>{4, 5, 6}));
+  dbg((vector<int>{1, 2, 3}));
   int i = 42;
-  debug(&i);
-  debug((int*){nullptr});
-  debug((map<pair<set<int>, vector<pair<string, double>>>,
-             array<tuple<string>, 1>>{}));
+  dbg(&i);
+  dbg((int*){nullptr});
+  dbg((map<pair<set<int>, vector<pair<string, double>>>,
+           array<tuple<string>, 1>>{}));
 }

@@ -50,11 +50,11 @@ void debug(std::ostream& os, const T& value, const Ts&... args) {
   debug(os, args...);
 }
 #if DEBUG
-#define dbg(...)                        \
-  do {                                  \
-    cerr << #__VA_ARGS__ << ": ";       \
-    debug(std::cerr, __VA_ARGS__);      \
-    cerr << " (L" << __LINE__ << ")\n"; \
+#define dbg(...)                             \
+  do {                                       \
+    std::cerr << #__VA_ARGS__ << ": ";       \
+    debug(std::cerr, __VA_ARGS__);           \
+    std::cerr << " (L" << __LINE__ << ")\n"; \
   } while (0)
 #else
 #define dbg(...)
