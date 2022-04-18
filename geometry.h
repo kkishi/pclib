@@ -4,151 +4,134 @@
 
 #include "dassert.h"
 
-template <typename T>
-struct Vector {
-  T x = T(), y = T();
-  T Norm() const { return std::sqrt(x * x + y * y); }
-  Vector Conj() const { return {x, -y}; }
-  T Real() const { return x; }
-  T Imag() const { return y; }
-  T Arg() const { return std::atan2(Imag(), Real()); }
-  Vector& operator+=(const Vector& v) {
-    (*this).x += v.x;
-    (*this).y += v.y;
-    return *this;
-  }
-  Vector operator+(const Vector& v) const { return Vector(*this) += v; }
-  Vector& operator-=(const Vector& v) {
-    (*this).x -= v.x;
-    (*this).y -= v.y;
-    return *this;
-  }
-  Vector operator-(const Vector& v) const { return Vector(*this) -= v; }
-  Vector& operator*=(T t) {
-    (*this).x *= t;
-    (*this).y *= t;
-    return *this;
-  }
-  Vector operator*(T t) const { return Vector(*this) *= t; }
-  Vector& operator*=(const Vector& v) {
-    T r = x * v.x - y * v.y;
-    T i = x * v.y + y * v.x;
-    (*this).x = r;
-    (*this).y = i;
-    return *this;
-  }
-  Vector operator*(const Vector& v) const { return Vector(*this) *= v; }
-  Vector& operator/=(T v) {
-    (*this).x /= v;
-    (*this).y /= v;
-    return *this;
-  }
-  Vector operator/(T v) const { return Vector(*this) /= v; }
-  Vector& operator/=(const Vector& v) {
-    T q = v.x * v.x + v.y * v.y;
-    dassert(q != 0);
-    T r = x * v.x + y * v.y;
-    T i = x * v.y - y * v.x;
-    (*this).x = r;
-    (*this).y = i;
-    return *this;
-  }
-  Vector operator/(const Vector& v) const { return Vector(*this) /= v; }
-  bool operator<(const Vector& v) const {
-    if (x != v.x) {
-      return x < v.x;
-    }
-    return y < v.y;
-  }
-  Vector Rot90() const { return {-y, x}; }
+using Float = long double;
 
-  // TODO:
-  // * Rename this struct to Point and add method that treats this struct as
-  //   a 2D vector (e.g., dot product) and as a complex number (arc, multiple
-  //   number multiplication, ...).
-  //   Check the STL functions:
-  //   https://ja.cppreference.com/w/cpp/numeric/complex Check the wikipedia
-  //   page: https://en.wikipedia.org/wiki/Complex_number
-  // * Replace Rot90 with more generic Rotate(arg) function.
-  // * Think about a way to visualize these objects for debugging. One idea is
-  //   to add an external library that renders these objects using Cairo.
-  //   For visualization, WolframAlpha is also extremely useful, for example it
-  //   even calculates intersections if provided 2 circles. Try:
-  //   (x-1)^2+y^2=5^2, (x+7)^2+y^2=3^2
-  // * Add common constants like pi.
+struct Point {
+  Float x = 0, y = 0;
+  Float Norm() const { return std::sqrt(x * x + y * y); }
+  Point Conj() const { return {x, -y}; }
+  Float Real() const { return x; }
+  Float Imag() const { return y; }
+  Float Arg() const { return std::atan2(Imag(), Real()); }
+  Point& operator+=(const Point& p) {
+    this->x += p.x;
+    this->y += p.y;
+    return *this;
+  }
+  Point operator+(const Point& p) const { return Point(*this) += p; }
+  Point& operator-=(const Point& p) {
+    this->x -= p.x;
+    this->y -= p.y;
+    return *this;
+  }
+  Point operator-(const Point& p) const { return Point(*this) -= p; }
+  Point operator-() const { return {-x, -y}; }
+  Point& operator*=(Float t) {
+    this->x *= t;
+    this->y *= t;
+    return *this;
+  }
+  Point operator*(Float t) const { return Point(*this) *= t; }
+  Point& operator*=(const Point& p) {
+    Float r = x * p.x - y * p.y;
+    Float i = x * p.y + y * p.x;
+    this->x = r;
+    this->y = i;
+    return *this;
+  }
+  Point operator*(const Point& p) const { return Point(*this) *= p; }
+  Point& operator/=(Float t) {
+    this->x /= t;
+    this->y /= t;
+    return *this;
+  }
+  Point operator/(Float t) const { return Point(*this) /= t; }
+  Point& operator/=(const Point& p) {
+    Float q = p.x * p.x + p.y * p.y;
+    dassert(q != 0);
+    Float r = x * p.x + y * p.y;
+    Float i = x * p.y - y * p.x;
+    this->x = r;
+    this->y = i;
+    return *this;
+  }
+  Point operator/(const Point& p) const { return Point(*this) /= p; }
+  bool operator<(const Point& p) const {
+    if (x != p.x) {
+      return x < p.x;
+    }
+    return y < p.y;
+  }
+  Point Rot90() const { return {-y, x}; }
+  static Point Polar(Float r, Float theta) {
+    return Point{cos(theta), sin(theta)} *= r;
+  }
 };
 
-template <typename T>
-T Cross(const Vector<T>& a, const Vector<T>& b) {
-  return (a.Conj() * b).Imag();
-}
+Float Cross(const Point& p, const Point& q) { return p.x * q.y - p.y * q.x; }
 
-template <typename T>
-std::istream& operator>>(std::istream& is, Vector<T>& v) {
-  is >> v.x >> v.y;
+std::istream& operator>>(std::istream& is, Float& f) {
+  is >> f;
   return is;
 }
 
-template <typename T>
-std::ostream& operator<<(std::ostream& os, const Vector<T>& v) {
-  os << "(" << v.x << "," << v.y << ")";
+std::istream& operator>>(std::istream& is, Point& p) {
+  is >> p.x >> p.y;
+  return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const Point& p) {
+  os << "(" << p.x << "," << p.y << ")";
   return os;
 }
 
-template <typename T>
 struct LineSegment {
-  Vector<T> a, b;
-  bool Intersect(const LineSegment& l) {
-    const double eps = 1e-8;
-    return Cross(b - a, l.a - a) * Cross(b - a, l.b - a) < eps &&
-           Cross(l.b - l.a, a - l.a) * Cross(l.b - l.a, b - l.a) < eps;
-  }
+  Point p, q;
 };
 
-template <typename T>
-int Sign(T x) {
-  static const T eps = 1e-8;
+struct Line {
+  Point p, q;
+};
+
+std::ostream& operator<<(std::ostream& os, const Line& l) {
+  os << "(" << l.p << "," << l.q << ")";
+  return os;
+}
+
+int Sign(Float x) {
+  const Float eps = 1e-8L;
   if (x < -eps) return -1;
   if (x > eps) return 1;
   return 0;
 }
 
-template <typename T>
-struct Line {
-  Vector<T> p, q;
-};
-
-template <typename T>
-std::ostream& operator<<(std::ostream& os, const Line<T>& l) {
-  os << "(" << l.p << "," << l.q << ")";
-  return os;
+bool Intersect(const LineSegment& s, const LineSegment& t) {
+  return Sign(Cross(s.q - s.p, t.p - s.p) * Cross(s.q - s.p, t.q - s.p)) <= 0 &&
+         Sign(Cross(t.q - t.p, s.p - t.p) * Cross(t.q - t.p, s.q - t.p)) <= 0;
 }
 
-template <typename T>
-bool Intersect(const Line<T>& l, const Vector<T>& p) {
+bool Intersect(const Line& l, const Point& p) {
   return Sign(Cross(l.p - p, l.q - p)) == 0;
 };
 
-template <typename T>
 struct Circle {
-  using V = Vector<T>;
-  V center;
-  double radius;
+  Point center;
+  Float radius;
 
-  std::vector<V> Intersections(const Circle& c) const {
+  std::vector<Point> Intersections(const Circle& c) const {
     // TODO: Handle cases where there is no intersection and there is only one
     // intersection.
-    auto sq = [](T x) -> T { return x * x; };
-    V v = c.center - center;
-    T l = v.Norm();
+    auto sq = [](Float x) -> Float { return x * x; };
+    Point p = c.center - center;
+    Float l = p.Norm();
     if (l >= radius + c.radius || (l + radius) <= c.radius ||
         (l + c.radius) <= radius) {
       return {};
     }
-    T x = (sq(radius) - sq(c.radius) + sq(l)) / (2 * l);
-    T a = std::sqrt(sq(radius) - sq(x));
-    V perpendicular_foot = v * (x / l);
-    V perpendicular = v.Rot90() * (a / l);
+    Float x = (sq(radius) - sq(c.radius) + sq(l)) / (2 * l);
+    Float a = std::sqrt(sq(radius) - sq(x));
+    Point perpendicular_foot = p * (x / l);
+    Point perpendicular = p.Rot90() * (a / l);
     return {center + perpendicular_foot + perpendicular,
             center + perpendicular_foot - perpendicular};
   }
@@ -159,4 +142,4 @@ struct Circle {
   // value (or provide utility functions that uses EPS inside of it).
 };
 
-const double pi = acos(-1);
+const Float pi = 3.141592653589793238462643383279502884L;
