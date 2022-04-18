@@ -106,6 +106,30 @@ struct LineSegment {
 };
 
 template <typename T>
+int Sign(T x) {
+  static const T eps = 1e-8;
+  if (x < -eps) return -1;
+  if (x > eps) return 1;
+  return 0;
+}
+
+template <typename T>
+struct Line {
+  Vector<T> p, q;
+};
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Line<T>& l) {
+  os << "(" << l.p << "," << l.q << ")";
+  return os;
+}
+
+template <typename T>
+bool Intersect(const Line<T>& l, const Vector<T>& p) {
+  return Sign(Cross(l.p - p, l.q - p)) == 0;
+};
+
+template <typename T>
 struct Circle {
   using V = Vector<T>;
   V center;
