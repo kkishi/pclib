@@ -1,4 +1,5 @@
 #include <cmath>
+#include <istream>
 #include <ostream>
 #include <vector>
 
@@ -70,11 +71,6 @@ struct Point {
 
 Float Cross(const Point& p, const Point& q) { return p.x * q.y - p.y * q.x; }
 
-std::istream& operator>>(std::istream& is, Float& f) {
-  is >> f;
-  return is;
-}
-
 std::istream& operator>>(std::istream& is, Point& p) {
   is >> p.x >> p.y;
   return is;
@@ -99,7 +95,7 @@ std::ostream& operator<<(std::ostream& os, const Line& l) {
 }
 
 int Sign(Float x) {
-  const Float eps = 1e-8L;
+  const Float eps = 1e-9L;
   if (x < -eps) return -1;
   if (x > eps) return 1;
   return 0;
