@@ -9,7 +9,7 @@ class Rand {
   double Double(double a, double b) {
     return std::uniform_real_distribution<double>(a, b)(generator_);
   }
-  char Alpha() { return 'a' + Int(0, 25); }
+  char Alpha() { return Int('a', 'z'); }
   template <typename T>
   void Shuffle(std::vector<T>& v) {
     for (size_t i = 0; i < v.size() - 1; ++i) {
