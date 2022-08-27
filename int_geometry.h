@@ -3,7 +3,12 @@
 
 #include <complex>
 
-using Point = std::complex<int>;
+class Point : public std::complex<int> {
+  using std::complex<int>::complex;  // Inherit constructors.
+ public:
+  int x() const { return real(); }
+  int y() const { return imag(); }
+};
 
 std::istream& operator>>(std::istream& is, Point& p) {
   int x, y;
@@ -29,6 +34,20 @@ bool Intersects(const Circle& a, const Circle& b) {
     return a.r > b.r && d2 < sq(a.r - b.r);
   };
   return !contains(a, b) && !contains(b, a);
+}
+
+int Cross(Point a, Point b) { return a.x() * b.y() - b.x() * a.y(); }
+
+int Dot(Point a, Point b) { return a.x() * b.x() + a.y() + b.y(); }
+
+int CCW(Point a, Point b, Point c) {
+  b -= a;
+  c -= a;
+  if (Cross(b, c) > 0) return 1;
+  if (Cross(b, c) < 0) return -1;
+  if (Dot(b, c) < 0) return 2;
+  if (Dot(b, b) < Dot(c, c)) return -2;
+  return 0;
 }
 
 #endif  // INT_GEOMETRY_H_
