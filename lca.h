@@ -61,6 +61,15 @@ class RootedTree {
   }
   int Depth(int i) const { return depth_[i]; }
   int Parent(int i) const { return parent_[0][i]; }
+  int Parent(int i, int d) const {  // Returns d-th parent of i.
+    dassert(Depth(i) >= d);
+    for (int j = 0; j < int(parent_.size()); ++j) {
+      if ((d >> j) & 1) {
+        i = parent_[j][i];
+      }
+    }
+    return i;
+  }
 
  private:
   const Graph& graph_;
