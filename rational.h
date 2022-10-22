@@ -1,37 +1,38 @@
 #include <cstdint>
 #include <numeric>
 #include <ostream>
-#include <utility>
 
-class Rational : public std::pair<int64_t, int64_t> {
+class Rational {
  public:
-  using std::pair<int64_t, int64_t>::pair;  // Inherit constructors.
-  void Normalize() {
-    auto& [p, q] = *this;
-    if (q == 0) {
-      p = 0;
+  Rational(int64_t n = 0, int64_t d = 1) : n_(n), d_(d) {
+    if (d_ == 0) {
+      n_ = 1;
       return;
     }
-    if (p == 0) {
-      q = 1;
+    if (n_ == 0) {
+      d_ = 1;
       return;
     }
-    if (q < 0) {
-      p = -p;
-      q = -q;
+    int64_t g = std::gcd(n_, d_);
+    n_ /= g;
+    d_ /= g;
+    if (d_ < 0) {
+      n_ = -n_;
+      d_ = -d_;
     }
-    int64_t g = std::gcd(p, q);
-    p /= g;
-    q /= g;
   }
-  static Rational Normalized(int64_t p, int64_t q) {
-    Rational r = {p, q};
-    r.Normalize();
-    return r;
-  }
+  bool operator<(const Rational& r) const { return n_ * r.d_ < r.n_ * d_; }
+  bool operator<=(const Rational& r) const { return n_ * r.d_ <= r.n_ * d_; }
+  bool operator==(const Rational& r) const { return n_ == r.n_ && d_ == r.d_; }
+  int64_t n() const { return n_; }
+  int64_t d() const { return d_; }
+  std::pair<int64_t, int64_t> ToPair() const { return {n_, d_}; }
+
+ private:
+  int64_t n_, d_;
 };
 
 std::ostream& operator<<(std::ostream& out, const Rational& r) {
-  out << r.first << '/' << r.second;
+  out << r.n() << '/' << r.d();
   return out;
 }
