@@ -1,5 +1,5 @@
-#ifndef DIJKSTRA_GENERIC_H_
-#define DIJKSTRA_GENERIC_H_
+#ifndef DIJKSTRA_UNORDERED_MAP_H_
+#define DIJKSTRA_UNORDERED_MAP_H_
 
 #include <functional>
 #include <map>
@@ -12,17 +12,20 @@ std::unordered_map<State, Cost> Dijkstra(
   using P = std::pair<Cost, State>;
   std::priority_queue<P, std::vector<P>, std::greater<P>> que;
   std::unordered_map<State, Cost> dist;
-  auto push = [&](State s, Cost c) {
-    auto [it, ok] = dist.emplace(s, c);
-    if (ok || chmin(it->second, c)) que.emplace(c, s);
+  auto push = [&](State state, Cost cost) {
+    auto [it, ok] = dist.emplace(state, cost);
+    if (ok || chmin(it->second, cost)) que.emplace(cost, state);
   };
   push(init, 0);
   while (!que.empty()) {
-    auto [c, s] = que.top();
+    auto [cost, state] = que.top();
     que.pop();
-    if (dist[s] >= c) next(s, [&](State ns, int dc) { push(ns, c + dc); });
+    if (dist[state] < cost) continue;
+    next(state, [&](State next_state, int cost_diff) {
+      push(next_state, cost + cost_diff);
+    });
   }
   return dist;
 }
 
-#endif  // DIJKSTRA_GENERIC_H_
+#endif  // DIJKSTRA_UNORDERED_MAP_H_
