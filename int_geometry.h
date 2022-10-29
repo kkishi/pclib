@@ -50,4 +50,6 @@ int CCW(Point a, Point b, Point c) {
   return 0;
 }
 
+Point Rot90(Point p) { return {-p.y(), p.x()}; }
+
 #endif  // INT_GEOMETRY_H_
