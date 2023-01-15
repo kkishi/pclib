@@ -19,6 +19,11 @@ class RollingHash {
     hash_ = Add(hash_, Mul(BasePow(values_.size()), x));
     values_.push_front(x);
   }
+  void PopBack() {
+    u64 x = values_.back();
+    values_.pop_back();
+    hash_ = Mul(Sub(hash_, x), inv_base());
+  }
   void PopFront() {
     u64 x = values_.front();
     values_.pop_front();
@@ -26,6 +31,7 @@ class RollingHash {
   }
   u64 hash() const { return hash_; }
   bool operator==(const RollingHash& h) const { return hash_ == h.hash_; }
+  const std::deque<u64>& values() const { return values_; };  // For debugging
 
   static u64 mod() { return mod_; }
   static u64 base() {
@@ -43,6 +49,12 @@ class RollingHash {
     }
     return base_;
   }
+  static u64 inv_base() {
+    if (inv_base_ == 0) {
+      inv_base_ = Pow(base(), mod() - 2, mod());
+    }
+    return inv_base_;
+  }
 
  private:
   u64 BasePow(int n) {
@@ -58,6 +70,7 @@ class RollingHash {
 
   static const u64 mod_ = (1ULL << 61) - 1;
   inline static u64 base_ = 0;
+  inline static u64 inv_base_ = 0;
   inline static std::vector<u64> base_pow_;
   u64 hash_ = 0;
   int size_ = 0;
