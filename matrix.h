@@ -30,11 +30,17 @@ Matrix<T, N, M> Plus(const Matrix<T, N, M>& a, const Matrix<T, N, M>& b) {
 }
 
 template <typename T, std::size_t N>
-Matrix<T, N, N> Pow(const Matrix<T, N, N>& x, int64_t y) {
-  Matrix<T, N, N> a = {}, b = x;
+Matrix<T, N, N> Identity() {
+  Matrix<T, N, N> a = {};
   for (std::size_t i = 0; i < N; ++i) {
     a[i][i] = 1;
   }
+  return a;
+}
+
+template <typename T, std::size_t N>
+Matrix<T, N, N> Pow(const Matrix<T, N, N>& x, int64_t y) {
+  Matrix<T, N, N> a = Identity<T, N>(), b = x;
   for (; y; y >>= 1) {
     if (y & 1) {
       a = Mult(a, b);

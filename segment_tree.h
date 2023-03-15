@@ -18,7 +18,11 @@ class SegmentTree {
     while (true) {
       v_[index] = v;
       if (index == 0) break;
-      v = operation_(v, v_[index + (IsRight(index) ? -1 : 1)]);
+      if (IsRight(index)) {
+        v = operation_(v_[index - 1], v);
+      } else {
+        v = operation_(v, v_[index + 1]);
+      }
       index = Parent(index);
     }
   }
@@ -33,7 +37,7 @@ class SegmentTree {
       }
       l = Parent(l);
       if (IsRight(r)) {
-        v = operation_(v, v_[r - 1]);
+        v = operation_(v_[r - 1], v);
       }
       r = Parent(r);
     }
