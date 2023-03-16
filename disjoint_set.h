@@ -1,3 +1,6 @@
+#ifndef DISJOINT_SET_H_
+#define DISJOINT_SET_H_
+
 #include <utility>
 #include <vector>
 
@@ -27,3 +30,5 @@ class DisjointSet {
  private:
   std::vector<int> parent_, size_;
 };
+
+#endif  // DISJOINT_SET_H_
