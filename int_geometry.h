@@ -79,16 +79,23 @@ bool Intersects(const Circle& a, const Circle& b) {
 
 using Polygon = std::vector<Point>;
 
-int Contains(const Polygon& P, Point p) {
+// Returns the position of a point p relative to a convex hull P. This returns:
+// * 0 if p is outside of P
+// * 1 if p is inside of P
+// * 2 if p is on the edge of P
+// This is based on the algorithm described here:
+// https://atcoder.jp/contests/abc296/editorial/6109
+int ConvexHullPointPosition(const Polygon& P, Point p) {
   int n = P.size();
-  auto lof = [&](Point a, Point b) { return Cross(b - a, p - a) > 0; };
-  auto rof = [&](Point a, Point b) { return Cross(b - a, p - a) < 0; };
-  if (rof(P[0], P[1])) return 0;
-  if (lof(P[0], P[n - 1])) return 0;
-  int i = BinarySearch<int>(n - 1, 1, [&](int i) { return !lof(P[0], P[i]); });
-  if (rof(P[i - 1], P[i])) return 0;
-  auto on = [&](Point a, Point b) { return CCW(a, b, p) == 0; };
-  if (on(P[0], P[1]) || on(P[i - 1], P[i]) || on(P[0], P[n - 1])) return 2;
+  auto cross = [&](Point a, Point b) { return Cross(b - a, p - a); };
+  int c1 = cross(P[0], P[1]);
+  int c2 = cross(P[n - 1], P[0]);
+  if (c1 < 0 || c2 < 0) return 0;
+  int i = BinarySearch<int>(n - 1, 1,
+                            [&](int i) { return cross(P[0], P[i]) <= 0; });
+  int c3 = cross(P[i - 1], P[i]);
+  if (c3 < 0) return 0;
+  if (c1 == 0 || c2 == 0 || c3 == 0) return 2;
   return 1;
 }
 
