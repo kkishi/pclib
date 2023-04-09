@@ -43,7 +43,7 @@ void write_to_cout(const T& value, const Ts&... args) {
 #define wt(...)                 \
   do {                          \
     write_to_cout(__VA_ARGS__); \
-    cout << '\n';               \
+    std::cout << '\n';          \
   } while (0)
 
 template <typename T>
