@@ -9,6 +9,7 @@ struct Interval {
   int64_t left, right, value;
   bool Contains(int64_t x) const { return left <= x && x < right; }
   bool operator<(const Interval& i) const { return left < i.left; };
+  int64_t Length() const { return right - left; }
 };
 
 std::ostream& operator<<(std::ostream& os, const Interval& i) {
