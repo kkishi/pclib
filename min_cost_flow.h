@@ -13,8 +13,9 @@ class MinCostFlow {
     n_ = std::max(n_, std::max(from, to) + 1);
   }
   std::pair<Cap, Cost> Flow(int s, int t) const {
-    int S = n_, T = n_ + 1;
-    atcoder::mcf_graph<Cap, Cost> g(n_ + 2);
+    int n = std::max(n_, std::max(s, t) + 1);
+    int S = n, T = n + 1;
+    atcoder::mcf_graph<Cap, Cost> g(n + 2);
     g.add_edge(t, s, std::numeric_limits<Cap>::max(), 0);
     Cost sum = 0;
     for (auto [from, to, cap, cost, min_flow] : edges_) {
