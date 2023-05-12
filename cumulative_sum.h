@@ -12,7 +12,7 @@ class CumulativeSum1D {
   }
   // Returns sum(val(r)) for i<=r<=j.
   T Get(int i, int j) const {
-    dassert(i <= j);
+    if (i > j) return 0;
     return Get(j) - Get(i - 1);
   }
   // Returns sum(val(r)) for r<=i.
@@ -44,7 +44,7 @@ class CumulativeSum2D {
   }
   // Returns sum(val(r, c)) for i<=r<=k, j<=c<=l.
   T Get(int i, int j, int k, int l) const {
-    dassert(i <= k && j <= l);
+    if (i > k || j > l) return 0;
     return Get(k, l) - Get(i - 1, l) - Get(k, j - 1) + Get(i - 1, j - 1);
   }
   // Returns sum(val(r, c)) for r<=i, c<=j.
