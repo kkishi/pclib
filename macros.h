@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <bitset>
+#include <limits>
 #include <numeric>
 #include <queue>
 #include <type_traits>
@@ -142,6 +143,9 @@ template <typename T>
 void reverse(T& v) {
   return std::reverse(v.begin(), v.end());
 }
+
+bool islower(char c) { return 'a' <= c && c <= 'z'; }
+bool isupper(char c) { return 'A' <= c && c <= 'Z'; }
 
 template <typename T>
 typename T::value_type accumulate(const T& v) {
