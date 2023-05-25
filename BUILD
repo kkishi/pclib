@@ -12,8 +12,7 @@ cc_test(
     srcs = ["extgcd_test.cc"],
     deps = [
         ":extgcd",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -27,8 +26,7 @@ cc_test(
     srcs = ["rational_test.cc"],
     deps = [
         ":rational",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -42,8 +40,7 @@ cc_test(
     srcs = ["modint_test.cc"],
     deps = [
         ":modint",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -53,9 +50,8 @@ cc_test(
     tags = ["manual"],
     deps = [
         ":modint",
-        "@benchmark",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_benchmark//:benchmark_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -69,8 +65,7 @@ cc_test(
     srcs = ["compressor_test.cc"],
     deps = [
         ":compressor",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -84,8 +79,7 @@ cc_test(
     srcs = ["macros_test.cc"],
     deps = [
         ":macros",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -104,8 +98,7 @@ cc_test(
     srcs = ["factors_test.cc"],
     deps = [
         ":factors",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -119,8 +112,7 @@ cc_test(
     srcs = ["primes_test.cc"],
     deps = [
         ":primes",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -134,8 +126,7 @@ cc_test(
     srcs = ["segment_tree_test.cc"],
     deps = [
         ":segment_tree",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -145,9 +136,8 @@ cc_test(
     tags = ["manual"],
     deps = [
         ":segment_tree",
-        "@benchmark",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_benchmark//:benchmark_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -161,8 +151,7 @@ cc_test(
     srcs = ["dual_segment_tree_test.cc"],
     deps = [
         ":dual_segment_tree",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -172,9 +161,8 @@ cc_test(
     tags = ["manual"],
     deps = [
         ":dual_segment_tree",
-        "@benchmark",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_benchmark//:benchmark_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -190,8 +178,7 @@ cc_test(
     deps = [
         ":dijkstra",
         ":graph",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -205,8 +192,7 @@ cc_test(
     srcs = ["disjoint_set_test.cc"],
     deps = [
         ":disjoint_set",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -220,8 +206,7 @@ cc_test(
     srcs = ["geometry_test.cc"],
     deps = [
         ":geometry",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -237,8 +222,7 @@ cc_test(
     deps = [
         ":modint",
         ":rerooting",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -252,8 +236,7 @@ cc_test(
     srcs = ["bignum_test.cc"],
     deps = [
         ":bignum",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -267,8 +250,7 @@ cc_test(
     srcs = ["grid_test.cc"],
     deps = [
         ":grid",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -282,8 +264,7 @@ cc_test(
     srcs = ["binary_search_test.cc"],
     deps = [
         ":binary_search",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -297,8 +278,7 @@ cc_test(
     srcs = ["warshall_floyd_test.cc"],
     deps = [
         ":warshall_floyd",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -314,8 +294,7 @@ cc_test(
     deps = [
         ":graph",
         ":strongly_connected_component",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -330,8 +309,7 @@ cc_test(
     srcs = ["graph_test.cc"],
     deps = [
         ":graph",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -345,8 +323,7 @@ cc_test(
     srcs = ["bidirected_graph_test.cc"],
     deps = [
         ":bidirected_graph",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -362,8 +339,7 @@ cc_test(
     deps = [
         ":bellman_ford",
         ":graph",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -377,8 +353,7 @@ cc_test(
     srcs = ["rolling_hash_match_test.cc"],
     deps = [
         ":rolling_hash_match",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -394,8 +369,7 @@ cc_test(
     deps = [
         ":rolling_hash",
         ":primitive_root",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -409,8 +383,7 @@ cc_test(
     srcs = ["bit_test.cc"],
     deps = [
         ":bit",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -424,8 +397,7 @@ cc_test(
     srcs = ["mo_test.cc"],
     deps = [
         ":mo",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -440,8 +412,7 @@ cc_test(
     srcs = ["edmonds_karp_test.cc"],
     deps = [
         ":edmonds_karp",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -455,8 +426,7 @@ cc_test(
     srcs = ["topological_sort_test.cc"],
     deps = [
         ":topological_sort",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -470,8 +440,7 @@ cc_test(
     srcs = ["i128_test.cc"],
     deps = [
         ":i128",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -485,8 +454,7 @@ cc_test(
     srcs = ["matrix_test.cc"],
     deps = [
         ":matrix",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -501,8 +469,7 @@ cc_test(
     srcs = ["int_sqrt_test.cc"],
     deps = [
         ":int_sqrt",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -516,8 +483,7 @@ cc_test(
     srcs = ["divisors_test.cc"],
     deps = [
         ":divisors",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -535,8 +501,7 @@ cc_test(
     srcs = ["lca_test.cc"],
     deps = [
         ":lca",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -551,8 +516,7 @@ cc_test(
     deps = [
         ":pow",
         ":modint",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -567,8 +531,7 @@ cc_test(
     srcs = ["numeric_sequence_test.cc"],
     deps = [
         ":numeric_sequence",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -582,8 +545,7 @@ cc_test(
     srcs = ["z_algorithm_test.cc"],
     deps = [
         ":z_algorithm",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -601,8 +563,7 @@ cc_test(
     srcs = ["primitive_root_test.cc"],
     deps = [
         ":primitive_root",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -616,8 +577,7 @@ cc_test(
     srcs = ["sparse_table_test.cc"],
     deps = [
         ":sparse_table",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -631,8 +591,7 @@ cc_test(
     srcs = ["rotate90_test.cc"],
     deps = [
         ":rotate90",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -646,8 +605,7 @@ cc_test(
     srcs = ["pbds_test.cc"],
     deps = [
         ":pbds",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -661,8 +619,7 @@ cc_test(
     srcs = ["binary_trie_test.cc"],
     deps = [
         ":binary_trie",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -677,8 +634,7 @@ cc_test(
     deps = [
         ":binary_search",
         ":suffix_array",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -693,8 +649,7 @@ cc_test(
     srcs = ["rational_reconstruction_test.cc"],
     deps = [
         ":rational_reconstruction",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -708,8 +663,7 @@ cc_test(
     srcs = ["type_traits_test.cc"],
     deps = [
         ":type_traits",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -724,8 +678,7 @@ cc_test(
     srcs = ["debug_test.cc"],
     deps = [
         ":debug",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -739,8 +692,7 @@ cc_test(
     srcs = ["fix_test.cc"],
     deps = [
         ":fix",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
@@ -755,7 +707,6 @@ cc_test(
     srcs = ["dfs_order_test.cc"],
     deps = [
         ":dfs_order",
-        "@gtest",
-        "@gtest//:gtest_main",
+        "@com_google_googletest//:gtest_main",
     ],
 )
