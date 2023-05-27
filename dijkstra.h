@@ -1,3 +1,6 @@
+#ifndef DIJKSTRA_H_
+#define DIJKSTRA_H_
+
 #include <algorithm>
 #include <optional>
 #include <queue>
@@ -53,3 +56,5 @@ Result<T> Dijkstra(const WeightedGraph<T>& graph, int64_t source) {
   }
   return {dist, prev};
 }
+
+#endif  // DIJKSTRA_H_
