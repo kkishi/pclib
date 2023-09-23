@@ -14,7 +14,10 @@ int64_t Kruskal(const WeightedGraph<T>& g) {
   DisjointSet ds(n);
   T ret = 0;
   for (auto [w, i, j] : v) {
-    if (ds.Union(i, j)) ret += w;
+    if (!ds.Same(i, j)) {
+      ds.Union(i, j);
+      ret += w;
+    }
   }
   return ret;
 }

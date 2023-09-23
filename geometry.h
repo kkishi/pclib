@@ -48,8 +48,7 @@ struct Point {
   }
   Point operator/(Float t) const { return Point(*this) /= t; }
   Point& operator/=(const Point& p) {
-    Float q = p.x * p.x + p.y * p.y;
-    dassert(q != 0);
+    dassert(p.x * p.x + p.y * p.y != 0);
     Float r = x * p.x + y * p.y;
     Float i = x * p.y - y * p.x;
     this->x = r;

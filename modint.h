@@ -12,7 +12,7 @@ using i64 = int64_t;
 }  // namespace
 
 #define BIN_OPS(F) F(+) F(-) F(*) F(/)
-#define CMP_OPS(F) F(!=) F(<) F(<=) F(==) F(>) F(>=)
+#define CMP_OPS(F) F(!=) F(==)
 
 template <i32 Mod = 1000000007>
 class ModInt {
@@ -140,6 +140,12 @@ class ModInt {
     return ModInt<Mod>(t) op m;                               \
   }
 BIN_OPS(DEFINE)
+#undef DEFINE
+#define DEFINE(op)                                     \
+  template <i32 Mod, typename T>                       \
+  bool operator op(const T& t, const ModInt<Mod>& m) { \
+    return ModInt<Mod>(t) op m;                        \
+  }
 CMP_OPS(DEFINE)
 #undef DEFINE
 

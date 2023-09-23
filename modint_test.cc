@@ -104,11 +104,6 @@ TEST(modint, comparison) {
   ModInt<7> a = 1, b = 2, c = 1;
   EXPECT_FALSE(a == b);
   EXPECT_TRUE(a == c);
-  EXPECT_TRUE(a < b);
-  EXPECT_FALSE(b < a);
-  EXPECT_TRUE(a <= b);
-  EXPECT_FALSE(b <= a);
-  EXPECT_TRUE(a <= a);
 }
 
 TEST(modint, stream) {

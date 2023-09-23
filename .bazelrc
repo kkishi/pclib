@@ -1,2 +1,2 @@
-common --cxxopt=-std=c++17
+common --cxxopt=-std=c++23
 test --test_output=errors
