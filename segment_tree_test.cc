@@ -57,3 +57,16 @@ TEST(segment_tree, min) {
   EXPECT_EQ(t.Aggregate(1, 4), 1);
   EXPECT_EQ(t.Aggregate(0, 4), 1);
 }
+
+TEST(segment_tree, application_order) {
+  using std::string;
+  auto concat = [](string a, string b) { return a + b; };
+  SegmentTree<string> t(8, concat);
+  string s = "abcdefgh";
+  for (int i = 0; i < 8; ++i) t.Set(i, string(1, s[i]));
+  for (int l = 0; l < 8; ++l) {
+    for (int r = l + 1; r <= 8; ++r) {
+      EXPECT_EQ(t.Aggregate(l, r), s.substr(l, r - l));
+    }
+  }
+}

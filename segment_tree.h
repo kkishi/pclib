@@ -29,19 +29,19 @@ class SegmentTree {
   T Get(int i) const { return Aggregate(i, i + 1); }
   T Aggregate(int begin, int end) const {
     int l = Leaf(begin), r = Leaf(end);
-    T v = identity_;
+    T lv = identity_, rv = identity_;
     while (l < r) {
       if (IsRight(l)) {
-        v = operation_(v, v_[l]);
+        lv = operation_(lv, v_[l]);
         ++l;
       }
       l = Parent(l);
       if (IsRight(r)) {
-        v = operation_(v_[r - 1], v);
+        rv = operation_(v_[r - 1], rv);
       }
       r = Parent(r);
     }
-    return v;
+    return operation_(lv, rv);
   }
 
  private:
