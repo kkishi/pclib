@@ -7,11 +7,13 @@ class DualSegmentTree {
   using Operation = std::function<T(T, T)>;
   DualSegmentTree(int size, Operation operation, T identity = T())
       : operation_(operation), identity_(identity) {
-    int two = 1;
-    while (two < size) {
-      two <<= 1;
+    log2_ = 0;
+    int pow2 = 1;
+    while (pow2 < size) {
+      ++log2_;
+      pow2 <<= 1;
     }
-    v_.resize(two * 2 - 1, identity_);
+    v_.resize(1 << (log2_ + 1), identity_);
   }
   void Update(int begin, int end, T v) {
     Eval(begin);
@@ -36,24 +38,19 @@ class DualSegmentTree {
 
  private:
   void Eval(int i) {
-    std::vector<int> v;
-    int index = Leaf(i);
-    while (index != 0) {
-      index = Parent(index);
-      v.push_back(index);
-    }
-    for (size_t i = 0; i < v.size(); ++i) {
-      int index = v[v.size() - 1 - i];
-      v_[Left(index)] = operation_(v_[index], v_[Left(index)]);
-      v_[Right(index)] = operation_(v_[index], v_[Right(index)]);
-      v_[index] = identity_;
+    for (int j = log2_; j >= 1; --j) {
+      int p = Parent(Leaf(i), j);
+      v_[Left(p)] = operation_(v_[p], v_[Left(p)]);
+      v_[Right(p)] = operation_(v_[p], v_[Right(p)]);
+      v_[p] = identity_;
     }
   }
-  int Leaf(int i) const { return i + (v_.size() >> 1); }
-  bool IsRight(int i) const { return !(i & 1); }
-  int Parent(int i) const { return (i - 1) >> 1; }
-  int Left(int i) const { return (i << 1) + 1; }
-  int Right(int i) const { return (i << 1) + 2; }
+  int log2_;
+  int Leaf(int i) const { return i + (1 << log2_); }
+  bool IsRight(int i) const { return i & 1; }
+  int Parent(int i, int j = 1) const { return i >> j; }
+  int Left(int i) const { return i << 1; }
+  int Right(int i) const { return Left(i) + 1; }
   const Operation operation_;
   const T identity_;
   std::vector<T> v_;
