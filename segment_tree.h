@@ -7,23 +7,25 @@ class SegmentTree {
   using Operation = std::function<T(T, T)>;
   SegmentTree(int size, Operation operation, T identity = T())
       : operation_(operation), identity_(identity) {
-    int two = 1;
-    while (two < size) {
-      two <<= 1;
+    log2_ = 0;
+    int pow2 = 1;
+    while (pow2 < size) {
+      ++log2_;
+      pow2 <<= 1;
     }
-    v_.resize(two * 2 - 1, identity_);
+    v_.resize(1 << (log2_ + 1), identity_);
   }
   void Set(int i, T v) {
-    int index = Leaf(i);
+    int idx = Leaf(i);
     while (true) {
-      v_[index] = v;
-      if (index == 0) break;
-      if (IsRight(index)) {
-        v = operation_(v_[index - 1], v);
+      v_[idx] = v;
+      if (idx == 1) break;
+      if (IsRight(idx)) {
+        v = operation_(v_[idx - 1], v);
       } else {
-        v = operation_(v, v_[index + 1]);
+        v = operation_(v, v_[idx + 1]);
       }
-      index = Parent(index);
+      idx = Parent(idx);
     }
   }
   T Get(int i) const { return Aggregate(i, i + 1); }
@@ -45,9 +47,10 @@ class SegmentTree {
   }
 
  private:
-  int Leaf(int i) const { return i + (v_.size() >> 1); }
-  bool IsRight(int i) const { return !(i & 1); }
-  int Parent(int i) const { return (i - 1) >> 1; }
+  int log2_;
+  int Leaf(int i) const { return i + (1 << log2_); }
+  bool IsRight(int i) const { return i & 1; }
+  int Parent(int i) const { return i >> 1; }
   const Operation operation_;
   const T identity_;
   std::vector<T> v_;
